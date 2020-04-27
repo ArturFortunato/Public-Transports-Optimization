@@ -4,12 +4,14 @@ import Line
 class Environment:
 
     self.orchestrator
+    self.lines
     self.hours
     self.minutes
     self.day_ended
 
     def Environment(self):
-        self.orchestrator = Orchestrator(self.create_lines())
+        self.lines = [ Line('red') , Line('yellow') , Line('blue') , Line('green') ]
+        self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
         self.start_day()
 
@@ -26,12 +28,14 @@ class Environment:
 
             if self.hours == 1:
                 self.day_ended = True
-    
-    def create_lines(self):
-        return [ Line('red') , Line('yellow') , Line('blue') , Line('green') ]
+
+    def moveTrains(self):
+        for line in self.lines:
+            line.moveTrains()
 
     def run(self):
         while True:
+            self.moveTrains()
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             self.orchestrator.actuate()
             self.tik()
