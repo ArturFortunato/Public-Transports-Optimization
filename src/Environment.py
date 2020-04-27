@@ -1,16 +1,10 @@
-import Orchestrator
-import Line
+from Orchestrator import Orchestrator
+from Line import Line
 
 class Environment:
 
-    self.orchestrator
-    self.lines
-    self.hours
-    self.minutes
-    self.day_ended
-
-    def Environment(self):
-        self.lines = [ Line('red') , Line('yellow') , Line('blue') , Line('green') ]
+    def __init__(self):
+        self.lines = [ Line('red',2,[]) , Line('yellow',2,[]) , Line('blue',2,[]) , Line('green',2,[]) ]
         self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
         self.start_day()
@@ -36,6 +30,9 @@ class Environment:
     def run(self):
         while True:
             self.moveTrains()
+            print("bacanao")
+            print("-")
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
+            self.orchestrator.deliberate()
             self.orchestrator.actuate()
             self.tik()
