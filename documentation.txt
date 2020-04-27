@@ -1,0 +1,35 @@
+Red -> Orchestrator
+{
+    'saldanha': {
+        'Aeroporto': 12,
+        'S Sebastião': 14
+    },
+    'alameda: {
+
+    }
+}
+
+{
+    'train1': {
+        'numCarruagens': 4,
+        'speed': 5,
+        'capCarruagens': {
+            '1': 12,
+            '2': 25
+        }
+        'lotacaoCarruagens': {
+            '1':11,
+            '2':16
+        }
+    }
+}
+
+Orchestrator -> Red
+
+{
+    'numberOfTrains': 5,
+    'train1': {
+        'numCarruagens': 2,
+        'speed': 4
+    }
+}
