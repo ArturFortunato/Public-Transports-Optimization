@@ -3,15 +3,12 @@ Project by Artur Fortunato, João Coelho and Pedro Esteves.
 """
 class Orchestrator:
 
-
     def __init__(self,new_lines):
         self.lines = new_lines       #List that contains the metropolitan lines.
-        self.percepcoes = {}         #Perceptions list
-        self.deliberacoes = {}
+        self.perceptions = {}         #Perceptions list
+        self.deliberations = {}
         self.hours = None
         self.minutes = None
-
-
 
     #Iterates the line list and extracts perceptions for each line.
         #dayOver - Boolean. It is true if the day is over, false if not.
@@ -22,30 +19,26 @@ class Orchestrator:
         self.minutes = minutes
 
         for line in self.lines:
-            self.percepcoes[line.getId()] = line.getLineInfo()
+            self.perceptions[line.get_id()] = line.get_line_info()
 
 
 
     #AI algorithm to calculate the optimal values for each train velocity and number of carriages.
-    def chooseLineAction(self,line):
+    def choose_line_action(self, line):
         pass
 
     def deliberate(self):
         for line in self.lines:
-            self.deliberacoes[line.getId()] = self.chooseLineAction(line)            
+            self.deliberations[line.get_id()] = self.choose_line_action(line)            
 
     def actuate(self):
-        #self.hours = 12
-        #self.minutes = 27
         for line in self.lines:
-            line.updateLineInfo(self.hours,self.minutes)
+            line.update_line_info(self.hours, self.minutes, self.deliberations)
         
-        self.percepcoes = {}
-        self.deliberacoes = {}
+        self.perceptions = {}
+        self.deliberations = {}
 
-
-
-    def printLines(self):
+    def print_lines(self):
         print(self.lines)
 
 

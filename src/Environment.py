@@ -23,15 +23,13 @@ class Environment:
             if self.hours == 1:
                 self.day_ended = True
 
-    def moveTrains(self):
+    def move_trains(self):
         for line in self.lines:
-            line.moveTrains()
+            line.move_trains()
 
     def run(self):
         while True:
-            self.moveTrains()
-            print("bacanao")
-            print("-")
+            self.move_trains()
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             self.orchestrator.deliberate()
             self.orchestrator.actuate()

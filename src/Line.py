@@ -1,6 +1,8 @@
 
 from Station import Station
 
+import re
+
 #verde
 telheiras = Station('telheiras', 'telheiras', 'cais_do_sodre')
 campo_grande = Station('campo_grande', 'telheiras', 'cais_do_sodre')
@@ -80,6 +82,7 @@ class Line:
         self.color = color #string #considerated id
         self.maximum_trains = maximum_trains 
         self.trains = trains #dictionary of trains
+        self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
         elif color == 'yellow':
@@ -89,20 +92,30 @@ class Line:
         elif color == 'blue':
             self.stations = blue
 
-    def getId(self):
+    def get_id(self):
         return self.color
 
-    def moveTrains(self):
-        pass
+    def move_trains(self):
+        for train in self.trains:
+            reached_destination = self.trains[train].move()
+            if self.number_of_trains > len(trains):
+                del self.trains[train]
 
+    def update_line_info(self,hours,minutes, deliberations):
+        for deliberation in deliberations:
+            if re.match("train\d", deliberation):
+                self.trains[deliberation].update_train_info(deliberations[deliberation])
+            elif self.number_of_trains == deliberation:
+                self.number_of_trains = deliberation
 
-    def updateLineInfo(self,hours,minutes):
-        pass
+    def get_line_info(self):
+        line_info = {}
+        for train in self.trains:
+            line_info[train] = self.trains[train].get_train_info()
+        
+        return line_info
 
-    def getLineInfo(self):
-        return 0
-
-    def getTrainById(self, tid):
+    def get_train_by_id(self, tid):
         return trains[tid]
         
 
