@@ -1,6 +1,8 @@
 from Orchestrator import Orchestrator
 from Line import Line
 
+import time
+
 class Environment:
 
     def __init__(self):
@@ -34,3 +36,5 @@ class Environment:
             self.orchestrator.deliberate()
             self.orchestrator.actuate()
             self.tik()
+            print("TIK")
+            time.sleep(1)
