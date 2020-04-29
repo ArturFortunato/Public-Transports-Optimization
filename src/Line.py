@@ -97,9 +97,12 @@ class Line:
 
     def move_trains(self):
         for train in self.trains:
-            reached_destination = self.trains[train].move()
-            if self.number_of_trains > len(trains):
-                del self.trains[train]
+            self.trains[train].move()
+
+        for train in self.trains:
+            for station in self.stations:
+                if station.get_position() == train.get_position():
+                    train.open_doors(station, []) #replace [] with list of new passengers
 
     def update_line_info(self,hours,minutes, deliberations):
         for deliberation in deliberations:

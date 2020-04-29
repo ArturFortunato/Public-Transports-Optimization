@@ -9,7 +9,6 @@ class Train:
         self.current_speed = current_speed
         self.terminal_station = self.terminal_station
         self.postion = position
-
     
     def change_speed(self, new_speed):
         if new_speed < maximum_speed:
@@ -29,11 +28,13 @@ class Train:
 
         return train_info
 
-    # Returns true if it reached the terminal station
     def move(self):
         self.postion += self.current_speed
-        
-        return self.terminal_station.position == self.postion
 
-
-
+    def open_doors(self, station, passengers):
+        for carriage in self.carriages:
+            carriage.remove_passengers(station)
+            number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers))
+            if number_of_passengers_to_enter != 0:
+                carriage.add_passengers(:passengers[number_of_passengers_to_enter])
+                passengers = passengers[number_of_passengers_to_enter:]
