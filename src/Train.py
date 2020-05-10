@@ -36,5 +36,5 @@ class Train:
             carriage.remove_passengers(station)
             number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers))
             if number_of_passengers_to_enter != 0:
-                carriage.add_passengers(:passengers[number_of_passengers_to_enter])
+                carriage.add_passengers(passengers[:number_of_passengers_to_enter])
                 passengers = passengers[number_of_passengers_to_enter:]
