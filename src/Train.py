@@ -32,9 +32,12 @@ class Train:
         self.postion += self.current_speed
 
     def open_doors(self, station, passengers):
+        original_length = len(passengers)
+        report = []
         for carriage in self.carriages:
             carriage.remove_passengers(station)
             number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers))
             if number_of_passengers_to_enter != 0:
-                carriage.add_passengers(:passengers[number_of_passengers_to_enter])
+                carriage.add_passengers(passengers[:number_of_passengers_to_enter])
                 passengers = passengers[number_of_passengers_to_enter:]
+        return original_length - len(passengers), report

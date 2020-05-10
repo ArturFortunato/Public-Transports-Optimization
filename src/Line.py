@@ -75,10 +75,11 @@ santa_apolonia = Station('amadora_este', 'amadora_este', 'santa_apolonia', 98)
 
 blue = [amadora_este, alfornelos, pontinha, carnide, colegio_militar, alto_moinhos, laranjeiras, jardim_zoologico, praca_espanha, sao_sebastiao, parque, marques_pombal, avenida, restauradores, baixa_chiado, terreio_paço, santa_apolonia]
 
-
+from Reporter import Reporter
 
 class Line:
-    def __init__(self, color, maximum_trains, trains):
+    def __init__(self, color, maximum_trains, trains, reporter):
+        self.reporter = reporter
         self.color = color #string #considerated id
         self.maximum_trains = maximum_trains 
         self.trains = trains #dictionary of trains
@@ -102,9 +103,12 @@ class Line:
         for train in self.trains:
             for station in self.stations:
                 if station.get_position() == train.get_position():
-                    train.open_doors(station, []) #replace [] with list of new passengers
-
-    def update_line_info(self,hours,minutes, deliberations):
+                    passengers_to_enter = station.get_persons()
+                    people_boarded, report = train.open_doors(station, passengers_to_enter)
+                    station.remove_persons_until_index(people_boarded)
+                    self.report_satisfaction(report)
+                    
+    def update_line_info(self, hours, minutes, deliberations):
         for deliberation in deliberations:
             if re.match("train\d", deliberation):
                 self.trains[deliberation].update_train_info(deliberations[deliberation])
@@ -121,11 +125,5 @@ class Line:
     def get_train_by_id(self, tid):
         return trains[tid]
         
-
-
-
-
-
-
-
-    
+    def report_satisfaction(self, report):
+        self.reporter.add_passengers_satisfaction(report)

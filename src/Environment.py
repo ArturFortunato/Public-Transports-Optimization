@@ -1,12 +1,14 @@
 from Orchestrator import Orchestrator
 from Line import Line
+from Reporter import Reporter
 
 import time
 
 class Environment:
 
     def __init__(self):
-        self.lines = [ Line('red',2,[]) , Line('yellow',2,[]) , Line('blue',2,[]) , Line('green',2,[]) ]
+        reporter = Reporter()
+        self.lines = [ Line('red',2,[], reporter) , Line('yellow',2,[], reporter) , Line('blue',2,[], reporter) , Line('green',2,[], reporter) ]
         self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
         self.start_day()

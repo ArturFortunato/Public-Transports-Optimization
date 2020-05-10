@@ -21,6 +21,9 @@ class Station:
 
     def updatePersons(self):
         pass
+
+    def get_persons(self):
+        return self.persons
     
     def setPeopleTerminalTwo(self, n):
         self.peopleTerminalTwo = n
