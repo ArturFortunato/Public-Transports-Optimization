@@ -39,7 +39,6 @@ class Environment:
             for number_of_persons in range(stationsDistribution[station]): 
                 p = Person(get_unique_id(), station, estimate_final_station(station, self.hours, self.minutes))
                 line.addPersonToStation(p, station)
-        print(line.stations[0])
 
 
     def run(self):
