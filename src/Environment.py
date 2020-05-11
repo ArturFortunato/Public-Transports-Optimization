@@ -2,7 +2,7 @@ from Orchestrator import Orchestrator
 from Line import Line
 from Reporter import Reporter
 
-import Schedule_Getter as sg
+#import Schedule_Getter as sg
 from Person import Person
 from Gui import Gui
 
@@ -37,7 +37,7 @@ class Environment:
     def move_trains(self):
         for line in self.lines:
             line.move_trains()
-        
+        '''
     def generate_people(self):
         for line in self.lines:
                 self.populate_stations(line)
@@ -50,11 +50,11 @@ class Environment:
             for number_of_persons in range(stationsDistribution[station]): 
                 p = Person(get_unique_id(), station, estimate_final_station(station,line.color, self.hours, self.minutes))
                 line.add_person_to_station(p, station)
-
+'''
 
     def run(self):
         while True:
-            self.generate_people()
+            #self.generate_people()
             self.move_trains()
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             self.orchestrator.deliberate()

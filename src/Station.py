@@ -51,3 +51,6 @@ class Station:
 
     def get_gui_center(self):
         return self.gui_center
+
+    def get_text_position(self): #change this to avoid overlap text and lines
+        return self.gui_center

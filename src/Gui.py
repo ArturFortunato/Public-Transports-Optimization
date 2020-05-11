@@ -1,6 +1,7 @@
 import pygame as pg
 
 from Line import Line
+
 colors = {
     'red': (255, 0, 0),
     'green': (0, 255, 0),
