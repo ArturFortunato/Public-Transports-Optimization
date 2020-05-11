@@ -1,5 +1,5 @@
 class Station:
-    def __init__(self, name, terminalOne, terminalTwo, position):
+    def __init__(self, name, terminalOne, terminalTwo, position, gui_center):
         self.name = name
         self.persons = []
         self.terminalOne = terminalOne
@@ -8,6 +8,11 @@ class Station:
         self.peopleTerminalTwo = 0
         self.isTerminal = (name == terminalOne or name == terminalTwo)
         self.position = position
+        self.gui_center = gui_center
+
+    def set_gui(self, gui):
+        self.gui = gui
+        gui.add_station(self)
 
     def setPeopleTerminalOne(self, n):
         self.peopleTerminalOne = n
@@ -44,4 +49,5 @@ class Station:
         self.peopleTerminalTwo += delta
 
 
-    
+    def get_gui_center(self):
+        return self.gui_center

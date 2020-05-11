@@ -1,9 +1,9 @@
 from Orchestrator import Orchestrator
 from Line import Line
 from Reporter import Reporter
-
-#import Schedule_Getter as sg
 from Person import Person
+from Gui import Gui
+#import Schedule_Getter as sg
 
 import time
 import random
@@ -12,7 +12,8 @@ class Environment:
 
     def __init__(self):
         reporter = Reporter()
-        self.lines = [ Line('red',2,[], reporter) , Line('yellow',2,[], reporter) , Line('blue',2,[], reporter) , Line('green',2,[], reporter) ]
+        self.gui = Gui()
+        self.lines = [ Line('red',2,[], reporter, self.gui) , Line('yellow',2,[], reporter, self.gui) , Line('blue',2,[], reporter, self.gui) , Line('green',2,[], reporter, self.gui) ]
         self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
         self.start_day()
@@ -56,12 +57,10 @@ class Environment:
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             self.orchestrator.deliberate()
             self.orchestrator.actuate()
+            self.gui.run()
             self.tik()
             print("TIK")
             time.sleep(1)
-
-
-
 
 ##### Auxiliar
 
