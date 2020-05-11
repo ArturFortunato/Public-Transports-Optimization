@@ -2,11 +2,12 @@ from Orchestrator import Orchestrator
 from Line import Line
 from Reporter import Reporter
 
-#import Schedule_Getter as sg
+import Schedule_Getter as sg
 from Person import Person
 
 import time
 import random
+
 
 class Environment:
 
@@ -45,7 +46,7 @@ class Environment:
         #{oriente: 2, encarnacao: 3, .... }
         for station in stationsDistribution:
             for number_of_persons in range(stationsDistribution[station]): 
-                p = Person(get_unique_id(), station, estimate_final_station(station, self.hours, self.minutes))
+                p = Person(get_unique_id(), station, estimate_final_station(station,line.color, self.hours, self.minutes))
                 line.add_person_to_station(p, station)
 
 
@@ -72,17 +73,60 @@ yellow = ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conc
 green = ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
 i = 0
 
+
+
+#mudanca de linha
+mudanca_linha = ["São Sebastião","Marquês de Pombal","Saldanha","Baixa Chiado","Alameda","Campo Grande"]
+
+stations_per_line = {
+    "red": ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Alameda', 'Saldanha', 'São Sebastião'],
+    "blue": ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal 1', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Amadora Este'],
+    "yellow": ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conchas', 'Campo Grande', 'Cidade Universitária', 'Entre Campos', 'Campo Pequeno', 'Saldanha', 'Picoas', 'Marquês de Pombal', 'Rato'],
+    "green": ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
+}
+
 #TODO: analyse the data
 #toy example with random station
-def estimate_final_station(station, hours, minutes):
-    if station in red:
-        return random.choice(red)
-    if station in blue:
-        return random.choice(blue)
-    if station in green:
-        return random.choice(green)
-    if station in yellow:
-        return random.choice(yellow)
+#-entrance station
+#-return a string 
+#Outputs a destination station for a person.
+def estimate_final_station(line,station, hours, minutes):
+    prob = random.uniform(0, 1)
+
+    if(prob >= 0.90):#mudanca de linha
+        valid_stations = []
+        for s in stations_per_line.keys():
+            if(s != line):
+                valid_stations = valid_stations + stations_per_line[s]
+        valid_stations = set(valid_stations)
+        if(station in valid_stations):
+            valid_stations.remove(list(station))
+        return random.choice(list(valid_stations))
+
+    else:#calcula probabilide de sair numa estacao da mesma linha
+        end_quarter = minutes + 15
+
+        if(len(str(hours)) == 1):
+            hora_formatada =  str(0) + str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
+        else:
+            hora_formatada = str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
+
+
+        line_stations = stations_per_line[line] #remove a estacao atual
+
+        dic_stations = {}
+        counter = 0
+        for s in line_stations:
+            if(s != station):
+                print("o valor da hora_formatada e: " + str(hora_formatada))
+                print("o valor de s e: " + str(s))
+                dic_stations[s] = sg.extract_value(line,hora_formatada,s,"entradas")
+                counter += dic_stations[s]
+            #print(s)
+
+    #if station in red:
+    #    return random.choice(red)
+
 
 #TODO: analyse the data
 #toy example with random number for each station
@@ -97,3 +141,6 @@ def get_unique_id():
     global i 
     i += 1
     return i
+
+
+print(estimate_final_station("yellow", "Rato",7,45))
