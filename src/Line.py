@@ -96,6 +96,11 @@ class Line:
     def get_id(self):
         return self.color
 
+    def getStation(self, name):
+        for station in self.stations:
+            if station.name == name:
+                return station
+
     def move_trains(self):
         for train in self.trains:
             self.trains[train].move()
@@ -127,3 +132,9 @@ class Line:
         
     def report_satisfaction(self, report):
         self.reporter.add_passengers_satisfaction(report)
+
+    #need to change stations representations from list to dict, to avoid the for loop.
+    def add_person_to_station(self, person, station):
+        for s in self.stations:
+            if s.name == station:
+                s.addPerson(person)

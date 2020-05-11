@@ -12,9 +12,16 @@ class Station:
     def setPeopleTerminalOne(self, n):
         self.peopleTerminalOne = n
 
+    def get_name(self):
+        return self.name
 
     def addPersonById(self):
         pass
+
+    def addPerson(self, person):
+        #a list won't be good for removal, change for dict but check if it is not being used elsewhere.
+        #also check add by id?
+        self.persons.append(person)
 
     def removePersonById(self):
         pass
@@ -25,6 +32,8 @@ class Station:
     def get_persons(self):
         return self.persons
     
+
+    #probably not necessary
     def setPeopleTerminalTwo(self, n):
         self.peopleTerminalTwo = n
 

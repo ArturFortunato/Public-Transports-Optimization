@@ -5,7 +5,6 @@ entry_lines = {}
 entry_lines["entradas"] = {}
 
 entry_lines["saidas"] = {}
-
 for cor in ["azul","amarela","verde","vermelha"]:
     for tipo in ["entradas","saidas"]:
         path = "schedules/linha_" + cor + "_" + tipo + "1.ods"
