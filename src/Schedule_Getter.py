@@ -1,17 +1,16 @@
 from pandas_ods_reader import read_ods
 
 entry_lines = {}
-
 entry_lines["entradas"] = {}
-
 entry_lines["saidas"] = {}
-for cor in ["azul","amarela","verde","vermelha"]:
+
+for cor in ["blue","yellow","green","red"]:
     for tipo in ["entradas","saidas"]:
         path = "schedules/linha_" + cor + "_" + tipo + "1.ods"
         sheet_idx = 1
         df = read_ods(path, sheet_idx)
         entry_lines[tipo][cor] = df
-        print("cor " + str(cor) + str(df.shape))
+        #print("cor " + str(cor) + str(df.shape))
 
 #path = "linha_vermelha_entradas1.ods"
 #sheet_idx = 1
@@ -47,4 +46,5 @@ def extract_value(line,hour,station,tipo):
         return 0        
     
 
-print(extract_value("azul",'06:15-30',"Alfornelos","entradas"))
+print(entry_lines["saidas"]["yellow"].keys())
+print(extract_value("yellow",'07:45-60',"Rato","saidas"))
