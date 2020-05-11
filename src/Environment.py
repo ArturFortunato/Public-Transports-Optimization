@@ -85,6 +85,16 @@ stations_per_line = {
     "green": ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
 }
 
+def format_hour(hours,minutes):
+    end_quarter = minutes + 15
+
+    if(len(str(hours)) == 1):
+        hora_formatada =  str(0) + str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
+    else:
+        hora_formatada = str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
+    return hora_formatada
+
+
 #TODO: analyse the data
 #toy example with random station
 #-entrance station
@@ -104,28 +114,29 @@ def estimate_final_station(line,station, hours, minutes):
         return random.choice(list(valid_stations))
 
     else:#calcula probabilide de sair numa estacao da mesma linha
-        end_quarter = minutes + 15
 
-        if(len(str(hours)) == 1):
-            hora_formatada =  str(0) + str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
-        else:
-            hora_formatada = str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
-
-
+        hora_formatada = format_hour(hours,minutes)
         line_stations = stations_per_line[line] #remove a estacao atual
 
         dic_stations = {}
         counter = 0
         for s in line_stations:
             if(s != station):
-                print("o valor da hora_formatada e: " + str(hora_formatada))
-                print("o valor de s e: " + str(s))
                 dic_stations[s] = sg.extract_value(line,hora_formatada,s,"entradas")
                 counter += dic_stations[s]
-            #print(s)
 
-    #if station in red:
-    #    return random.choice(red)
+        #normalizacao
+        for key in list(dic_stations.keys()):
+            dic_stations[key] = dic_stations[key] / counter
+
+        counter = 0 
+        prob = random.uniform(0, 1)
+
+        for key in list(dic_stations.keys()):
+            counter += dic_stations[key]
+            if(counter >= prob):
+                return key
+
 
 
 #TODO: analyse the data
@@ -133,8 +144,8 @@ def estimate_final_station(line,station, hours, minutes):
 def estimate_number_of_people_per_station(line, hours, minutes):
     estimative = dict()
     for station in line.stations:
-        estimative[station.name] = random.randint(1,10)
-    return estimative
+        hora_formatada = format_hour(hours,minutes)
+        estimative[station.name] = sg.extract_value(line.color,hora_formatada,station.name,"entradas")
 
 #may not be necessary
 def get_unique_id():
@@ -143,4 +154,3 @@ def get_unique_id():
     return i
 
 
-print(estimate_final_station("yellow", "Rato",7,45))
