@@ -31,16 +31,10 @@ with open('horas.txt') as openfileobject:
 #tipo e um booleano que devolve entradas e saidas
 def extract_value(line,hour,station,tipo):
 
-    
-    if tipo == 1:#entradas
-        line = entry_lines["entradas"][line]
-        index = hours_dicio[hour]
-        res = line[station][index]
-        
-    elif tipo == 0: #saidas
-        line = entry_lines["saidas"][line]
-        index = hours_dicio[hour]
-        res = line[station][index]
+    line = entry_lines[tipo][line]
+    index = hours_dicio[hour]
+    res = line[station][index]
+
 
     res = str(res)
 
@@ -53,4 +47,4 @@ def extract_value(line,hour,station,tipo):
         return 0        
     
 
-print(extract_value("azul",'06:15-30',"Alfornelos",1))
+print(extract_value("azul",'06:15-30',"Alfornelos","entradas"))
