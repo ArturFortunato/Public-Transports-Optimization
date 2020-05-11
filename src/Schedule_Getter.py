@@ -1,4 +1,5 @@
 from pandas_ods_reader import read_ods
+
 entry_lines = {}
 
 entry_lines["entradas"] = {}

@@ -2,6 +2,8 @@ from Orchestrator import Orchestrator
 from Line import Line
 from Reporter import Reporter
 
+import Schedule_Getter as sg
+
 import time
 
 class Environment:
@@ -30,9 +32,13 @@ class Environment:
     def move_trains(self):
         for line in self.lines:
             line.move_trains()
+        
+    def generatePeople(self):
+        pass
 
     def run(self):
         while True:
+            self.generatePeople()
             self.move_trains()
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             self.orchestrator.deliberate()
