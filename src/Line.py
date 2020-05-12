@@ -6,7 +6,7 @@ import re
 
 #verde
 telheiras = Station('Telheiras', 'Telheiras', 'Cais do Sodré', 0, [750, 600])
-campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, None)
+campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, [750, 495])
 alvalade = Station('Alvalade', 'Telheiras', 'Cais do Sodré', 20, [750, 450])
 roma = Station('Roma', 'Telheiras', 'Cais do Sodré', 26, [750, 400])
 areeiro = Station('Areeiro', 'Telheiras', 'Cais do Sodré', 33, [750, 350])
@@ -22,19 +22,19 @@ cais_do_sodre = Station('Cais do Sodré', 'Telheiras', 'Cais do Sodré', 78, [75
 green = [telheiras, campo_grande, alvalade, roma, areeiro, alameda, arroios, anjos, intendente, martim_moniz, rossio, baixa_chiado, cais_do_sodre]
 
 #amarela
-odivelas = Station('Odivelas', 'Odivelas', 'Rato', 0, [620, 760])
+odivelas = Station('Odivelas', 'Odivelas', 'Rato', 0, [622, 760])
 senhor_roubado = Station('Senhor Roubado', 'Odivelas', 'Rato', 4, [646, 708])
-ameixoeira = Station('Ameixoeira', 'Odivelas', 'Rato', 10, [672, 656])
-lumiar = Station('Lumiar', 'Odivelas', 'Rato', 18, [698, 604])
-quinta_conchas = Station('Quinta das Conchas', 'Odivelas', 'Rato', 22, [724, 552])
-campo_grande = Station('Campo Grande', 'Odivelas', 'Rato', 31, [750, 500])
-cidade_universitaria = Station('Cidade Universitária', 'Odivelas', 'Rato', 37, [820, 350])
-entrecampos = Station('Entre Campos', 'Odivelas', 'Rato', 41, [796, 400])
-campo_pequeno = Station('Campo Pequeno', 'Odivelas', 'Rato', 43, [773, 450])
-saldanha = Station('Saldanha', 'Odivelas', 'Rato', 51, None)
+ameixoeira = Station('Ameixoeira', 'Odivelas', 'Rato', 10, [670, 656])
+lumiar = Station('Lumiar', 'Odivelas', 'Rato', 18, [696, 604])
+quinta_conchas = Station('Quinta das Conchas', 'Odivelas', 'Rato', 22, [720, 552])
+campo_grande = Station('Campo Grande', 'Odivelas', 'Rato', 31, [750, 495])
+cidade_universitaria = Station('Cidade Universitária', 'Odivelas', 'Rato', 37, [772, 450])
+entrecampos = Station('Entre Campos', 'Odivelas', 'Rato', 41, [792, 400])
+campo_pequeno = Station('Campo Pequeno', 'Odivelas', 'Rato', 43, [820, 350])
+saldanha = Station('Saldanha', 'Odivelas', 'Rato', 51, [845, 300])
 picoas = Station('Picoas', 'Odivelas', 'Rato', 56, [875, 237])
-marques_pombal = Station('Marquês de Pombal', 'Odivelas', 'Rato', 59, None)
-rato = Station('Rato', 'Odivelas', 'Rato', 68, [980, 20])
+marques_pombal = Station('Marquês de Pombal', 'Odivelas', 'Rato', 59, [905,175])
+rato = Station('Rato', 'Odivelas', 'Rato', 68, [982, 20])
 
 yellow = [odivelas, senhor_roubado, ameixoeira, lumiar, quinta_conchas, campo_grande, cidade_universitaria, entrecampos, campo_pequeno, saldanha, picoas, marques_pombal, rato]
 
@@ -56,22 +56,22 @@ sao_sebastiao = Station('São Sebastião', 'Aeroporto', 'São Sebastião', 70, [
 red = [aeroporto, encarnacao, moscavide, oriente, cabo_ruivo, olivais, chelas, bela_vista, olaias, alameda, saldanha, sao_sebastiao]
 
 #azul
-amadora_este = Station('Amadora Este', 'Amadora Este', 'Santa Apolónia', 0, [1450, 500])
-alfornelos = Station('Alfornelos', 'Amadora Este', 'Santa Apolónia', 7, None)
-pontinha = Station('Pontinha', 'Amadora Este', 'Santa Apolonia', 16, None)
-carnide = Station('Carnide', 'Amadora Este', 'Santa Apolónia', 21, None)
-colegio_militar = Station('Colégio Militar', 'Amadora Este', 'Santa Apolónia', 31, None)
-alto_moinhos = Station('Alto dos Moinhos', 'Amadora Este', 'Santa Apolónia', 36, None)
-laranjeiras = Station('Laranjeiras', 'Amadora Este', 'Santa Apolónia', 44, None)
-jardim_zoologico = Station('Jardim Zoológico', 'Amadora Este', 'Santa Apolónia', 49, None)
-praca_espanha = Station('Praça Espanha', 'Amadora Este', 'Santa Apolónia', 58, None)
-sao_sebastiao = Station('São Sebastião', 'Amadora Este', 'Santa Apolónia', 68, None)
-parque = Station('Parque', 'Amadora Este', 'Santa Apolónia', 72, None)
+amadora_este = Station('Amadora Este', 'Amadora Este', 'Santa Apolónia', 0, [1475, 515])
+alfornelos = Station('Alfornelos', 'Amadora Este', 'Santa Apolónia', 7, [1435, 496])
+pontinha = Station('Pontinha', 'Amadora Este', 'Santa Apolonia', 16, [1395, 472])
+carnide = Station('Carnide', 'Amadora Este', 'Santa Apolónia', 21, [1355, 448])
+colegio_militar = Station('Colégio Militar', 'Amadora Este', 'Santa Apolónia', 31, [1315, 420])
+alto_moinhos = Station('Alto dos Moinhos', 'Amadora Este', 'Santa Apolónia', 36, [1275, 396])
+laranjeiras = Station('Laranjeiras', 'Amadora Este', 'Santa Apolónia', 44, [1235, 372])
+jardim_zoologico = Station('Jardim Zoológico', 'Amadora Este', 'Santa Apolónia', 49, [1195, 348])
+praca_espanha = Station('Praça Espanha', 'Amadora Este', 'Santa Apolónia', 58, [1155, 324])
+sao_sebastiao = Station('São Sebastião', 'Amadora Este', 'Santa Apolónia', 68, [1115, 300])
+parque = Station('Parque', 'Amadora Este', 'Santa Apolónia', 72, [1010, 237])
 marques_pombal = Station('Marquês de Pombal', 'Amadora Este', 'Santa Apolónia', 77, [905,175])
-avenida = Station('Avenida', 'Amadora Este', 'Santa Apolónia', 79, None)
-restauradores = Station('Restauradores', 'Amadora Este', 'Santa Apolónia', 82, None)
-baixa_chiado = Station('Baixa Chiado', 'Amadora Este', 'Santa Apolónia', 87, None)
-terreio_paço = Station('Terreiro Paço', 'Amadora Este', 'Santa Apolónia', 91, None)
+avenida = Station('Avenida', 'Amadora Este', 'Santa Apolónia', 79, [854, 144])
+restauradores = Station('Restauradores', 'Amadora Este', 'Santa Apolónia', 82, [802, 112])
+baixa_chiado = Station('Baixa Chiado', 'Amadora Este', 'Santa Apolónia', 87, [750, 80])
+terreio_paço = Station('Terreiro Paço', 'Amadora Este', 'Santa Apolónia', 91, [700, 50])
 santa_apolonia = Station('Santa Apolónia', 'Amadora Este', 'Santa Apolónia', 98, [650, 20])
 
 blue = [amadora_este, alfornelos, pontinha, carnide, colegio_militar, alto_moinhos, laranjeiras, jardim_zoologico, praca_espanha, sao_sebastiao, parque, marques_pombal, avenida, restauradores, baixa_chiado, terreio_paço, santa_apolonia]
@@ -86,7 +86,7 @@ init_pos = {
 end_pos = {
     'red': [1115, 300],
     'green': [750, 600],
-    'blue': [1450, 500],
+    'blue': [1475, 515],
     'yellow': [980, 20]
 }
 
