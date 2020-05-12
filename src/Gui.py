@@ -39,10 +39,10 @@ class Gui:
     def draw_train(self, color, position):
         pg.draw.rect(self.win, color, position)
 
-    def draw_station(self, position, name):
+    def draw_station(self, position, name, text_position):
         if position != None:
             pg.draw.circle(self.win, STATION_COLOR, position, STATION_RADIUS)
-            self.write_station_name(position, name)
+            self.write_station_name(text_position, name)
 
     def write_station_name(self, station_position, station_name):
         largeText = pg.font.Font('freesansbold.ttf', 15)
@@ -55,7 +55,8 @@ class Gui:
         for i in range(len(self.lines)):
             self.draw_line(colors[self.lines[i].get_color()], self.lines[i].init_pos(), self.lines[i].end_pos())
         for i in range(len(self.stations)):
-            self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name())
+            if self.stations[i].to_draw():
+                self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position())
         for i in range(len(self.trains)):
             self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position())
 
