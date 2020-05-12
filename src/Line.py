@@ -22,17 +22,17 @@ cais_do_sodre = Station('Cais do Sodré', 'Telheiras', 'Cais do Sodré', 78, [75
 green = [telheiras, campo_grande, alvalade, roma, areeiro, alameda, arroios, anjos, intendente, martim_moniz, rossio, baixa_chiado, cais_do_sodre]
 
 #amarela
-odivelas = Station('Odivelas', 'Odivelas', 'Rato', 0, [650, 700])
-senhor_roubado = Station('Senhor Roubado', 'Odivelas', 'Rato', 4, None)
-ameixoeira = Station('Ameixoeira', 'Odivelas', 'Rato', 10, None)
-lumiar = Station('Lumiar', 'Odivelas', 'Rato', 18, None)
-quinta_conchas = Station('Quinta das Conchas', 'Odivelas', 'Rato', 22, None)
+odivelas = Station('Odivelas', 'Odivelas', 'Rato', 0, [620, 760])
+senhor_roubado = Station('Senhor Roubado', 'Odivelas', 'Rato', 4, [646, 708])
+ameixoeira = Station('Ameixoeira', 'Odivelas', 'Rato', 10, [672, 656])
+lumiar = Station('Lumiar', 'Odivelas', 'Rato', 18, [698, 604])
+quinta_conchas = Station('Quinta das Conchas', 'Odivelas', 'Rato', 22, [724, 552])
 campo_grande = Station('Campo Grande', 'Odivelas', 'Rato', 31, [750, 500])
-cidade_universitaria = Station('Cidade Universitária', 'Odivelas', 'Rato', 37, None)
-entrecampos = Station('Entre Campos', 'Odivelas', 'Rato', 41, None)
-campo_pequeno = Station('Campo Pequeno', 'Odivelas', 'Rato', 43, None)
+cidade_universitaria = Station('Cidade Universitária', 'Odivelas', 'Rato', 37, [820, 350])
+entrecampos = Station('Entre Campos', 'Odivelas', 'Rato', 41, [796, 400])
+campo_pequeno = Station('Campo Pequeno', 'Odivelas', 'Rato', 43, [773, 450])
 saldanha = Station('Saldanha', 'Odivelas', 'Rato', 51, None)
-picoas = Station('Picoas', 'Odivelas', 'Rato', 56, None)
+picoas = Station('Picoas', 'Odivelas', 'Rato', 56, [875, 237])
 marques_pombal = Station('Marquês de Pombal', 'Odivelas', 'Rato', 59, None)
 rato = Station('Rato', 'Odivelas', 'Rato', 68, [980, 20])
 
@@ -80,7 +80,7 @@ init_pos = {
     'red': [20, 300],
     'green': [750, 20],
     'blue': [650, 20],
-    'yellow': [650, 700]
+    'yellow': [620, 760]
 }
 
 end_pos = {
