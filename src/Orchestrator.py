@@ -20,7 +20,7 @@ class Orchestrator:
 
         for line in self.lines:
             self.perceptions[line.get_id()] = line.get_line_info()
-        print(self.perceptions)
+        #print(self.perceptions)
 
 
     #AI algorithm to calculate the optimal values for each train velocity and number of carriages.

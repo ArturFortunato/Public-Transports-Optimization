@@ -1,6 +1,7 @@
 
 from Station import Station
 from Reporter import Reporter
+from Train import Train
 
 import re
 
@@ -99,6 +100,7 @@ class Line:
         self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
+            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, (255,0,0), gui, red)]
         elif color == 'yellow':
             self.stations = yellow
         elif color == 'green':
@@ -121,15 +123,15 @@ class Line:
                 return station
 
     def move_trains(self):
-        for train in self.trains:
-            self.trains[train].move()
+        for i in range(len(self.trains)):
+            self.trains[i].move()
 
         for train in self.trains:
             for station in self.stations:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons()
                     people_boarded, report = train.open_doors(station, passengers_to_enter)
-                    station.remove_persons_until_index(people_boarded)
+                    #station.remove_persons_until_index(people_boarded)
                     self.report_satisfaction(report)
                     
     def update_line_info(self, hours, minutes, deliberations):
@@ -141,8 +143,8 @@ class Line:
 
     def get_line_info(self):
         line_info = {}
-        for train in self.trains:
-            line_info[train] = self.trains[train].get_train_info()
+        for i in range(len(self.trains)):
+            line_info[i] = self.trains[i].get_train_info()
         
         return line_info
 

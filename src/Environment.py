@@ -61,7 +61,7 @@ class Environment:
             self.orchestrator.actuate()
             self.gui.run()
             self.tik()
-            print("TIK")
+            #print("TIK")
             time.sleep(1)
 
 ##### Auxiliar
