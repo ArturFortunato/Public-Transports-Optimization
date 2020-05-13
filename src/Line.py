@@ -145,6 +145,8 @@ class Line:
                     self.report_satisfaction(report)
                     
     def update_line_info(self, hours, minutes, deliberations):
+
+        print("isto sao as deliberacoes que recebi:" + str(deliberations))
         for deliberation in deliberations:
             if re.match("train\d", deliberation):
                 self.trains[deliberation].update_train_info(deliberations[deliberation])
@@ -155,7 +157,6 @@ class Line:
         line_info = {}
         for i in range(len(self.trains)):
             line_info[i] = self.trains[i].get_train_info()
-        
         return line_info
 
     def get_train_by_id(self, tid):
