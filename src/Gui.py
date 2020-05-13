@@ -21,6 +21,7 @@ class Gui:
         self.trains = []
         self.lines = []
         self.stations = []
+        self.reporter = None
     
     def run(self):
         if self.check_quit():
@@ -51,6 +52,13 @@ class Gui:
         textRect.center = (station_position[0],station_position[1] + 15)
         self.win.blit(textSurf, textRect)
 
+    def write_reports(self):
+        base_text = "Global average waiting time:"
+        largeText = pg.font.Font('freesansbold.ttf', 15)
+        textSurf = largeText.render(base_text + str(self.reporter.get_average()), True, STATION_COLOR)
+        textRect = textSurf.get_rect()
+        self.win.blit(textSurf, textRect)
+
     def draw(self):
         for i in range(len(self.lines)):
             self.draw_line(colors[self.lines[i].get_color()], self.lines[i].init_pos(), self.lines[i].end_pos())
@@ -59,6 +67,7 @@ class Gui:
                 self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position())
         for i in range(len(self.trains)):
             self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position())
+        self.write_reports()
 
     def add_train(self, train):
         self.trains += [train]
@@ -68,6 +77,9 @@ class Gui:
 
     def add_station(self, station):
         self.stations += [station]
+
+    def add_reporter(self, reporter):
+        self.reporter = reporter
 
     def check_quit(self):
         for event in pg.event.get():

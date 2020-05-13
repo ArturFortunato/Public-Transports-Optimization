@@ -1,13 +1,13 @@
 class Person:
-    def __init__(self,pid, starting_station, final_station):
+    def __init__(self,pid, starting_station, final_station, entered_time):
         self.pId = pid
         self.starting_station = starting_station
         self.final_station = final_station
-        self.waiting_time = 0
+        self.entered_time  = entered_time
     
     #To be updated every tick the person is waiting
-    def update_waiting_time(self):
-        self.waiting_time += 1
+    def get_entered_time(self):
+        return self.entered_time
 
     def get_starting_station(self):
         return self.startingStation

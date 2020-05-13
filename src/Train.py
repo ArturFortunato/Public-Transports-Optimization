@@ -1,5 +1,7 @@
 from Carriage import Carriage
 
+
+from datetime import datetime, date
 import time
 
 TRAIN_HEIGHT = 20
@@ -70,16 +72,20 @@ class Train:
             #soma a gui position da ultima estação o quanto mexemos desde que lá chegamos
             self.gui_positions = [last_station_position[0] + vec[0] * mult, last_station_position[1] + vec[1] * mult, self.size, TRAIN_HEIGHT]
 
-    def open_doors(self, station, passengers):
-        '''original_length = len(passengers)
+    def open_doors(self, station, passengers, time):
+        original_length = len(passengers)
         report = []
         for carriage in self.carriages:
             carriage.remove_passengers(station)
             number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers))
             if number_of_passengers_to_enter != 0:
+                for p in passengers[:number_of_passengers_to_enter]:
+                    waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, p.get_entered_time()) 
+                    report.append(waiting_time)
                 carriage.add_passengers(passengers[:number_of_passengers_to_enter])
-                passengers = passengers[number_of_passengers_to_enter:]'''
-        return 0, {}#original_length - len(passengers), report
+                passengers = passengers[number_of_passengers_to_enter:]
+        print("entered" +  str(original_length - len(passengers)) + " at " + station.name)
+        return original_length - len(passengers), report
 
     def get_gui_position(self):
         return self.gui_positions

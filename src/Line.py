@@ -2,7 +2,10 @@
 from Station import Station
 from Reporter import Reporter
 from Train import Train
+from Carriage import Carriage
 
+
+import datetime
 import re
 
 #verde
@@ -107,16 +110,16 @@ class Line:
         self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, red)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, red)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, yellow)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, yellow)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, green)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, green)]
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, blue)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, blue)]
 
         #gui stuff
         self.gui = gui
@@ -133,7 +136,7 @@ class Line:
             if station.name == name:
                 return station
 
-    def move_trains(self):
+    def move_trains(self, hours, minutes):
         for i in range(len(self.trains)):
             self.trains[i].move()
 
@@ -141,7 +144,7 @@ class Line:
             for station in self.stations:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons()
-                    people_boarded, report = train.open_doors(station, passengers_to_enter)
+                    people_boarded, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
                     #station.remove_persons_until_index(people_boarded)
                     self.report_satisfaction(report)
                     
