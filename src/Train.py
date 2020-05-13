@@ -61,7 +61,6 @@ class Train:
         if self.position == next_station.get_position():
             self.gui_positions = next_station.get_gui_center() + [self.size, TRAIN_HEIGHT]
             self.last_station = next_station
-            print(str(self.color) + ": Cheguei à estação: " + self.last_station.get_name())
         else:
             last_station_position = self.last_station.get_gui_center()
             #fracao entre estações percorrida

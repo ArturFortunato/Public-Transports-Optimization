@@ -20,32 +20,45 @@ class Orchestrator:
 
         for line in self.lines:
             self.perceptions[line.get_id()] = line.get_line_info()
+        
             
-        #print(self.perceptions)
-
 
     #AI algorithm to calculate the optimal values for each train velocity and number of carriages.
     #Each invocation of this func deliberates  for a line taking in account the 4 line PERCEPTIONS
     #each line_perception is a dictionary the values of each train. the train ids are numerics.
-    def choose_line_action(self, line_perception):
+    def choose_line_action(self, line_perception,line_color):
 
-        print("o valor da line_perception e: " + str(line_perception))
-    
-        pass
+        res = {}
+        res["trains"] = {}
+
+        #atualiza info relativo aos comboios
+        for train_key in line_perception["trains"].keys():
+            res["trains"][train_key] = {}
+            res["trains"][train_key]["position"] = {}
+            res["trains"][train_key]["current_speed"] = line_perception["trains"][train_key]["current_speed"]
+            res["trains"][train_key]["carriages"] = []
+            res["trains"][train_key]["maximum_carriage"] = 3
+
+            if(line_color == "blue"):#teste, brincadeira
+               res["trains"][train_key]["current_speed"] = line_perception["trains"][train_key]["current_speed"] + 1
+
+        return res
 
     #nao passamos uma linha. Passamos percepcoes! do percept.
     def deliberate(self):
         for line_color in list(self.perceptions.keys()):
-            self.deliberations[line_color] = self.choose_line_action(self.perceptions[line_color])    
+            self.deliberations[line_color] = self.choose_line_action(self.perceptions[line_color],line_color)    
 
     def actuate(self):
         for line in self.lines:
-            line.update_line_info(self.hours, self.minutes, self.deliberations)
-        
+            print("----------------------line_id: " + str(line.color) + "-----------------------")
+            line.update_line_info(self.hours, self.minutes, self.deliberations[line.color])
+            print("---------------------------------------------------------------------")
+
         self.perceptions = {}
         self.deliberations = {}
-        print("acabei de actuar")
-        exit()
+        #print("acabei de actuar")
+        #exit()
 
 
     def print_lines(self):
