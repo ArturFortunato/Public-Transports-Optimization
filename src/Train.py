@@ -53,13 +53,15 @@ class Train:
         return [pos2[0] - pos1[0], pos2[1] - pos1[1]]
 
     def move(self):
+        if self.position == self.stations[-1].get_position():
+            return 
+
         self.position += self.current_speed
         next_station = self.get_next_station()
         if self.position == next_station.get_position():
-            self.gui_position = next_station.get_gui_center() + [self.size, TRAIN_HEIGHT]
+            self.gui_positions = next_station.get_gui_center() + [self.size, TRAIN_HEIGHT]
             self.last_station = next_station
             print("Cheguei à estação: " + self.last_station.get_name())
-            time.sleep(2)
         else:
             last_station_position = self.last_station.get_gui_center()
             #fracao entre estações percorrida

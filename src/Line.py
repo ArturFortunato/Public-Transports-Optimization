@@ -91,6 +91,13 @@ end_pos = {
     'yellow': [980, 20]
 }
 
+colors = {
+    'red': (255, 0, 0),
+    'green': (0, 255, 0),
+    'blue': (0, 0, 255),
+    'yellow': (255, 255, 0)
+}
+
 class Line:
     def __init__(self, color, maximum_trains, trains, reporter, gui):
         self.reporter = reporter
@@ -100,13 +107,16 @@ class Line:
         self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, (255,0,0), gui, red)]
+            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, red)]
         elif color == 'yellow':
             self.stations = yellow
+            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, yellow)]
         elif color == 'green':
             self.stations = green
+            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, green)]
         elif color == 'blue':
             self.stations = blue
+            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, blue)]
 
         #gui stuff
         self.gui = gui
