@@ -14,7 +14,7 @@ campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, [750, 4
 alvalade = Station('Alvalade', 'Telheiras', 'Cais do Sodré', 20, [750, 450], [-40, -15])
 roma = Station('Roma', 'Telheiras', 'Cais do Sodré', 26, [750, 400], [-35, -15])
 areeiro = Station('Areeiro', 'Telheiras', 'Cais do Sodré', 33, [750, 350], [-35, -15])
-alameda = Station('Alameda', 'Telheiras', 'Cais do Sodré', 40, [750, 3004344], [35, -25])
+alameda = Station('Alameda', 'Telheiras', 'Cais do Sodré', 40, [750, 300], [35, -25])
 arroios = Station('Arroios', 'Telheiras', 'Cais do Sodré', 44, [750, 260], [-40, -15])
 anjos = Station('Anjos', 'Telheiras', 'Cais do Sodré', 48, [750, 220], [-30, -15])
 intendente = Station('Intendente', 'Telheiras', 'Cais do Sodré', 53, [750, 180], [-50, -15])
@@ -149,13 +149,14 @@ class Line:
                     self.report_satisfaction(report)
                     
 
-    #updates line components, such as trains with the orchestrator deliberations.
-    def update_line_info(self, hours, minutes, deliberations):
+    def update_trains_info(self, deliberations):
+        for i in range(len(self.trains)):
+            if i in deliberations:
+                self.trains[i].update_train_info(deliberations[i])
 
-        for train_key in list(deliberations["trains"].keys()):
-            print("posicao do comboio: " + str(self.trains[train_key].position))
-            self.trains[train_key].current_speed = deliberations["trains"][train_key]["current_speed"]
-
+    def update_line_info(self, deliberations):
+        if 'trains' in deliberations:
+            self.update_trains_info(deliberations['trains'])
 
     def get_line_info(self):
         line_info = {}

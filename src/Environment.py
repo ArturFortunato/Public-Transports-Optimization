@@ -41,7 +41,7 @@ class Environment:
         
     def generate_people(self):
         for line in self.lines:
-                self.populate_stations(line)
+            self.populate_stations(line)
 
     # receives a Line object
     def populate_stations(self, line):
@@ -53,16 +53,19 @@ class Environment:
                 line.add_person_to_station(p, station)
 
 
+    def update_lines(self, decisions):
+        for line in self.lines:
+            line.update_line_info(decisions[line.color])
+        
     def run(self):
         while True:
             self.generate_people()
             self.move_trains(self.hours, self.minutes)
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
-            self.orchestrator.deliberate()
-            self.orchestrator.actuate()
+            decisions = self.orchestrator.deliberate()
+            self.update_lines(decisions)
             self.gui.run()
             self.tik()
-            #print("TIK")
             time.sleep(1)
 
 ##### Auxiliar

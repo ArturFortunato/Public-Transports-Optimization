@@ -12,7 +12,7 @@ class Train:
         self.maximum_carriages = maximum_carriages
         self.carriages = carriages
         self.maximum_speed = maximum_speed
-        self.current_speed = current_speed
+        self.current_speed = 4
         self.terminal_station = terminal_station
         self.position = position
         self.last_station = stations[0]
@@ -26,17 +26,19 @@ class Train:
     
     def get_next_station(self):
         for station in self.stations: #this will blow up whe train moving backwards
-            if station.position >= self.position:
+            if station.position > self.position:
                 return station
 
     def change_speed(self, new_speed):
-        if new_speed < maximum_speed and self.position + new_speed <= self.get_next_station().get_position():
+        if self.position == self.stations[-1].get_position():
+            self.current_speed = 0
+        elif new_speed <= self.maximum_speed and self.position + new_speed <= self.get_next_station().get_position():
             self.current_speed = new_speed
-        elif new_speed < maximum_speed:
+        elif new_speed <= self.maximum_speed:
             self.current_speed = self.get_next_station().get_position() - self.position
         else:
-            self.current_speed = maximum_speed
-    
+            self.current_speed = self.maximum_speed
+
     def get_train_info(self):
         train_info = {}
         train_info['position'] = self.position
@@ -53,16 +55,30 @@ class Train:
         pos1 = station1.get_gui_center()
         pos2 = station2.get_gui_center()
         return [pos2[0] - pos1[0], pos2[1] - pos1[1]]
+        
+    def update_train_info(self, info):
+        if 'current_speed' in info:
+            self.change_speed(info['current_speed'])
+
+    def in_a_station(self):
+        for station in self.stations:
+            if station.get_position() == self.position:
+                return station
+        return None
 
     def move(self):
         if self.position == self.stations[-1].get_position():
             return 
 
-        self.position += self.current_speed
         next_station = self.get_next_station()
-        if self.position == next_station.get_position():
-            self.gui_positions = next_station.get_gui_center() + [self.size, TRAIN_HEIGHT]
-            self.last_station = next_station
+        
+        self.position += min(self.current_speed, next_station.get_position() - self.position)
+        in_a_station = self.in_a_station()
+
+        if in_a_station != None:
+            print("Cheguei a", in_a_station.get_name())
+            self.gui_positions = in_a_station.get_gui_center() + [self.size, TRAIN_HEIGHT]
+            self.last_station = in_a_station
         else:
             last_station_position = self.last_station.get_gui_center()
             #fracao entre estações percorrida
@@ -84,7 +100,6 @@ class Train:
                     report.append(waiting_time)
                 carriage.add_passengers(passengers[:number_of_passengers_to_enter])
                 passengers = passengers[number_of_passengers_to_enter:]
-        print("entered" +  str(original_length - len(passengers)) + " at " + station.name)
         return original_length - len(passengers), report
 
     def get_gui_position(self):

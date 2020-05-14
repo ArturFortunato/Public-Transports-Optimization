@@ -29,6 +29,5 @@ class Carriage:
         self.passengers = [passenger for passenger in self.passengers if passenger.get_final_station() != station]
         #for testing:
         removed_passengers = [passenger for passenger in self.passengers if passenger.get_final_station() != station]
-        print(str(len(removed_passengers)) + "left at " + station.name)
 
         self.update_taken_spots()
