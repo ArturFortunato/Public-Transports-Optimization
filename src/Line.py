@@ -2,7 +2,10 @@
 from Station import Station
 from Reporter import Reporter
 from Train import Train
+from Carriage import Carriage
 
+
+import datetime
 import re
 
 #verde
@@ -107,22 +110,23 @@ class Line:
         self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, red)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, red)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, yellow)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, yellow)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, green)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, green)]
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(1, 3, [1], 1, 4, "indiferente", 0, colors[color], gui, blue)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, blue)]
 
         #gui stuff
         self.gui = gui
         self.gui.add_line(self)
         for i in range(len(self.stations)):
             self.stations[i].set_gui(gui)
+
 
     def get_id(self):
         return self.color
@@ -132,7 +136,7 @@ class Line:
             if station.name == name:
                 return station
 
-    def move_trains(self):
+    def move_trains(self, hours, minutes):
         for i in range(len(self.trains)):
             self.trains[i].move()
 
@@ -140,22 +144,25 @@ class Line:
             for station in self.stations:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons()
-                    people_boarded, report = train.open_doors(station, passengers_to_enter)
+                    people_boarded, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
                     #station.remove_persons_until_index(people_boarded)
                     self.report_satisfaction(report)
                     
+
+    #updates line components, such as trains with the orchestrator deliberations.
     def update_line_info(self, hours, minutes, deliberations):
-        for deliberation in deliberations:
-            if re.match("train\d", deliberation):
-                self.trains[deliberation].update_train_info(deliberations[deliberation])
-            elif self.number_of_trains == deliberation:
-                self.number_of_trains = deliberation
+
+        for train_key in list(deliberations["trains"].keys()):
+            print("posicao do comboio: " + str(self.trains[train_key].position))
+            self.trains[train_key].current_speed = deliberations["trains"][train_key]["current_speed"]
+
 
     def get_line_info(self):
         line_info = {}
+        line_info["trains"] = {}
         for i in range(len(self.trains)):
-            line_info[i] = self.trains[i].get_train_info()
-        
+            line_info["trains"][i] = self.trains[i].get_train_info()
+            line_info["stations"] = self.stations
         return line_info
 
     def get_train_by_id(self, tid):

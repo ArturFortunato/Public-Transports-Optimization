@@ -2,10 +2,11 @@ from Orchestrator import Orchestrator
 from Line import Line
 from Reporter import Reporter
 
-#import Schedule_Getter as sg
+import Schedule_Getter as sg
 from Person import Person
 from Gui import Gui
 
+import datetime
 import time
 import random
 
@@ -13,8 +14,8 @@ import random
 class Environment:
 
     def __init__(self):
-        reporter = Reporter()
         self.gui = Gui()
+        reporter = Reporter(self.gui)
         self.lines = [ Line('red',2,[], reporter, self.gui) , Line('yellow',2,[], reporter, self.gui) , Line('blue',2,[], reporter, self.gui) , Line('green',2,[], reporter, self.gui) ]
         self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
@@ -22,7 +23,7 @@ class Environment:
 
     def start_day(self):
         self.hours = 6
-        self.minutes = 0
+        self.minutes = 15
     
     def tik(self):
         if self.minutes != 59:
@@ -34,10 +35,10 @@ class Environment:
             if self.hours == 1:
                 self.day_ended = True
 
-    def move_trains(self):
+    def move_trains(self, hours, minutes):
         for line in self.lines:
-            line.move_trains()
-        '''
+            line.move_trains(hours, minutes)
+        
     def generate_people(self):
         for line in self.lines:
                 self.populate_stations(line)
@@ -47,15 +48,15 @@ class Environment:
         stationsDistribution = estimate_number_of_people_per_station(line, self.hours, self.minutes)
         #{oriente: 2, encarnacao: 3, .... }
         for station in stationsDistribution:
-            for number_of_persons in range(stationsDistribution[station]): 
-                p = Person(get_unique_id(), station, estimate_final_station(station,line.color, self.hours, self.minutes))
+            for number_of_persons in range(stationsDistribution[station]):
+                p = Person(get_unique_id(), station, estimate_final_station(station, self.hours, self.minutes), datetime.time(self.hours, self.minutes))
                 line.add_person_to_station(p, station)
-'''
+
 
     def run(self):
         while True:
-            #self.generate_people()
-            self.move_trains()
+            self.generate_people()
+            self.move_trains(self.hours, self.minutes)
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             self.orchestrator.deliberate()
             self.orchestrator.actuate()
@@ -85,13 +86,18 @@ stations_per_line = {
     "green": ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
 }
 
-def format_hour(hours,minutes):
+""" def format_hour(hours,minutes):
     end_quarter = minutes + 15
+    hr = str(hours)
+    mn = str(minutes)
 
     if(len(str(hours)) == 1):
-        hora_formatada =  str(0) + str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
-    else:
-        hora_formatada = str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
+        hr = str(0) + str(hours)
+        #hora_formatada =  str(0) + str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
+    if(len(str(minutes)) == 1):
+        mn = str(0) + str(minutes)
+   
+    hora_formatada = hr + ":" + mn + "-" + str(end_quarter)
     return hora_formatada
 
 
@@ -143,10 +149,34 @@ def estimate_final_station(line,station, hours, minutes):
 #toy example with random number for each station
 def estimate_number_of_people_per_station(line, hours, minutes):
     estimative = dict()
+    print(hours)
+    print(minutes)
     for station in line.stations:
         hora_formatada = format_hour(hours,minutes)
-        estimative[station.name] = sg.extract_value(line.color,hora_formatada,station.name,"entradas")
+        estimative[station.name] = sg.extract_value(line.color,hora_formatada,station.name,"entradas") """
 
+
+def estimate_final_station(station, hours, minutes):
+    if station in red:
+        temp = list(filter(lambda x: x != station,red))
+        return random.choice(temp)
+    if station in blue:
+        temp = list(filter(lambda x: x != station,blue))
+        return random.choice(temp)
+    if station in green:
+        temp = list(filter(lambda x: x != station,green))
+        return random.choice(temp)
+    if station in yellow:
+        temp = list(filter(lambda x: x != station,yellow))
+        return random.choice(temp)
+
+#TODO: analyse the data
+#toy example with random number for each station
+def estimate_number_of_people_per_station(line, hours, minutes):
+    estimative = dict()
+    for station in line.stations:
+        estimative[station.name] = random.randint(1,10)
+    return estimative
 #may not be necessary
 def get_unique_id():
     global i 

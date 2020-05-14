@@ -1,7 +1,7 @@
 class Carriage:
-    def __init__(self, maximum_capacity, taken_spots):
+    def __init__(self, maximum_capacity, taken_spots=0):
         self.maximum_capacity = maximum_capacity
-        self.taken_spots = 0
+        self.taken_spots = taken_spots
         self.passengers = []
 
     def get_capacity(self):
@@ -27,4 +27,8 @@ class Carriage:
 
     def remove_passengers(self, station):
         self.passengers = [passenger for passenger in self.passengers if passenger.get_final_station() != station]
+        #for testing:
+        removed_passengers = [passenger for passenger in self.passengers if passenger.get_final_station() != station]
+        print(str(len(removed_passengers)) + "left at " + station.name)
+
         self.update_taken_spots()
