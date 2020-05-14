@@ -62,3 +62,6 @@ class Station:
 
     def to_draw(self):
         return self.draw
+
+    def get_people(self): #update for each sentido
+        return self.peopleTerminalOne
