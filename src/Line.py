@@ -9,6 +9,7 @@ import datetime
 import re
 
 #verde
+#arroios ta a mais, nao ha dados
 telheiras = Station('Telheiras', 'Telheiras', 'Cais do Sodré', 0, [750, 600], [0, 0])
 campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, [750, 495], [70,-10])
 alvalade = Station('Alvalade', 'Telheiras', 'Cais do Sodré', 20, [750, 450], [-40, -15])
@@ -60,6 +61,7 @@ sao_sebastiao = Station('São Sebastião', 'Aeroporto', 'São Sebastião', 70, [
 red = [aeroporto, encarnacao, moscavide, oriente, cabo_ruivo, olivais, chelas, bela_vista, olaias, alameda, saldanha, sao_sebastiao]
 
 #azul
+#missing reboleira
 amadora_este = Station('Amadora Este', 'Amadora Este', 'Santa Apolónia', 0, [1475, 515], [-50, 0])
 alfornelos = Station('Alfornelos', 'Amadora Este', 'Santa Apolónia', 7, [1440, 496], [-50, -15])
 pontinha = Station('Pontinha', 'Amadora Este', 'Santa Apolonia', 16, [1400, 472], [50, -15])
@@ -79,6 +81,7 @@ terreio_paço = Station('Terreiro Paço', 'Amadora Este', 'Santa Apolónia', 91,
 santa_apolonia = Station('Santa Apolónia', 'Amadora Este', 'Santa Apolónia', 98, [650, 20], [-65, -15])
 
 blue = [amadora_este, alfornelos, pontinha, carnide, colegio_militar, alto_moinhos, laranjeiras, jardim_zoologico, praca_espanha, sao_sebastiao, parque, marques_pombal, avenida, restauradores, baixa_chiado, terreio_paço, santa_apolonia]
+
 
 init_pos = {
     'red': [20, 300],

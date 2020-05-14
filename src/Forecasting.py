@@ -17,28 +17,37 @@ with open("random_dataset.csv", "w") as f:
         if init.day == 31:
             break  """
 
+
+#AUTOREGULARIZATION???
+
 series = read_csv('random_dataset.csv', header=0, parse_dates=[0], index_col=0, squeeze=True)
 
 model = ARIMA(series, order=(5,1,0)) #check the values for the model with the real dataset
 model_fit = model.fit(disp=0)
 
+#baricentro
 
 #predict from x to y. x has to be in-sample timestamp
-output1 = model_fit.predict("2020-12-30 23:45:00", "2020-12-31 11:15:00")
+#output1 = model_fit.predict("2020-12-30 23:45:00", "2020-12-31 11:15:00")
 #forecast the 1st out of sample result
-output2 = model_fit.forecast()
+#output2 = model_fit.forecast()
 
 
 
 #also use this to check if values are ok
-""" print(model_fit.summary())
+print(model_fit.summary())
 # plot residual errors
 residuals = DataFrame(model_fit.resid)
 residuals.plot()
 pyplot.show()
 residuals.plot(kind='kde')
 pyplot.show()
-print(residuals.describe()) """
+print(residuals.describe())
+
+
+#tslearn
+#barycenter
+#DTW
 
 #prediction
 

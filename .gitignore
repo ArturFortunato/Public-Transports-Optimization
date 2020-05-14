@@ -131,3 +131,10 @@ dmypy.json
 
 *.xlsx
 db/
+
+
+#data
+data/base_data/metro/
+data/parsed_data/data_per_station_count/
+data/parsed_data/data_per_station_exits/
+data/parsed_data/full_data
