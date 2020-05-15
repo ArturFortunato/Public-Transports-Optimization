@@ -92,4 +92,4 @@ def write_sheet_to_file(writer, wsheet, day, isentry, stations):
                 writer.write(line.replace('Linha ','').replace('í','i').replace('ã','a'))
 
 
-#transform_data()
+transform_data()
