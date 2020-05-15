@@ -148,7 +148,7 @@ class Line:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons()
                     people_boarded, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
-                    #station.remove_persons_until_index(people_boarded)
+                    station.remove_persons_until_index(people_boarded)
                     self.report_satisfaction(report)
                     
 
