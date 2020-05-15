@@ -113,16 +113,16 @@ class Line:
         self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
-            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, red)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, red[::-1], -1)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, yellow)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, yellow, 1)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, green)]
+            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, green, 1)]
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, "indiferente", 0, colors[color], gui, blue)]
+            #self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, blue, 1)]
 
         #gui stuff
         self.gui = gui

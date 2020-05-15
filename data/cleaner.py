@@ -1,8 +1,6 @@
 import pandas as pd
 
-
 #Create datasets for estimating number of people entering a station at a given time
-
 
 file = "parsed_data/full_data/samplemetro_only_entries_station_names.csv"
 endfolder1 = "parsed_data/data_per_station_count/"
@@ -17,9 +15,7 @@ def generate_count_per_station_per_hour():
     del csv['id']
     del csv['linha_entrada']
     del csv['linha_saida']
-    del csv['estacao_saida']
-    
-        
+    del csv['estacao_saida'] 
     
     for station in stations:
         reduced = csv[csv['estacao_entrada'] == station]
@@ -27,7 +23,6 @@ def generate_count_per_station_per_hour():
         summed.to_csv(endfolder1 + station + ".csv", index=True, sep=',')    
         
     return "done"
-
 
 def generate_exits_per_station_per_hour():
     csv = pd.read_csv(file, encoding = "ISO-8859-1", sep=',', header=0, skipinitialspace=True)
@@ -45,5 +40,5 @@ def generate_exits_per_station_per_hour():
         
     return "done"
 
-generate_count_per_station_per_hour()
-generate_exits_per_station_per_hour()
+#generate_count_per_station_per_hour()
+#generate_exits_per_station_per_hour()

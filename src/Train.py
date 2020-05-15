@@ -7,35 +7,36 @@ import time
 TRAIN_HEIGHT = 20
 
 class Train:
-    def __init__(self, tid, maximum_carriages, carriages, current_speed, maximum_speed, terminal_station, position, color, gui, stations):
+    def __init__(self, tid, maximum_carriages, carriages, starting_speed, maximum_speed, color, gui, stations, way):
         self.id = tid
         self.maximum_carriages = maximum_carriages
         self.carriages = carriages
         self.maximum_speed = maximum_speed
-        self.current_speed = 4
-        self.terminal_station = terminal_station
-        self.position = position
+        self.current_speed = starting_speed
+        self.position = stations[0].get_position()
         self.last_station = stations[0]
         self.stations = stations
         self.color = color
-        
+        # 1 para sentio omrmal, -1 para sentido contrario
+        self.way = way
+
         #gui stuff
         self.size = 50 * len(carriages)
-        self.gui_positions = [50, 50, self.size, TRAIN_HEIGHT] #change the 50's for x and y for the train
+        self.gui_positions = [stations[0].get_gui_center()[0], stations[0].get_gui_center()[1], self.size, TRAIN_HEIGHT] #change the 50's for x and y for the train
         gui.add_train(self)
     
     def get_next_station(self):
-        for station in self.stations: #this will blow up whe train moving backwards
-            if station.position > self.position:
+        for station in self.stations:
+            if (station.position > self.position and self.way == 1) or (station.position < self.position and self.way == -1):
                 return station
 
     def change_speed(self, new_speed):
         if self.position == self.stations[-1].get_position():
             self.current_speed = 0
-        elif new_speed <= self.maximum_speed and self.position + new_speed <= self.get_next_station().get_position():
+        elif new_speed <= self.maximum_speed and self.position + self.way * new_speed <= self.get_next_station().get_position():
             self.current_speed = new_speed
         elif new_speed <= self.maximum_speed:
-            self.current_speed = self.get_next_station().get_position() - self.position
+            self.current_speed = self.way * (self.get_next_station().get_position() - self.position)
         else:
             self.current_speed = self.maximum_speed
 
@@ -67,22 +68,20 @@ class Train:
         return None
 
     def move(self):
-        if self.position == self.stations[-1].get_position():
+        if self.gui_positions[:2] == self.stations[-1].get_gui_center()[:2]: 
             return 
 
         next_station = self.get_next_station()
-        
-        self.position += min(self.current_speed, next_station.get_position() - self.position)
+        self.position += self.way * min(self.current_speed, abs(next_station.get_position() - self.position))
         in_a_station = self.in_a_station()
 
         if in_a_station != None:
-            print("Cheguei a", in_a_station.get_name())
             self.gui_positions = in_a_station.get_gui_center() + [self.size, TRAIN_HEIGHT]
             self.last_station = in_a_station
         else:
             last_station_position = self.last_station.get_gui_center()
             #fracao entre estações percorrida
-            mult = (self.position - self.last_station.get_position()) / (next_station.get_position() - self.last_station.get_position())
+            mult = abs((self.position - self.last_station.get_position()) / (next_station.get_position() - self.last_station.get_position()))
             #vetor entre 2 estações
             vec = self.get_vector_between(self.last_station, next_station)
             #soma a gui position da ultima estação o quanto mexemos desde que lá chegamos

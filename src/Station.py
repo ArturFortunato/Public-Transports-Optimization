@@ -4,8 +4,8 @@ class Station:
         self.persons = []
         self.terminalOne = terminalOne
         self.terminalTwo = terminalTwo
-        self.peopleTerminalOne = 0
-        self.peopleTerminalTwo = 0
+        self.peopleTerminalOne = 0  #nr de pessoas no sentido negativo: t2 -> t1
+        self.peopleTerminalTwo = 0 #nr de pessoas no sentido positivo: t1 -> t2
         self.isTerminal = (name == terminalOne or name == terminalTwo)
         self.position = position
         self.gui_center = gui_center
@@ -29,9 +29,12 @@ class Station:
         pass
 
     def addPerson(self, person):
-        #a list won't be good for removal, change for dict but check if it is not being used elsewhere.
-        #also check add by id?
         self.persons.append(person)
+        if person.get_way(): 
+             self.peopleTerminalTwo += 1
+        else:
+            self.peopleTerminalOne += 1
+
 
     def removePersonById(self):
         pass
@@ -64,4 +67,4 @@ class Station:
         return self.draw
 
     def get_people(self): #update for each sentido
-        return self.peopleTerminalOne
+        return (self.peopleTerminalOne, self.peopleTerminalTwo)

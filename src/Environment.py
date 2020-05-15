@@ -49,7 +49,8 @@ class Environment:
         #{oriente: 2, encarnacao: 3, .... }
         for station in stationsDistribution:
             for number_of_persons in range(stationsDistribution[station]):
-                p = Person(get_unique_id(), station, estimate_final_station(station, self.hours, self.minutes), datetime.time(self.hours, self.minutes))
+                final, way = estimate_final_station(station, self.hours, self.minutes)
+                p = Person(get_unique_id(), station, final, datetime.time(self.hours, self.minutes), way)
                 line.add_person_to_station(p, station)
 
 
@@ -71,8 +72,8 @@ class Environment:
 ##### Auxiliar
 
 #rethink station and line design if this seems too ugly
-red = ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Alameda', 'Saldanha', 'São Sebastião']
-blue = ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Amadora Este']
+red = ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Olaias', 'Alameda', 'Saldanha', 'São Sebastião']
+blue = ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Santa Apolónia']
 yellow = ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conchas', 'Campo Grande', 'Cidade Universitária', 'Entre Campos', 'Campo Pequeno', 'Saldanha', 'Picoas', 'Marquês de Pombal', 'Rato']
 green = ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
 i = 0
@@ -82,8 +83,8 @@ i = 0
 mudanca_linha = ["São Sebastião","Marquês de Pombal","Saldanha","Baixa Chiado","Alameda","Campo Grande"]
 
 stations_per_line = {
-    "red": ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Alameda', 'Saldanha', 'São Sebastião'],
-    "blue": ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Amadora Este'],
+    "red": ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Olaias', 'Alameda', 'Saldanha', 'São Sebastião'],
+    "blue": ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Santa Apolónia'],
     "yellow": ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conchas', 'Campo Grande', 'Cidade Universitária', 'Entre Campos', 'Campo Pequeno', 'Saldanha', 'Picoas', 'Marquês de Pombal', 'Rato'],
     "green": ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
 }
@@ -158,26 +159,44 @@ def estimate_number_of_people_per_station(line, hours, minutes):
         estimative[station.name] = sg.extract_value(line.color,hora_formatada,station.name,"entradas") """
 
 
+#this is ugly but it'll change when we have the models of the data so dw
 def estimate_final_station(station, hours, minutes):
     if station in red:
         temp = list(filter(lambda x: x != station,red))
-        return random.choice(temp)
+        final = random.choice(temp)
+        idx_start = red.index(station)
+        idx_final = red.index(final)
+        way = idx_start < idx_final
+        return final,way
     if station in blue:
         temp = list(filter(lambda x: x != station,blue))
-        return random.choice(temp)
+        final = random.choice(temp)
+        idx_start = blue.index(station)
+        idx_final = blue.index(final)
+        way = idx_start < idx_final
+        return final,way
     if station in green:
         temp = list(filter(lambda x: x != station,green))
-        return random.choice(temp)
+        final = random.choice(temp)
+        idx_start = green.index(station)
+        idx_final = green.index(final)
+        way = idx_start < idx_final
+        return final,way
     if station in yellow:
         temp = list(filter(lambda x: x != station,yellow))
-        return random.choice(temp)
+        final = random.choice(temp)
+        idx_start = yellow.index(station)
+        idx_final = yellow.index(final)
+        way = idx_start < idx_final
+        return final,way
+
 
 #TODO: analyse the data
 #toy example with random number for each station
 def estimate_number_of_people_per_station(line, hours, minutes):
     estimative = dict()
     for station in line.stations:
-        estimative[station.name] = random.randint(1,10)
+        estimative[station.name] = random.randint(1,1)
     return estimative
 #may not be necessary
 def get_unique_id():
