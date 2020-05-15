@@ -36,8 +36,6 @@ class Station:
             self.peopleTerminalOne += 1
 
     def remove_persons_until_index(self, idx):
-        print("hereeeee")
-        print(idx)
         for p in self.persons[:idx]:
             if p.get_way():
                 self.peopleTerminalTwo -= 1

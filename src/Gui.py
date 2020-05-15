@@ -9,9 +9,12 @@ colors = {
     'yellow': (255, 255, 0)
 }
 
+TRAIN_ID_OFFSET = [25,12]
+
 LINE_WIDTH = 2
 STATION_COLOR = (255, 255, 255)
 STATION_RADIUS = 5
+TEXT_COLOR = (255, 255, 255)
 
 class Gui:
     def __init__(self):
@@ -37,8 +40,9 @@ class Gui:
     def draw_line(self, color, init_pos, end_pos):
         pg.draw.line(self.win, color, init_pos, end_pos, LINE_WIDTH)
 
-    def draw_train(self, color, position):
+    def draw_train(self, color, position, train_id, line):
         pg.draw.rect(self.win, color, position)
+        self.write_train_id(position, train_id, line)
 
     def draw_station(self, position, name, text_position, nr_people):
         if position != None:
@@ -62,21 +66,31 @@ class Gui:
         textRect.center = (station_position[0],station_position[1] + 15)
         self.win.blit(textSurf, textRect)
 
+    def write_train_id(self, train_position, train_id, color):
+        largeText = pg.font.Font('freesansbold.ttf', 15)
+        textSurf = largeText.render(str(train_id), True, TEXT_COLOR)
+        textRect = textSurf.get_rect()
+        textRect.center = (train_position[0] + TRAIN_ID_OFFSET[0], train_position[1] + TRAIN_ID_OFFSET[1])
+        self.win.blit(textSurf, textRect)
+    
     def write_reports(self):
         base_text = "Global average waiting time:"
         largeText = pg.font.Font('freesansbold.ttf', 15)
-        textSurf = largeText.render(base_text + str(self.reporter.get_average()), True, STATION_COLOR)
+        textSurf = largeText.render(base_text + str(self.reporter.get_average()), True, TEXT_COLOR)
         textRect = textSurf.get_rect()
         self.win.blit(textSurf, textRect)
 
     def draw(self):
         for i in range(len(self.lines)):
             self.draw_line(colors[self.lines[i].get_color()], self.lines[i].init_pos(), self.lines[i].end_pos())
+        
         for i in range(len(self.stations)):
             if self.stations[i].to_draw():
                 self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people())
+        
         for i in range(len(self.trains)):
-            self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position())
+            self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position(), self.trains[i].get_id(), self.trains[i].get_line())
+        
         self.write_reports()
 
     def add_train(self, train):

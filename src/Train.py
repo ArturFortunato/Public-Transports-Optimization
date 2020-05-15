@@ -7,7 +7,7 @@ import time
 TRAIN_HEIGHT = 20
 
 class Train:
-    def __init__(self, tid, maximum_carriages, carriages, starting_speed, maximum_speed, color, gui, stations, way):
+    def __init__(self, tid, maximum_carriages, carriages, starting_speed, maximum_speed, color, gui, stations, way, line):
         self.id = tid
         self.maximum_carriages = maximum_carriages
         self.carriages = carriages
@@ -17,14 +17,18 @@ class Train:
         self.last_station = stations[0]
         self.stations = stations
         self.color = color
-        # 1 para sentio omrmal, -1 para sentido contrario
+        # 1 para sentido normal, -1 para sentido contrario
         self.way = way
+        self.line = line
 
         #gui stuff
         self.size = 50 * len(carriages)
         self.gui_positions = [stations[0].get_gui_center()[0], stations[0].get_gui_center()[1], self.size, TRAIN_HEIGHT] #change the 50's for x and y for the train
         gui.add_train(self)
     
+    def get_id(self):
+        return self.id
+
     def get_next_station(self):
         for station in self.stations:
             if (station.position > self.position and self.way == 1) or (station.position < self.position and self.way == -1):
@@ -109,3 +113,6 @@ class Train:
     
     def get_color(self):
         return self.color
+
+    def get_line(self):
+        return self.line

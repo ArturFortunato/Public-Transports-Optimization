@@ -82,6 +82,7 @@ santa_apolonia = Station('Santa Apolónia', 'Amadora Este', 'Santa Apolónia', 9
 
 blue = [amadora_este, alfornelos, pontinha, carnide, colegio_militar, alto_moinhos, laranjeiras, jardim_zoologico, praca_espanha, sao_sebastiao, parque, marques_pombal, avenida, restauradores, baixa_chiado, terreio_paço, santa_apolonia]
 
+lines = {'blue': blue, 'red': red, 'yellow': yellow, 'green': green}
 
 init_pos = {
     'red': [20, 300],
@@ -113,16 +114,16 @@ class Line:
         self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
-            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, red[::-1], -1)]
+            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, red[::-1], -1, self.color)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, yellow, 1)]
+            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, yellow, 1, self.color)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, green, 1)]
+            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, green, 1, self.color)]
         elif color == 'blue':
             self.stations = blue
-            #self.trains += [Train(1, 3, [Carriage(80)], 1, 4, colors[color], gui, blue, 1)]
+            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, blue, 1, self.color)]
 
         #gui stuff
         self.gui = gui
@@ -160,6 +161,9 @@ class Line:
     def update_line_info(self, deliberations):
         if 'trains' in deliberations:
             self.update_trains_info(deliberations['trains'])
+        if 'new_train' in deliberations:
+            for i in range(len(deliberations['new_train'])):
+                self.add_train(deliberations['new_train'][i])
 
     def get_line_info(self):
         line_info = {}
@@ -189,3 +193,6 @@ class Line:
 
     def get_color(self):
         return self.color
+    
+    def add_train(self, info):
+        self.trains += [Train(len(self.trains), 3, [Carriage(80) for i in range(info['nr_carriages'])], info['nr_carriages'], 4, colors[self.color], self.gui, lines[self.color] if info['way'] == 1 else lines[self.color][::1], info['way'], self.color )]
