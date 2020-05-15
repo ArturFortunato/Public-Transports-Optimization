@@ -8,7 +8,7 @@ file = "parsed_data/full_data/samplemetro_only_entries_station_names.csv"
 endfolder1 = "parsed_data/data_per_station_count/"
 endfolder2 = "parsed_data/data_per_station_exits/"
 
-stations =['aeroporto', 'alameda', 'alfornelos', 'alto dos moinhos', 'alvalade', 'amadora este', 'ameixoeira', 'anjos', 'areeiro', 'avenida', 'baixa chiado', 'bela vista', 'cabo ruivo', 'cais do sodré', 'campo grande', 'campo pequeno', 'carnide', 'chelas', 'cidade universitária', 'colégio militar', 'encarnação', 'entre campos', 'intendente', 'jardim zoológico', 'laranjeiras', 'lumiar', 'marquês de pombal', 'martim moniz', 'moscavide', 'odivelas', 'olaias', 'olivais', 'oriente', 'parque', 'picoas', 'pontinha', 'praça de espanha', 'quinta das conchas', 'rato', 'reboleira', 'restauradores', 'roma', 'rossio', 'saldanha', 'santa apolónia', 'são sebastião', 'senhor roubado', 'telheiras', 'terreiro paço']
+stations =['aeroporto', 'alameda', 'alfornelos', 'alto dos moinhos', 'alvalade', 'amadora este', 'ameixoeira', 'anjos', 'areeiro', 'avenida', 'baixa chiado', 'bela vista', 'cabo ruivo', 'cais do sodrï¿½', 'campo grande', 'campo pequeno', 'carnide', 'chelas', 'cidade universitï¿½ria', 'colï¿½gio militar', 'encarnaï¿½ï¿½o', 'entre campos', 'intendente', 'jardim zoolï¿½gico', 'laranjeiras', 'lumiar', 'marquï¿½s de pombal', 'martim moniz', 'moscavide', 'odivelas', 'olaias', 'olivais', 'oriente', 'parque', 'picoas', 'pontinha', 'praï¿½a de espanha', 'quinta das conchas', 'rato', 'reboleira', 'restauradores', 'roma', 'rossio', 'saldanha', 'santa apolï¿½nia', 'sï¿½o sebastiï¿½o', 'senhor roubado', 'telheiras', 'terreiro paï¿½o']
 
 
 def generate_count_per_station_per_hour():
