@@ -147,9 +147,9 @@ class Line:
         for train in self.trains:
             for station in self.stations:
                 if station.get_position() == train.get_position():
-                    passengers_to_enter = station.get_persons()
+                    passengers_to_enter = station.get_persons(train.get_way())
                     people_boarded, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
-                    station.remove_persons_until_index(people_boarded)
+                    station.remove_persons_until_index(people_boarded, train.get_way())
                     self.report_satisfaction(report)
                     
 

@@ -52,16 +52,16 @@ class Gui:
     def get_station_color(self, nr_people): #maybe change this for both ways?
         if nr_people[0] + nr_people[1] == 0:
             return (255,255,255)
-        elif nr_people[0] + nr_people[1] <= 5:
+        elif (nr_people[0] + nr_people[1]) / 2 <= 5:
             return (0,255,0)
-        elif nr_people[0] + nr_people[1] <= 10:
+        elif (nr_people[0] + nr_people[1]) / 2 <= 10:
             return (255,255,0)
         else:
             return (255,0,0)
             
     def write_station_name(self, station_position, station_name, nr_people):
         largeText = pg.font.Font('freesansbold.ttf', 15)
-        textSurf = largeText.render(station_name + "(" + str(nr_people[0]) + ', ' + str(nr_people[1]) + ")", True, self.get_station_color(nr_people))
+        textSurf = largeText.render(station_name + " " + str(nr_people), True, self.get_station_color(nr_people))
         textRect = textSurf.get_rect()
         textRect.center = (station_position[0],station_position[1] + 15)
         self.win.blit(textSurf, textRect)
@@ -110,4 +110,5 @@ class Gui:
             if event.type == pg.QUIT:
                 pg.display.quit()
                 return True
+                
         return False

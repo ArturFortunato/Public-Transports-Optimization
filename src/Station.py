@@ -1,7 +1,7 @@
 class Station:
     def __init__(self, name, terminalOne, terminalTwo, position, gui_center, text_offset, draw=True):
         self.name = name
-        self.persons = []
+        self.persons = {terminalOne: [], terminalTwo: []}
         self.terminalOne = terminalOne
         self.terminalTwo = terminalTwo
         self.peopleTerminalOne = 0  #nr de pessoas no sentido negativo: t2 -> t1
@@ -29,20 +29,19 @@ class Station:
         pass
 
     def addPerson(self, person):
-        self.persons.append(person)
-        if person.get_way(): 
+        self.persons[self.terminalTwo if person.get_way() == 1 else self.terminalOne] += [person]
+        if person.get_way() == 1: 
              self.peopleTerminalTwo += 1
         else:
             self.peopleTerminalOne += 1
 
-    def remove_persons_until_index(self, idx):
-        for p in self.persons[:idx]:
-            if p.get_way():
-                self.peopleTerminalTwo -= 1
-            else:
-                self.peopleTerminalOne -= 1
+    def remove_persons_until_index(self, idx, way):
+        if way == 1:
+            self.peopleTerminalTwo -= idx
+        else:
+            self.peopleTerminalOne -= idx
 
-        self.persons = self.persons[idx:]
+        self.persons[way] = self.persons[self.terminalTwo if way == 1 else self.terminalOne][idx:]
 
     def removePersonById(self):
         pass
@@ -50,8 +49,8 @@ class Station:
     def updatePersons(self):
         pass
 
-    def get_persons(self):
-        return self.persons
+    def get_persons(self, way):
+        return self.persons[self.terminalTwo if way == 1 else self.terminalOne]
     
 
     #probably not necessary
@@ -64,7 +63,6 @@ class Station:
     def updatePeopleTerminalTwo(self, delta):
         self.peopleTerminalTwo += delta
 
-
     def get_gui_center(self):
         return self.gui_center
 
@@ -75,4 +73,10 @@ class Station:
         return self.draw
 
     def get_people(self): #update for each sentido
-        return (self.peopleTerminalOne, self.peopleTerminalTwo)
+        return (self.peopleTerminalTwo, self.peopleTerminalOne)
+    
+    def get_terminal_1(self):
+        return self.terminalOne
+
+    def get_terminal_2(self):
+        return self.terminalTwo

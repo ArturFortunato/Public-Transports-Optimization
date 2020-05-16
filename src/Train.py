@@ -98,6 +98,7 @@ class Train:
             carriage.remove_passengers(station)
             number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers))
             if number_of_passengers_to_enter != 0:
+                print(number_of_passengers_to_enter)
                 for p in passengers[:number_of_passengers_to_enter]:
                     waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, p.get_entered_time()) 
                     report.append(waiting_time)
@@ -116,3 +117,6 @@ class Train:
 
     def get_line(self):
         return self.line
+
+    def get_way(self):
+        return self.way
