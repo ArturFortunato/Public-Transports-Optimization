@@ -1,3 +1,4 @@
+# - coding: utf-8 --
 
 from Station import Station
 from Reporter import Reporter

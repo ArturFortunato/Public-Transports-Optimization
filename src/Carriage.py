@@ -27,7 +27,4 @@ class Carriage:
 
     def remove_passengers(self, station):
         self.passengers = [passenger for passenger in self.passengers if passenger.get_final_station() != station]
-        #Need to remove person from station, not only from carriage
-        #removed_passengers = [passenger for passenger in self.passengers if passenger.get_final_station() != station]
-
         self.update_taken_spots()

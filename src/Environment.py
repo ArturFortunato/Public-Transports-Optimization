@@ -198,6 +198,7 @@ def estimate_number_of_people_per_station(line, hours, minutes):
     for station in line.stations:
         estimative[station.name] = random.randint(1,1)
     return estimative
+    
 #may not be necessary
 def get_unique_id():
     global i 
