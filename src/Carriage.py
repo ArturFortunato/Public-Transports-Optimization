@@ -25,6 +25,15 @@ class Carriage:
         self.passengers += passengers
         self.update_taken_spots()
 
+    def printAlguemSaiu(self):
+        print("alguem saiu")
+        exit()
+
     def remove_passengers(self, station):
-        self.passengers = [passenger for passenger in self.passengers if passenger.get_final_station() != station]
+        passengers_left = []
+        for passenger in self.passengers:
+            #print( str(station.name) +  " - " + str(passenger.get_final_station()))
+            if(passenger.get_final_station() != station.name):
+                passengers_left.append(passenger)
+        self.passengers = passengers_left            
         self.update_taken_spots()

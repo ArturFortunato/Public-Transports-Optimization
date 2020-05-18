@@ -113,7 +113,6 @@ class Line:
         self.maximum_trains = maximum_trains 
         self.trains = trains #dictionary of trains
         self.number_of_trains = len(trains)
-        self.counter_temporario = 0
         if color == 'red':
             self.stations = red
             self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, red[::-1], -1, self.color)]
@@ -148,17 +147,13 @@ class Line:
 
         for train in self.trains:
             for station in self.stations:
-                if station.get_position() == train.get_position() and train.color == (0,0,255):
-                    print("station: " + str(station.name) + " -- Pessoas a espera: " + str(len(station.get_persons(train.get_way()))) + " -- Train id:" + str(train.id))
+                if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons(train.get_way())
                     people_boarded, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
-                    print("pessoas que entraram: " + str(people_boarded))
                     station.remove_persons_until_index(people_boarded, train.get_way())
                     self.report_satisfaction(report)
-        self.counter_temporario +=1
-        if(self.counter_temporario == 33):
-            exit()
-                    
+
+
 
     def update_trains_info(self, deliberations):
         for i in range(len(self.trains)):
