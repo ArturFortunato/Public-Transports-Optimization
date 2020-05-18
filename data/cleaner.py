@@ -11,8 +11,9 @@ stations = ['aeroporto', 'alameda', 'alfornelos', 'alto dos moinhos', 'alvalade'
 
 
 def generate_count_per_station_per_hour():
-    csv = pd.read_csv(file, encoding = "ISO-8859-1", sep=',', header=0, skipinitialspace=True)
+    csv = pd.read_csv(file, sep=',', header=0, skipinitialspace=True)
     
+
     del csv['id']
     del csv['linha_entrada']
     del csv['linha_saida']
@@ -24,14 +25,14 @@ def generate_count_per_station_per_hour():
     for station in stations:
         reduced = csv[csv['estacao_entrada'] == station]
         summed = reduced.groupby('date')['count'].sum()
-        summed.to_csv(endfolder1 + station + ".csv", index=True, sep=',')
-        with open(endfolder1 + station + ".csv", 'd' , encoding = "latin1") as f:
+        summed.to_csv(endfolder1 + station + ".csv", index=True, sep=',', header=["count"])
+        with open(endfolder1 + station + ".csv" , 'a', encoding = "latin1") as f:
             f.write(add)
     return "done"
 
 def generate_exits_per_station_per_hour():
-    csv = pd.read_csv(file, encoding = "ISO-8859-1", sep=',', header=0, skipinitialspace=True)
-    
+    csv = pd.read_csv(file, sep=',', header=0, skipinitialspace=True)
+
     del csv['id']
     del csv['linha_entrada']
     del csv['linha_saida']
@@ -41,9 +42,11 @@ def generate_exits_per_station_per_hour():
     for station in stations:
         reduced = csv[csv['estacao_entrada'] == station]
         summed = reduced.groupby(['date', 'estacao_saida'])['count'].sum()
-        summed.to_csv(endfolder2 + station + ".csv", index=True, sep=',')    
+        #print(summed)
+        summed.to_csv(endfolder2 + station + ".csv", index=True, sep=',', header=["count"])    
         
     return "done"
 
+#GERA OS EXCEIS!!! LENTO... CERTIFICAR QUE ELES EXISTEM ANTES DE CORRER
 #generate_count_per_station_per_hour()
 #generate_exits_per_station_per_hour()

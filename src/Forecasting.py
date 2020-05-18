@@ -154,9 +154,13 @@ def get_closest_15_min_time(hour, minute):
 
 forecaster = Forecasting()
 
+#predict alameda 16 horas e 0 minutos.
 print(forecaster.predict_number_of_people("alameda", 16, 0))
 print(forecaster.predict_final_station("alameda", 16, 0))
 
-
+for i in stations:
+    print(forecaster.predict_number_of_people(i, 16, 0))
+    print(forecaster.predict_final_station(i, 16, 0))
+    
 
 

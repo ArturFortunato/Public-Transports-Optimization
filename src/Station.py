@@ -37,11 +37,16 @@ class Station:
 
     def remove_persons_until_index(self, idx, way):
         if way == 1:
-            self.peopleTerminalTwo -= idx
+            self.peopleTerminalTwo -= idx           #subtrai o numero de pessoas em cada estacao
+            terminal_station = self.terminalTwo     #converte o sentido no terminal da estacao
         else:
-            self.peopleTerminalOne -= idx
+            self.peopleTerminalOne -= idx           #subtrai o numero de pessoas em cada estacao
+            terminal_station = self.terminalOne     #converte o sentido no terminal da estacao
 
-        self.persons[way] = self.persons[self.terminalTwo if way == 1 else self.terminalOne][idx:]
+        self.persons[terminal_station] = self.persons[terminal_station][idx:]
+
+        
+
 
     def removePersonById(self):
         pass

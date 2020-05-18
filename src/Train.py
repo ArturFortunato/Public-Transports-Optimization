@@ -91,17 +91,23 @@ class Train:
             #soma a gui position da ultima estação o quanto mexemos desde que lá chegamos
             self.gui_positions = [last_station_position[0] + vec[0] * mult, last_station_position[1] + vec[1] * mult, self.size, TRAIN_HEIGHT]
 
+    #falta discriminar sentido de passageiros
+    #ele ta a fazer slice dos passageiros, ele nao esta a discriminar os passageiros.
+    #certificar se pessoal nos dois sentidos esta entrar no comboio.
+    #problema da concorrencia dos comboios
     def open_doors(self, station, passengers, time):
+
         original_length = len(passengers)
         report = []
         for carriage in self.carriages:
             carriage.remove_passengers(station)
-            number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers))
+            number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers)) #verifica quantidade de pessoas a entrar
             if number_of_passengers_to_enter != 0:
                 for p in passengers[:number_of_passengers_to_enter]:
                     waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, p.get_entered_time()) 
                     report.append(waiting_time)
                 carriage.add_passengers(passengers[:number_of_passengers_to_enter])
+                print("carriage.taken.spots: " + str(carriage.taken_spots) + " carriage.maximum.capacity: " + str(carriage.maximum_capacity))
                 passengers = passengers[number_of_passengers_to_enter:]
         return original_length - len(passengers), report
 
