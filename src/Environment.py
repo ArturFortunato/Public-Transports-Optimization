@@ -2,7 +2,6 @@ from Orchestrator import Orchestrator
 from Line import Line
 from Reporter import Reporter
 
-import Schedule_Getter as sg
 from Person import Person
 from Gui import Gui
 
