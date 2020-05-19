@@ -33,34 +33,33 @@ class Carriage:
         self.passengers += passengers
         self.update_taken_spots()
 
-    def printAlguemSaiu(self):
-        print("alguem saiu")
-        exit()
-
     def get_station_line(self, station):
         for line in stations_per_line:
             if station in stations_per_line[line]:
                 return line
 
     def get_crossing_station(self, other_line):
-        print(self.line)
         for station_name in stations_per_line[self.line.color]:
             if station_name in stations_per_line[other_line]:
                 return station_name
-        print("vou sair daqui")
 
+    
+    #fix identation
     def remove_passengers(self, station):
         passengers_left = []
         passengers_to_exchange = []
         for passenger in self.passengers:
             # reached changing station
+            print(passenger.get_final_station())
             if not passenger.get_final_station() in stations_per_line[self.line.get_color()]:
+                print("mota jr ca bu fla ma nau")
                 final_line = self.get_station_line(passenger.get_final_station())
+                print(passenger.get_final_station() + " " + station.name)
                 if station.get_name() == self.get_crossing_station(final_line):
                     passengers_to_exchange += [passenger]
             # is not in his destiny yet
             elif passenger.get_final_station() != station.name:
                 passengers_left.append(passenger)
-        self.passengers = passengers_left            
+        self.passengers = passengers_left
         self.update_taken_spots()
         return passengers_to_exchange

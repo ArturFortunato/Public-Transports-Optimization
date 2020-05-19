@@ -73,8 +73,14 @@ class Environment:
     def update_lines(self, decisions):
         for line in self.lines:
             line.update_line_info(decisions[line.color])
+
+    #person to test line change!! make sure that line changes are occuring before continuing
+    def hardcode_new_person(self):
+        p = Person ("Zé", "Alfornelos", "Chelas" ,datetime.time(self.hours, self.minutes), True)
+        self.lines[2].add_person_to_station(p, "Alfornelos")
         
     def run(self):
+        #self.hardcode_new_person()
         while True:
             self.generate_people()
             self.move_trains(self.hours, self.minutes)
@@ -83,7 +89,7 @@ class Environment:
             self.update_lines(decisions)
             self.gui.run()
             self.tik()
-            #time.sleep(1)
+            time.sleep(1)
 
 ##### Auxiliar
 
