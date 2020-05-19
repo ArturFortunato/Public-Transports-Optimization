@@ -43,9 +43,11 @@ class Carriage:
                 return line
 
     def get_crossing_station(self, other_line):
-        for station_name in stations_per_line[self.line]:
+        print(self.line)
+        for station_name in stations_per_line[self.line.color]:
             if station_name in stations_per_line[other_line]:
                 return station_name
+        print("vou sair daqui")
 
     def remove_passengers(self, station):
         passengers_left = []

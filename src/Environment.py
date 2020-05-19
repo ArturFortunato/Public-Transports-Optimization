@@ -77,11 +77,9 @@ class Environment:
     def run(self):
         while True:
             self.generate_people()
-            print("---------------------------------------------------")
             self.move_trains(self.hours, self.minutes)
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             decisions = self.orchestrator.deliberate()
-            print("####################################################")
             self.update_lines(decisions)
             self.gui.run()
             self.tik()
