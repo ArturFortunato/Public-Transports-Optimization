@@ -19,8 +19,9 @@ class Person:
     def get_way(self):
         return self.positive_way
 
+    # se encontrar a estação de destino primeiro deve andar no sentido positivo, caso contrario anda no sentido negativo
     def update_way(self, line, current_station):
-        for station in line.get_stations:
+        for station in line.get_stations():
             if station.get_name() == current_station:
                 self.positive_way = 1
                 break

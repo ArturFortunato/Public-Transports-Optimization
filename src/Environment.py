@@ -35,27 +35,48 @@ class Environment:
                 self.day_ended = True
 
     def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
-        for station in line:
+        for station in line.get_stations():
+            print(station.get_name(), current_station.get_name())
             if station.get_name() == current_station.get_name():
                 for passenger in passengers_to_exchange:
                     passenger.update_way(line, station)
                     station.addPerson(passenger)
                 return True
+        time.sleep(1)
         return False
 
-    def change_passengers_line(self, passengers_to_exchange, station, current_line):
+    # returns the only line that has both station1 and station2
+    def get_stations_line(self, station1, station2):
         for line in self.lines:
-            print("valor da current line: " + str(current_line))
-            print(current_line)
-            if self.lines[line].get_color() != current_line:
-                if self.add_change_passengers_to_line(station, line, passengers_to_exchange):
-                    break
+            cont = 0
+            for station in line.get_stations():
+                if station.get_name() == station1:
+                    cont += 1
+                elif station.get_name() == station2:
+                    cont += 1
+            if cont == 2:
+                return line
+
+    def add_person_to_station(self, insert_station, line, person):
+        print("Vou adicionar um gajo ")
+        for station in line.get_stations():
+            if station.get_name() == insert_station:
+                print("SOu um deus, adicionei o à estacao", station.get_name(), " na linha ", line.get_color())
+                station.addPerson(person)
+                break
+
+    def change_passengers_line(self, passengers_to_exchange):
+        for station in passengers_to_exchange:
+            for person in passengers_to_exchange[station]:
+                line = self.get_stations_line(person.get_final_station(), station)
+                person.update_way(line, station)
+                self.add_person_to_station(station, line, person)
 
     def move_trains(self, hours, minutes):
         for line in self.lines:
-            passengers_to_exchange, station = line.move_trains(hours, minutes)
-            if passengers_to_exchange:
-                self.change_passengers_line(passengers_to_exchange, station, line.get_color())
+            passengers_to_exchange = line.move_trains(hours, minutes)
+            if passengers_to_exchange != {}:
+                self.change_passengers_line(passengers_to_exchange)
 
     def generate_people(self):
         for line in self.lines:
@@ -78,8 +99,8 @@ class Environment:
 
     #person to test line change!! make sure that line changes are occuring before continuing
     def hardcode_new_person(self):
-        p = Person ("Zé", "Alfornelos", "Lumiar" ,datetime.time(self.hours, self.minutes), True)
-        self.lines[2].add_person_to_station(p, "Alfornelos")
+        p = Person ("Zé", "S. Sebastião", "Anjos" ,datetime.time(self.hours, self.minutes), True)
+        self.lines[2].add_person_to_station(p, "S. Sebastião")
         
     def run(self):
         self.hardcode_new_person()

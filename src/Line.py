@@ -141,8 +141,12 @@ class Line:
             if station.name == name:
                 return station
 
+
+    def get_stations(self):
+        return self.stations
+
     def move_trains(self, hours, minutes):
-        passengers_to_exchange = None
+        passengers_to_exchange = {}
         for i in range(len(self.trains)):
             self.trains[i].move()
 
@@ -150,10 +154,16 @@ class Line:
             for station in self.stations:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons(train.get_way())
-                    people_boarded, passengers_to_exchange, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
+                    people_boarded, passengers_to_exchange_temp, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
+                    # needs to know the station where the exchange happens to transfer people to the new platform
+                    if passengers_to_exchange_temp != []:
+                        if station in passengers_to_exchange:
+                            print("DAFUC?")
+                            exit()
+                        passengers_to_exchange[station.get_name()] = passengers_to_exchange_temp
                     station.remove_persons_until_index(people_boarded, train.get_way())
                     self.report_satisfaction(report)
-        return passengers_to_exchange, station
+        return passengers_to_exchange
 
 
     def update_trains_info(self, deliberations):
