@@ -100,8 +100,6 @@ class Train:
         original_length = len(passengers)
         report = []
         for carriage in self.carriages:
-
-            print("hereeeeeeeeeeeeeeeeeee")
             passengers_to_exchange = carriage.remove_passengers(station)
             number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers)) #verifica quantidade de pessoas a entrar
             

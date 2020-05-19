@@ -45,6 +45,8 @@ class Environment:
 
     def change_passengers_line(self, passengers_to_exchange, station, current_line):
         for line in self.lines:
+            print("valor da current line: " + str(current_line))
+            print(current_line)
             if self.lines[line].get_color() != current_line:
                 if self.add_change_passengers_to_line(station, line, passengers_to_exchange):
                     break
@@ -76,7 +78,7 @@ class Environment:
 
     #person to test line change!! make sure that line changes are occuring before continuing
     def hardcode_new_person(self):
-        p = Person ("Zé", "Alfornelos", "Chelas" ,datetime.time(self.hours, self.minutes), True)
+        p = Person ("Zé", "Alfornelos", "Lumiar" ,datetime.time(self.hours, self.minutes), True)
         self.lines[2].add_person_to_station(p, "Alfornelos")
         
     def run(self):
@@ -89,7 +91,7 @@ class Environment:
             self.update_lines(decisions)
             self.gui.run()
             self.tik()
-            time.sleep(1)
+            time.sleep(0.3)
 
 ##### Auxiliar
 
