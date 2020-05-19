@@ -45,9 +45,6 @@ class Station:
 
         self.persons[terminal_station] = self.persons[terminal_station][idx:]
 
-        
-
-
     def removePersonById(self):
         pass
 

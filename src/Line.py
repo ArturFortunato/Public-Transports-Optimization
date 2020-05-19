@@ -115,16 +115,16 @@ class Line:
         self.number_of_trains = len(trains)
         if color == 'red':
             self.stations = red
-            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, red[::-1], -1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(80, self)], 1, 4, colors[color], gui, red[::-1], -1, self.color)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, yellow, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(80, self)], 1, 4, colors[color], gui, yellow, 1, self.color)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, green, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(80, self)], 1, 4, colors[color], gui, green, 1, self.color)]
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(0, 3, [Carriage(80)], 1, 4, colors[color], gui, blue, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(80, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
 
         #gui stuff
         self.gui = gui
@@ -142,6 +142,7 @@ class Line:
                 return station
 
     def move_trains(self, hours, minutes):
+        passengers_to_exchange = None
         for i in range(len(self.trains)):
             self.trains[i].move()
 
@@ -149,10 +150,10 @@ class Line:
             for station in self.stations:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons(train.get_way())
-                    people_boarded, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
+                    people_boarded, passengers_to_exchange, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
                     station.remove_persons_until_index(people_boarded, train.get_way())
                     self.report_satisfaction(report)
-
+        return passengers_to_exchange, station
 
 
     def update_trains_info(self, deliberations):
@@ -197,4 +198,4 @@ class Line:
         return self.color
     
     def add_train(self, info):
-        self.trains += [Train(len(self.trains), 3, [Carriage(80) for i in range(info['nr_carriages'])], info['nr_carriages'], 4, colors[self.color], self.gui, lines[self.color] if info['way'] == 1 else lines[self.color][::1], info['way'], self.color )]
+        self.trains += [Train(len(self.trains), 3, [Carriage(80, self) for i in range(info['nr_carriages'])], info['nr_carriages'], 4, colors[self.color], self.gui, lines[self.color] if info['way'] == 1 else lines[self.color][::1], info['way'], self.color )]

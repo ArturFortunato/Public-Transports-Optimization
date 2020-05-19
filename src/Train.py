@@ -96,7 +96,7 @@ class Train:
     #certificar se pessoal nos dois sentidos esta entrar no comboio.
     #problema da concorrencia dos comboios
     def open_doors(self, station, passengers, time):
-
+        passengers_to_exchange = None
         original_length = len(passengers)
         report = []
         for carriage in self.carriages:
@@ -104,7 +104,7 @@ class Train:
             ##alterar no fim
             if(self.color == (0,0,255) and self.id == 0):
                 print("train_id: " + str(self.id) + " vai remover passageiros")
-                carriage.remove_passengers(station)
+                passengers_to_exchange = carriage.remove_passengers(station)
             number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers)) #verifica quantidade de pessoas a entrar
             
             if(self.color == (0,0,255)  and self.id == 0):
@@ -119,7 +119,7 @@ class Train:
                     report.append(waiting_time)
                 carriage.add_passengers(passengers[:number_of_passengers_to_enter])
                 passengers = passengers[number_of_passengers_to_enter:]
-        return original_length - len(passengers), report
+        return original_length - len(passengers), passengers_to_exchange, report
 
     def get_gui_position(self):
         return self.gui_positions

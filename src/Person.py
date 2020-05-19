@@ -18,3 +18,12 @@ class Person:
 
     def get_way(self):
         return self.positive_way
+
+    def update_way(self, line, current_station):
+        for station in line.get_stations:
+            if station.get_name() == current_station:
+                self.positive_way = 1
+                break
+            elif station.get_name() == self.final_station:
+                self.positive_way = -1
+                break

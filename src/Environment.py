@@ -34,10 +34,27 @@ class Environment:
             if self.hours == 1:
                 self.day_ended = True
 
+    def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
+        for station in line:
+            if station.get_name() == current_station.get_name():
+                for passenger in passengers_to_exchange:
+                    passenger.update_way(line, station)
+                    station.addPerson(passenger)
+                return True
+        return False
+
+    def change_passengers_line(self, passengers_to_exchange, station, current_line):
+        for line in self.lines:
+            if self.lines[line].get_color() != current_line:
+                if self.add_change_passengers_to_line(station, line, passengers_to_exchange):
+                    break
+
     def move_trains(self, hours, minutes):
         for line in self.lines:
-            line.move_trains(hours, minutes)
-        
+            passengers_to_exchange, station = line.move_trains(hours, minutes)
+            if passengers_to_exchange:
+                self.change_passengers_line(passengers_to_exchange, station, line.get_color())
+
     def generate_people(self):
         for line in self.lines:
             self.populate_stations(line)
