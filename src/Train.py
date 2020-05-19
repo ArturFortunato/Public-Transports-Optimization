@@ -101,18 +101,11 @@ class Train:
         report = []
         for carriage in self.carriages:
 
-            ##alterar no fim
-            if(self.color == (0,0,255) and self.id == 0):
-                print("train_id: " + str(self.id) + " vai remover passageiros")
-                passengers_to_exchange = carriage.remove_passengers(station)
+
+            passengers_to_exchange = carriage.remove_passengers(station)
             number_of_passengers_to_enter = min(carriage.current_capacity(), len(passengers)) #verifica quantidade de pessoas a entrar
             
-            if(self.color == (0,0,255)  and self.id == 0):
-                print(str(station.name) + " train_id: " + str(self.id) +  " min: " + str(number_of_passengers_to_enter) + " cap: " + str(carriage.current_capacity()) + " passengers: " + str(len(passengers)))
-            if(carriage.current_capacity() == 0):
-                print("lotacao esgotada na estacao: " + str(station.name))
-                tempo.sleep(5.4)
-            
+
             if number_of_passengers_to_enter != 0:
                 for p in passengers[:number_of_passengers_to_enter]:
                     waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, p.get_entered_time()) 
