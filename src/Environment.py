@@ -63,6 +63,7 @@ class Environment:
         for station in line.get_stations():
             if station.get_name() == insert_station:
                 print("Station change: ", station.get_name(), " -- ", line.get_color())
+                person.reset_entered_time(datetime.time(self.hours, self.minutes))
                 station.addPerson(person)
                 break
 
@@ -100,7 +101,7 @@ class Environment:
 
     #person to test line change!! make sure that line changes are occuring before continuing
     def hardcode_new_person(self):
-        p = Person ("Zé", "Laranjeiras", "Ameixoeira" ,datetime.time(self.hours, self.minutes), True)
+        p = Person ("Zé", "Laranjeiras", "Rato" ,datetime.time(self.hours, self.minutes), True)
         self.lines[2].add_person_to_station(p, "Laranjeiras")
         
     def run(self):

@@ -10,6 +10,14 @@ class Person:
     def get_entered_time(self):
         return self.entered_time
 
+
+    #Funcao que atualiza o tempo de entrada de uma pessoa numa nova estacao(troca de linha)
+    #para poder avaliar quanto tempo ela esta a espera no metro.
+    def reset_entered_time(self,new_reset_time):
+        print("vou imprimir o entered time:")
+        self.entered_time = new_reset_time
+    
+
     def get_starting_station(self):
         return self.starting_station
 
