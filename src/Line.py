@@ -209,7 +209,7 @@ class Line:
         return trains[tid]
         
     def report_satisfaction(self, report):
-        self.reporter.add_passengers_satisfaction(report)
+        self.reporter.add_passengers_satisfaction(report,self.color)
 
     #need to change stations representations from list to dict, to avoid the for loop.
     def add_person_to_station(self, person, station):

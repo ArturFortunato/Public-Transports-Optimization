@@ -14,13 +14,22 @@ import random
 
 class Environment:
 
-    def __init__(self):
+    def __init__(self,input_args):
+        self.flags = {}
+        #Faz print de metricas para cada linha no terminal
+        if "-v" in input_args: self.flags["verbose"] = True
+        else: self.flags["verbose"] = False
+
         self.gui = Gui(self)
-        reporter = Reporter(self.gui)
+        reporter = Reporter(self.gui,self.flags)
+
         self.lines = [ Line('red',2, reporter, self.gui) , Line('yellow',2, reporter, self.gui) , Line('blue',2, reporter, self.gui) , Line('green',2, reporter, self.gui) ]
         self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
         self.start_day()
+
+
+
 
     def start_day(self):
         self.hours = 6
@@ -64,7 +73,7 @@ class Environment:
     def add_person_to_station(self, insert_station, line, person):
         for station in line.get_stations():
             if station.get_name() == insert_station:
-                print("Station change: ", station.get_name(), " -- ", line.get_color())
+                #print("Station change: ", station.get_name(), " -- ", line.get_color())
                 person.reset_entered_time(datetime.time(self.hours, self.minutes))
                 station.addPerson(person)
                 break
@@ -114,7 +123,7 @@ class Environment:
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             decisions = self.orchestrator.deliberate()
 
-            print(decisions)
+            #print(decisions)
             #exit()
 
             self.update_lines(decisions)

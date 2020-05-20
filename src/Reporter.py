@@ -1,16 +1,32 @@
+
 class Reporter:
-    def __init__(self, gui):
-        self.waiting_times = []
+    def __init__(self, gui,flags):
+        self.total_waiting_times = []
+        self.waiting_times_per_line = {}
+        self.waiting_times_per_line["red"] = []
+        self.waiting_times_per_line["green"] = []
+        self.waiting_times_per_line["blue"] = []
+        self.waiting_times_per_line["yellow"] = []
         self.gui = gui
+        self.flags = flags
         gui.add_reporter(self)
 
 
-    def add_passengers_satisfaction(self, report):
+    def add_passengers_satisfaction(self, report,color):
         for r in report:
-            self.waiting_times.append(r.seconds)
+            self.waiting_times_per_line[color].append(r.seconds)    #analysis per line
+            self.total_waiting_times.append(r.seconds)              #total analysis
+
 
     def get_average(self):
-        if len(self.waiting_times) == 0:
+        if len(self.total_waiting_times) == 0:
             return None
         else:
-            return sum(self.waiting_times)/len(self.waiting_times)
+            for key in list(self.waiting_times_per_line.keys()):
+                if(self.flags["verbose"] == True):
+                    self.printIndividualLineMetrics(key)
+            return sum(self.total_waiting_times)/len(self.total_waiting_times)
+
+    def printIndividualLineMetrics(self,key):
+        if( len(self.waiting_times_per_line[key]) != 0 ):
+            print("Linha " +str(key) + " - "  + str( round(sum(self.waiting_times_per_line[key]) / len(self.waiting_times_per_line[key]),2) )  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
