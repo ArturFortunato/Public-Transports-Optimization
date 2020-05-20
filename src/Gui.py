@@ -46,10 +46,13 @@ class Gui:
         pg.draw.rect(self.win, color, position)
         self.write_train_id(position, train_id, line)
 
-    def draw_station(self, position, name, text_position, nr_people):
+    def draw_station(self, position, name, text_position, nr_people, index=None):
         if position != None:
             pg.draw.circle(self.win, STATION_COLOR, position, STATION_RADIUS)
-            self.write_station_name(text_position, name, nr_people)
+            if index == None:
+                self.write_station_name(text_position, name, nr_people)
+            else:
+                self.write_station_name(text_position, name, nr_people, self.stations[index].get_people())
 
     def get_station_color(self, nr_people): #maybe change this for both ways?
         if nr_people[0] + nr_people[1] == 0:
@@ -61,9 +64,12 @@ class Gui:
         else:
             return (255,0,0)
             
-    def write_station_name(self, station_position, station_name, nr_people):
+    def write_station_name(self, station_position, station_name, nr_people, nr_people_extra=None):
         largeText = pg.font.Font('freesansbold.ttf', 15)
-        textSurf = largeText.render(station_name + " " + str(nr_people), True, self.get_station_color(nr_people))
+        if nr_people_extra == None:
+            textSurf = largeText.render(station_name + " " + str(nr_people), True, self.get_station_color(nr_people))
+        else:
+            textSurf = largeText.render(station_name + " " + str(nr_people) + " " + str(nr_people_extra), True, self.get_station_color(nr_people))
         textRect = textSurf.get_rect()
         textRect.center = (station_position[0],station_position[1] + 15)
         self.win.blit(textSurf, textRect)
@@ -97,14 +103,24 @@ class Gui:
         
         for i in range(len(self.stations)):
             if self.stations[i].to_draw():
-                self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people())
+                index = self.is_crossing(self.stations[i], i)
+                if index == None:
+                    self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people())
+                else:
+                    self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people(), index)
         
         for i in range(len(self.trains)):
-
             self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position(), self.trains[i].get_id(), self.trains[i].get_line())
         
         self.write_reports()
         self.write_current_time()
+
+    def is_crossing(self, current_station, index):
+        cont = 0
+        for i in range(len(self.stations)):
+            if self.stations[i].get_name() == current_station.get_name() and i != index:
+                return i
+        return None
 
     def add_train(self, train):
         self.trains += [train]
