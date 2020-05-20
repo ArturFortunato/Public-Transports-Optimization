@@ -48,8 +48,18 @@ class Forecasting:
         stations = self.model_final_station[mapping[station]][time][0]
         probabilities = self.model_final_station[mapping[station]][time][1]
         # correction for rounding problem
-        if sum(probabilities) != 1:
-            probabilities[-1] += 1 - sum(probabilities)
+        if sum(probabilities) > 1:
+            probabilities[-1] -=  sum(probabilities) - 1
+            print(probabilities)
+            print(station)
+            print(time)
+        elif sum(probabilities) < 1:
+            probabilities[-1] +=  1 - sum(probabilities)
+            print(probabilities)
+            print(station)
+            print(time)
+
+        #some times still breaks, probabilities are non negative
 
         #remove when reboleira added to env model. 
         final = inv_mapping[numpy.random.choice(stations, 1, p=probabilities)[0]]
@@ -167,14 +177,12 @@ def get_closest_15_min_time(hour, minute):
 #
 ###################################
 
-'''forecaster = Forecasting()
+""" forecaster = Forecasting()
 
 temp = ['Aeroporto', 'Alameda', 'Alfornelos', 'Alto dos Moinhos', 'Alvalade', 'Amadora Este', 'Ameixoeira', 'Anjos', 'Areeiro', 'Avenida', 'Baixa Chiado', 'Bela Vista', 'Cabo Ruivo', 'Cais do Sodré', 'Campo Grande', 'Campo Pequeno', 'Carnide', 'Chelas', 'Cidade Universitária', 'Colégio Militar', 'Encarnação', 'Entre Campos', 'Intendente', 'Jardim Zoológico', 'Laranjeiras', 'Lumiar', 'Marquês de Pombal', 'Martim Moniz', 'Moscavide', 'Odivelas', 'Olaias', 'Olivais', 'Oriente', 'Parque', 'Picoas', 'Pontinha', 'Praça Espanha', 'Quinta das Conchas', 'Rato', 'Restauradores', 'Roma', 'Rossio', 'Saldanha', 'Santa Apolónia', 'Senhor Roubado', 'São Sebastião', 'Telheiras', 'Terreiro Paço']
 #predict alameda 16 horas e 0 minutos.
 
-for i in temp:
-    print(forecaster.predict_number_of_people(i, 16, 0))
-    print(forecaster.predict_final_station(i, 16, 0)) '''
-
+print(forecaster.predict_final_station("Alfornelos", 23, 31))
+ """
 
 

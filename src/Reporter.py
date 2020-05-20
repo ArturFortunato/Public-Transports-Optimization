@@ -35,7 +35,7 @@ class Reporter:
 
 
     def get_average(self, time):
-        print(time)
+        #print(time)
         if len(self.total_waiting_times) == 0:
             return None
         else:

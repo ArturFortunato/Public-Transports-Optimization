@@ -152,7 +152,7 @@ class Line:
         self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color)]
         self.number_of_trains += 1
 
-    def move_trains(self, hours, minutes):
+    def move_trains(self, time):
         passengers_to_exchange = {}
         trains_to_remove = []
 
@@ -160,7 +160,7 @@ class Line:
             for station in self.stations:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons(train.get_way())
-                    people_boarded, passengers_to_exchange_temp, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
+                    people_boarded, passengers_to_exchange_temp, report = train.open_doors(station, passengers_to_enter, time)
                     # needs to know the station where the exchange happens to transfer people to the new platform
                     if passengers_to_exchange_temp != []:
                         if station in passengers_to_exchange:
@@ -168,7 +168,7 @@ class Line:
                             exit()
                         passengers_to_exchange[station.get_name()] = passengers_to_exchange_temp
                     station.remove_persons_until_index(people_boarded, train.get_way())
-                    self.report_satisfaction(report, datetime.time(hours, minutes))
+                    self.report_satisfaction(report, time)
 
                     # se tiver chegado a estacao final (ou "inicial" se estiver a andar ao contrario, adiciona o comboio à lista de comboios para apagar)
                     if station == self.stations[-1 if train.get_way() == 1 else 0]:

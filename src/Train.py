@@ -105,8 +105,9 @@ class Train:
 
             if number_of_passengers_to_enter != 0:
                 for passenger in passengers[:number_of_passengers_to_enter]:
-                    waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, passenger.get_entered_time()) 
+                    waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, passenger.get_entered_time())
                     report.append(waiting_time)
+                    
                 carriage.add_passengers(passengers[:number_of_passengers_to_enter])
                 passengers = passengers[number_of_passengers_to_enter:]
         return original_length - len(passengers), passengers_to_exchange, report

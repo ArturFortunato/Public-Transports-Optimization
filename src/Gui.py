@@ -84,7 +84,7 @@ class Gui:
     def write_reports(self):
         base_text = "Global average waiting time:"
         large_text = pg.font.Font('freesansbold.ttf', 15)
-        time = datetime.time(self.environment.hours, self.environment.minutes)
+        time = self.environment.time
         text_surf = large_text.render(base_text + str(self.reporter.get_average(time)), True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
         self.win.blit(text_surf, text_rect)
@@ -92,7 +92,7 @@ class Gui:
     def write_current_time(self):
         base_text = "Time: "
         large_text = pg.font.Font('freesansbold.ttf', 15)
-        time = str(datetime.time(self.environment.hours, self.environment.minutes))
+        time = str(self.environment.time)
         text_surf = large_text.render(base_text + time, True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
         text_rect.center = (49, 33)

@@ -26,15 +26,22 @@ class Environment:
         self.start_day()
 
     def start_day(self):
-        self.hours = 6
-        self.minutes = 15
+        self.time = datetime.time(23,15)
+        #self.hours = 6
+        #self.minutes = 15
     
     def tik(self):
-        if self.minutes != 59:
-            self.minutes += 1
-        else:
-            self.minutes = 0 
-            self.hours = (self.hours + 1) % 24
+        self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
+        if self.time == datetime.time(0,1):
+            self.time = datetime.time(6,15)
+            print("---new day---")
+
+        
+        #if self.minutes != 59:
+            #self.minutes += 1
+        #else:
+            #self.minutes = 0 
+            #self.hours = (self.hours + 1) % 24
 
     def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
         for station in line.get_stations():
@@ -64,7 +71,7 @@ class Environment:
         for station in line.get_stations():
             if station.get_name() == insert_station:
                 #print("Station change: ", station.get_name(), " -- ", line.get_color())
-                person.reset_entered_time(datetime.time(self.hours, self.minutes))
+                person.reset_entered_time(self.time)
                 station.add_person(person)
                 break
 
@@ -75,9 +82,9 @@ class Environment:
                 person.update_way(line, station)
                 self.add_person_to_station(station, line, person)
 
-    def move_trains(self, hours, minutes):
+    def move_trains(self):
         for line in self.lines:
-            passengers_to_exchange = line.move_trains(hours, minutes)
+            passengers_to_exchange = line.move_trains(self.time)
             if passengers_to_exchange != {}:
                 self.change_passengers_line(passengers_to_exchange)
 
@@ -87,12 +94,12 @@ class Environment:
 
     # receives a Line object
     def populate_stations(self, line):
-        stations_distribution = estimate_number_of_people_per_station(line, self.hours, self.minutes)
+        stations_distribution = estimate_number_of_people_per_station(line, self.time.hour, self.time.minute)
         #{oriente: 2, encarnacao: 3, .... }
         for station in stations_distribution:
             for number_of_persons in range(stations_distribution[station]):
-                final, way = estimate_final_station(station, self.hours, self.minutes)
-                person = Person(station, final, datetime.time(self.hours, self.minutes), way)
+                final, way = estimate_final_station(station, self.time.hour, self.time.minute)
+                person = Person(station, final, self.time, way)
                 line.add_person_to_station(person, station)
 
 
@@ -100,27 +107,20 @@ class Environment:
         for line in self.lines:
             line.update_line_info(decisions[line.color])
 
-    #person to test line change!! make sure that line changes are occuring before continuing
-    def hardcode_new_person(self):
-        p = Person("Odivelas", "Bela Vista", datetime.time(self.hours, self.minutes), True)
-        self.lines[1].add_person_to_station(p, "Odivelas")
-
     def run(self):
-        self.hardcode_new_person()
         try:
             while True:
                 self.generate_people()
-                self.move_trains(self.hours, self.minutes)
-                self.orchestrator.percept(self.hours, self.minutes)
+
+                self.move_trains()
+
+                self.orchestrator.percept(self.time.hour, self.time.minute)
                 decisions = self.orchestrator.deliberate()
-
-                #print(decisions)
-                #exit()
-
                 self.update_lines(decisions)
+
                 self.gui.run()
+
                 self.tik()
-                time.sleep(0.3)
         except KeyboardInterrupt:
             print("Deste Ctrl-c.")
             self.reporter.generate_charts()
