@@ -48,5 +48,5 @@ def generate_exits_per_station_per_hour():
     return "done"
 
 #GERA OS EXCEIS!!! LENTO... CERTIFICAR QUE ELES EXISTEM ANTES DE CORRER
-#generate_count_per_station_per_hour()
-#generate_exits_per_station_per_hour()
+generate_count_per_station_per_hour()
+generate_exits_per_station_per_hour()

@@ -23,9 +23,6 @@ class Environment:
         self.day_ended = False
         self.start_day()
 
-
-
-
     def start_day(self):
         self.hours = 6
         self.minutes = 15
@@ -48,7 +45,6 @@ class Environment:
                     passenger.update_way(line, station)
                     station.addPerson(passenger)
                 return True
-        #time.sleep(1)
         return False
 
     # returns the only line that has both station1 and station2
@@ -107,11 +103,11 @@ class Environment:
 
     #person to test line change!! make sure that line changes are occuring before continuing
     def hardcode_new_person(self):
-        p = Person ("Zé", "Laranjeiras", "Rato" ,datetime.time(self.hours, self.minutes), True)
-        self.lines[2].add_person_to_station(p, "Laranjeiras")
+        p = Person ("Zé", "Odivelas", "Bela Vista" ,datetime.time(self.hours, self.minutes), True)
+        self.lines[1].add_person_to_station(p, "Odivelas")
 
     def run(self):
-        self.hardcode_new_person()
+        #self.hardcode_new_person()
         while True:
             self.generate_people()
             self.move_trains(self.hours, self.minutes)

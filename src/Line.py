@@ -109,11 +109,10 @@ colors = {
 class Line:
     def __init__(self, color, maximum_trains, reporter, gui):
         self.reporter = reporter
-        self.color = color #string #considered id
+        self.color = color
         self.maximum_trains = maximum_trains 
         self.trains = []
 
-        #Todas as linhas excepto a azul tiveram a sua velocidade aumentada.
         if color == 'red':
             self.stations = red
             self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
@@ -127,35 +126,35 @@ class Line:
             self.stations = blue
             self.trains += [Train(0, 3, [Carriage(141*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
         self.number_of_trains = 1
+        
         #gui stuff
         self.gui = gui
         self.gui.add_line(self)
         for i in range(len(self.stations)):
             self.stations[i].set_gui(gui)
 
-
-    def get_id(self):
-        return self.color
-
-    def getStation(self, name):
-        for station in self.stations:
-            if station.name == name:
-                return station
-
     def can_update_train_speed(self, current_train, position, new_speed):
         for train in self.trains:  
             if train.get_way() == current_train.get_way() and train.get_id() < current_train.get_id() and (position + new_speed) >= (train.get_position() + train.get_speed()):
                 return False
         return True
-        
-    def get_stations(self):
-        return self.stations
+
+    #hardcoded 6 carriaged with 141 capacity each
+    def add_train(self, info):
+        carriages = []
+        #for i in range(info['nr_carriages']):
+        carriages.append(Carriage(141*6, self))
+
+        if info["way"] == 1: line_stations = lines[self.color]
+        else: line_stations = lines[self.color][::-1]            
+
+
+        self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
+        self.number_of_trains += 1
 
     def move_trains(self, hours, minutes):
         passengers_to_exchange = {}
         trains_to_remove = []
-        for i in range(len(self.trains)):
-            self.trains[i].move()
 
         for train in self.trains:
             for station in self.stations:
@@ -175,6 +174,10 @@ class Line:
                     if station == self.stations[-1 if train.get_way() == 1 else 0]:
                         trains_to_remove += [train]
         self.delete_trains(trains_to_remove)
+
+        for i in range(len(self.trains)):
+            self.trains[i].move()
+
         return passengers_to_exchange
 
     def delete_trains(self, trains_to_remove):
@@ -211,7 +214,6 @@ class Line:
     def report_satisfaction(self, report):
         self.reporter.add_passengers_satisfaction(report,self.color)
 
-    #need to change stations representations from list to dict, to avoid the for loop.
     def add_person_to_station(self, person, station):
         for s in self.stations:
             if s.name == station:
@@ -226,17 +228,9 @@ class Line:
     def get_color(self):
         return self.color
 
+    def get_stations(self):
+        return self.stations
 
-    #hardcoded 6 carriaged with 141 capacity each
-    def add_train(self, info):
-        carriages = []
-        #for i in range(info['nr_carriages']):
-        carriages.append(Carriage(141*6, self))
-
-        if info["way"] == 1: line_stations = lines[self.color]
-        else: line_stations = lines[self.color][::-1]            
-
-
-        self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
-        self.number_of_trains += 1
+    def get_id(self):
+        return self.color
 
