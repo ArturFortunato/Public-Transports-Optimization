@@ -22,7 +22,10 @@ class Orchestrator:
         for line in self.lines:
             self.perceptions[line.get_id()] = line.get_line_info()
         
-            
+
+    #receives as argument the way where the line is changing.
+    def launch_new_train(self,sentido):
+        return [{'nr_carriages': 1,'speed': 2,'way': sentido}]
 
     #AI algorithm to calculate the optimal values for each train velocity and number of carriages.
     #Each invocation of this func deliberates  for a line taking in account the 4 line PERCEPTIONS
@@ -31,6 +34,15 @@ class Orchestrator:
         res = {}
         res["trains"] = {}
         res['new_train'] = []
+        print("Orchestrator: Choosing actions for line:  " + str(line_color))
+
+        if(self.minutes %6 == 0 and self.minutes % 12 == 0):
+            res['new_train'] += self.launch_new_train(-1)
+
+        #launch new train each 6 minutes
+        elif( self.minutes % 6 == 0):
+            res['new_train'] += self.launch_new_train(1)
+
         #atualiza info relativo aos comboios
         for train_key in line_perception["trains"].keys():
             
@@ -43,10 +55,7 @@ class Orchestrator:
                 res["trains"][train_key]["current_speed"] = line_perception["trains"][train_key]["current_speed"] + 4
 
         if not self.test_new_train and line_color == 'blue':
-            res["new_train"] += [{'nr_carriages': 1,
-                                  'speed': 2,
-                                  'way': 1
-                                }]
+            res["new_train"] += [{'nr_carriages': 1,'speed': 2,'way': 1}]
             self.test_new_train = True
 
         return res
