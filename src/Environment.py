@@ -107,6 +107,7 @@ class Environment:
         self.lines[1].add_person_to_station(p, "Odivelas")
 
     def run(self):
+<<<<<<< HEAD
         #self.hardcode_new_person()
         while True:
             self.generate_people()
@@ -121,6 +122,27 @@ class Environment:
             self.gui.run()
             self.tik()
             #time.sleep(0.3)
+=======
+        self.hardcode_new_person()
+        try:
+            while True:
+                self.generate_people()
+                self.move_trains(self.hours, self.minutes)
+                self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
+                decisions = self.orchestrator.deliberate()
+
+                #print(decisions)
+                #exit()
+
+                self.update_lines(decisions)
+                self.gui.run()
+                self.tik()
+                #time.sleep(0.3)
+        except KeyboardInterrupt:
+            print("Deste Ctrl-c.")
+            reporter.generateCharts()
+            pass
+>>>>>>> 1c9004991fcac422768e340f543711a795dafee8
 
 ##### Auxiliar
 

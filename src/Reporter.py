@@ -24,10 +24,14 @@ class Reporter:
             return None
         else:
             for key in list(self.waiting_times_per_line.keys()):
-                if(flags["verbose"] == True):
+                if(flags["verbose"] == "ALL" or flags["verbose"] == key):
                     self.printIndividualLineMetrics(key)
             return sum(self.total_waiting_times)/len(self.total_waiting_times)
 
     def printIndividualLineMetrics(self,key):
         if( len(self.waiting_times_per_line[key]) != 0 ):
             print("Linha " +str(key) + " - "  + str( round(sum(self.waiting_times_per_line[key]) / len(self.waiting_times_per_line[key]),2) )  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
+
+
+    def generate_charts():
+        pass
