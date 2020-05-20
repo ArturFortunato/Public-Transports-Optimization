@@ -13,7 +13,7 @@ Ex:
 
 def add_flags(args):
     p = re.compile('lines=+')
-
+    flags["verbose"] = None
     for arg in args:
         if p.match(arg) != None:
             arg = arg.split("=")[1]
@@ -21,7 +21,6 @@ def add_flags(args):
                 print("FLAG: " + str(arg) + "não reconhecida pelo sistema")
                 #exit()
             else: flags["verbose"] = arg
-        else: flags["verbose"] = None
 
 
 ##### Auxiliar
