@@ -57,10 +57,13 @@ class Environment:
             if cont == 2:
                 return line
 
+
+    #Funcao responsavel por adicionar uma pessoa a uma estacao numa troca de linha.
     def add_person_to_station(self, insert_station, line, person):
         for station in line.get_stations():
             if station.get_name() == insert_station:
                 print("Station change: ", station.get_name(), " -- ", line.get_color())
+                person.reset_entered_time(datetime.time(self.hours, self.minutes))
                 station.addPerson(person)
                 break
 
