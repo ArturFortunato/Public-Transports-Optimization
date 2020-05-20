@@ -26,22 +26,16 @@ class Environment:
         self.start_day()
 
     def start_day(self):
-        self.time = datetime.time(23,15)
-        #self.hours = 6
-        #self.minutes = 15
+        self.time = datetime.time(6,15)
     
     def tik(self):
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
         if self.time == datetime.time(0,1):
             self.time = datetime.time(6,15)
             print("---new day---")
+            #delete all people who were still waiting!!!!
 
-        
-        #if self.minutes != 59:
-            #self.minutes += 1
-        #else:
-            #self.minutes = 0 
-            #self.hours = (self.hours + 1) % 24
+    
 
     def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
         for station in line.get_stations():

@@ -50,16 +50,8 @@ class Forecasting:
         # correction for rounding problem
         if sum(probabilities) > 1:
             probabilities[-1] -=  sum(probabilities) - 1
-            print(probabilities)
-            print(station)
-            print(time)
         elif sum(probabilities) < 1:
             probabilities[-1] +=  1 - sum(probabilities)
-            print(probabilities)
-            print(station)
-            print(time)
-
-        #some times still breaks, probabilities are non negative
 
         #remove when reboleira added to env model. 
         final = inv_mapping[numpy.random.choice(stations, 1, p=probabilities)[0]]
@@ -145,15 +137,16 @@ def create_model_final_station(files_path):
                 numbers = df_series.between_time(str(start_time), str(start_time))['count'].to_numpy().tolist()
                 
                 probability_distribution = [float(n)/sum(numbers) for n in numbers]
-
                 result[station][str(start_time)] = [stations, probability_distribution]
 
                 start_time = (datetime.datetime.combine(datetime.date(1, 1, 1), start_time) + datetime.timedelta(minutes=15)).time()
-
+            
             stations = df_series.between_time(str(end_time), str(end_time))['estacao_saida'].to_numpy().tolist()
             numbers = df_series.between_time(str(end_time), str(end_time))['count'].to_numpy().tolist()
-            result[station][str(end_time)] = [stations, numbers]   
-        
+
+            probability_distribution = [float(n)/sum(numbers) for n in numbers]
+            result[station][str(end_time)] = [stations, probability_distribution]  
+     
         with open(endfolder + 'final_station.pickle', 'wb') as handle:
                 pickle.dump(result, handle, protocol=pickle.HIGHEST_PROTOCOL)
         return result
@@ -182,7 +175,7 @@ def get_closest_15_min_time(hour, minute):
 temp = ['Aeroporto', 'Alameda', 'Alfornelos', 'Alto dos Moinhos', 'Alvalade', 'Amadora Este', 'Ameixoeira', 'Anjos', 'Areeiro', 'Avenida', 'Baixa Chiado', 'Bela Vista', 'Cabo Ruivo', 'Cais do Sodré', 'Campo Grande', 'Campo Pequeno', 'Carnide', 'Chelas', 'Cidade Universitária', 'Colégio Militar', 'Encarnação', 'Entre Campos', 'Intendente', 'Jardim Zoológico', 'Laranjeiras', 'Lumiar', 'Marquês de Pombal', 'Martim Moniz', 'Moscavide', 'Odivelas', 'Olaias', 'Olivais', 'Oriente', 'Parque', 'Picoas', 'Pontinha', 'Praça Espanha', 'Quinta das Conchas', 'Rato', 'Restauradores', 'Roma', 'Rossio', 'Saldanha', 'Santa Apolónia', 'Senhor Roubado', 'São Sebastião', 'Telheiras', 'Terreiro Paço']
 #predict alameda 16 horas e 0 minutos.
 
-print(forecaster.predict_final_station("Alfornelos", 23, 31))
- """
+print(forecaster.predict_final_station("Alfornelos", 23, 31)) """
+
 
 
