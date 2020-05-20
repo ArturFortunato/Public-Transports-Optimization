@@ -19,7 +19,8 @@ class Reporter:
             self.total_waiting_times.append(r.seconds)              #total analysis
 
 
-    def get_average(self):
+    def get_average(self,time):
+        print(time)
         if len(self.total_waiting_times) == 0:
             return None
         else:
@@ -33,5 +34,6 @@ class Reporter:
             print("Linha " +str(key) + " - "  + str( round(sum(self.waiting_times_per_line[key]) / len(self.waiting_times_per_line[key]),2) )  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
 
 
-    def generate_charts():
+    def generate_charts(self):
+        print("Gerando charts")
         pass

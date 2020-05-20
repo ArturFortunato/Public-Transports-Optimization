@@ -16,9 +16,9 @@ class Environment:
 
     def __init__(self):
         self.gui = Gui(self)
-        reporter = Reporter(self.gui)
+        self.reporter = Reporter(self.gui)
 
-        self.lines = [ Line('red',2, reporter, self.gui) , Line('yellow',2, reporter, self.gui) , Line('blue',2, reporter, self.gui) , Line('green',2, reporter, self.gui) ]
+        self.lines = [ Line('red',2, self.reporter, self.gui) , Line('yellow',2, self.reporter, self.gui) , Line('blue',2, self.reporter, self.gui) , Line('green',2, self.reporter, self.gui) ]
         self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
         self.start_day()
@@ -140,7 +140,7 @@ class Environment:
                 #time.sleep(0.3)
         except KeyboardInterrupt:
             print("Deste Ctrl-c.")
-            reporter.generateCharts()
+            self.reporter.generate_charts()
             pass
 >>>>>>> 1c9004991fcac422768e340f543711a795dafee8
 
