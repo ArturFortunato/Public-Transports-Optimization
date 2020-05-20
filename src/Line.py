@@ -169,7 +169,7 @@ class Line:
                             exit()
                         passengers_to_exchange[station.get_name()] = passengers_to_exchange_temp
                     station.remove_persons_until_index(people_boarded, train.get_way())
-                    self.report_satisfaction(report)
+                    self.report_satisfaction(report, datetime.time(hours, minutes))
 
                     # se tiver chegado a estacao final (ou "inicial" se estiver a andar ao contrario, adiciona o comboio à lista de comboios para apagar)
                     if station == self.stations[-1 if train.get_way() == 1 else 0]:
@@ -208,8 +208,8 @@ class Line:
     def get_train_by_id(self, tid):
         return trains[tid]
         
-    def report_satisfaction(self, report):
-        self.reporter.add_passengers_satisfaction(report,self.color)
+    def report_satisfaction(self, report,time):
+        self.reporter.add_passengers_satisfaction(report,self.color,time)
 
     #need to change stations representations from list to dict, to avoid the for loop.
     def add_person_to_station(self, person, station):
