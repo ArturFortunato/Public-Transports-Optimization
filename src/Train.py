@@ -37,8 +37,9 @@ class Train:
     def change_speed(self, new_speed):
         if self.position == self.stations[-1].get_position():
             self.current_speed = 0
-        elif new_speed <= self.maximum_speed and self.position + self.way * new_speed <= self.get_next_station().get_position():
+        elif new_speed <= self.maximum_speed and self.position + self.way * new_speed <= self.get_next_station().get_position() and self.line.can_update_train_speed(self.tid, self.position, new_speed):
             self.current_speed = new_speed
+        # Deveriamos acrescentar self.line.can_update_train_speed(self.tid, self.position, self.way * (self.get_next_station().get_position() - self.position))?
         elif new_speed <= self.maximum_speed:
             self.current_speed = self.way * (self.get_next_station().get_position() - self.position)
         else:
@@ -48,7 +49,7 @@ class Train:
         train_info = {}
         train_info['position'] = self.position
         train_info['current_speed'] = self.current_speed
-        train_info['carriages'] = []
+        train_info['carriages'] = self.carriages
         train_info['maximum_carriage'] = self.maximum_carriages
 
         #for carriage in self.carriages:

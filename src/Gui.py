@@ -91,8 +91,6 @@ class Gui:
         textRect.center = (49,33)
         self.win.blit(textSurf, textRect)
 
-
-
     def draw(self):
         for i in range(len(self.lines)):
             self.draw_line(colors[self.lines[i].get_color()], self.lines[i].init_pos(), self.lines[i].end_pos())
@@ -102,6 +100,7 @@ class Gui:
                 self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people())
         
         for i in range(len(self.trains)):
+
             self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position(), self.trains[i].get_id(), self.trains[i].get_line())
         
         self.write_reports()
@@ -126,3 +125,9 @@ class Gui:
                 return True
                 
         return False
+    
+    def delete_train(self, train_to_remove):
+        for i in range(len(self.trains)):
+            if self.trains[i].get_color() == train_to_remove.get_color() and self.trains[i].get_id() == train_to_remove.get_id():
+                del self.trains[i]
+                break

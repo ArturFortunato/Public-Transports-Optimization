@@ -103,7 +103,7 @@ class Environment:
     def hardcode_new_person(self):
         p = Person ("Zé", "Laranjeiras", "Rato" ,datetime.time(self.hours, self.minutes), True)
         self.lines[2].add_person_to_station(p, "Laranjeiras")
-        
+
     def run(self):
         self.hardcode_new_person()
         while True:

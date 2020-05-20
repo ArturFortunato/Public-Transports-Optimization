@@ -143,12 +143,20 @@ class Line:
             if station.name == name:
                 return station
 
-
+    def can_update_train_speed(self, tid, position, new_speed):
+        print("Aqui")
+        for train in self.trains:  
+            if train.get_id() < tid and (position + new_speed) >= (train.get_position() + train.get_speed()):
+                print("False")
+                return False
+        return True
+        
     def get_stations(self):
         return self.stations
 
     def move_trains(self, hours, minutes):
         passengers_to_exchange = {}
+        trains_to_remove = []
         for i in range(len(self.trains)):
             self.trains[i].move()
 
@@ -165,8 +173,20 @@ class Line:
                         passengers_to_exchange[station.get_name()] = passengers_to_exchange_temp
                     station.remove_persons_until_index(people_boarded, train.get_way())
                     self.report_satisfaction(report)
+
+                    # se tiver chegado a estacao final (ou "inicial" se estiver a andar ao contrario, adiciona o comboio à lista de comboios para apagar)
+                    if station == self.stations[-1 if train.get_way() == 1 else 0]:
+                        trains_to_remove += [train]
+        self.delete_trains(trains_to_remove)
         return passengers_to_exchange
 
+    def delete_trains(self, trains_to_remove):
+        for train_to_delete in trains_to_remove:
+            for i in range(len(self.trains)):
+                if train_to_delete.get_id() == self.trains[i].get_id():
+                    self.gui.delete_train(self.trains[i])
+                    del self.trains[i]
+                    break
 
     def update_trains_info(self, deliberations):
         for i in range(len(self.trains)):
