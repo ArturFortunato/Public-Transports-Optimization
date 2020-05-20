@@ -142,11 +142,9 @@ class Line:
             if station.name == name:
                 return station
 
-    def can_update_train_speed(self, tid, position, new_speed):
-        print("Aqui")
+    def can_update_train_speed(self, current_train, position, new_speed):
         for train in self.trains:  
-            if train.get_id() < tid and (position + new_speed) >= (train.get_position() + train.get_speed()):
-                print("False")
+            if train.get_way() == current_train.get_way() and train.get_id() < current_train.get_id() and (position + new_speed) >= (train.get_position() + train.get_speed()):
                 return False
         return True
         
