@@ -107,12 +107,11 @@ colors = {
 }
 
 class Line:
-    def __init__(self, color, maximum_trains, trains, reporter, gui):
+    def __init__(self, color, maximum_trains, reporter, gui):
         self.reporter = reporter
         self.color = color #string #considered id
         self.maximum_trains = maximum_trains 
-        self.trains = trains #dictionary of trains
-        self.number_of_trains = len(trains)
+        self.trains = []
 
         #Todas as linhas excepto a azul tiveram a sua velocidade aumentada.
         if color == 'red':
@@ -127,7 +126,7 @@ class Line:
         elif color == 'blue':
             self.stations = blue
             self.trains += [Train(0, 3, [Carriage(80, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
-
+        self.number_of_trains = 1
         #gui stuff
         self.gui = gui
         self.gui.add_line(self)
@@ -238,6 +237,6 @@ class Line:
         else: line_stations = lines[self.color][::-1]            
 
 
-        self.trains += [Train(len(self.trains), 3, carriages, info['nr_carriages'], 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
-
+        self.trains += [Train(self.number_of_trains, 3, carriages, info['nr_carriages'], 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
+        self.number_of_trains += 1
 

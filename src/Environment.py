@@ -15,7 +15,7 @@ class Environment:
     def __init__(self):
         self.gui = Gui(self)
         reporter = Reporter(self.gui)
-        self.lines = [ Line('red',2,[], reporter, self.gui) , Line('yellow',2,[], reporter, self.gui) , Line('blue',2,[], reporter, self.gui) , Line('green',2,[], reporter, self.gui) ]
+        self.lines = [ Line('red',2, reporter, self.gui) , Line('yellow',2, reporter, self.gui) , Line('blue',2, reporter, self.gui) , Line('green',2, reporter, self.gui) ]
         self.orchestrator = Orchestrator(self.lines)
         self.day_ended = False
         self.start_day()
