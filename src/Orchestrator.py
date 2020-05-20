@@ -37,7 +37,7 @@ class Orchestrator:
         print("Orchestrator: Choosing actions for line:  " + str(line_color))
 
         if(self.minutes %6 == 0 and self.minutes % 12 == 0):
-            res['new_train'] += self.launch_new_train(1)
+            res['new_train'] += self.launch_new_train(-1)
 
         #launch new train each 6 minutes
         elif( self.minutes % 6 == 0):
@@ -55,10 +55,7 @@ class Orchestrator:
                 res["trains"][train_key]["current_speed"] = line_perception["trains"][train_key]["current_speed"] + 4
 
         if not self.test_new_train and line_color == 'blue':
-            res["new_train"] += [{'nr_carriages': 1,
-                                  'speed': 2,
-                                  'way': 1
-                                }]
+            res["new_train"] += [{'nr_carriages': 1,'speed': 2,'way': 1}]
             self.test_new_train = True
 
         return res

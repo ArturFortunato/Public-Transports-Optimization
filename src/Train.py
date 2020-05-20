@@ -29,11 +29,6 @@ class Train:
     def get_id(self):
         return self.id
 
-    def get_next_station(self):
-        for station in self.stations:
-            if (station.position > self.position and self.way == 1) or (station.position < self.position and self.way == -1):
-                return station
-
     def change_speed(self, new_speed):
         if self.position == self.stations[-1].get_position():
             self.current_speed = 0
@@ -70,6 +65,12 @@ class Train:
             if station.get_position() == self.position:
                 return station
         return None
+
+    def get_next_station(self):
+        for station in self.stations:
+            if (station.position > self.position and self.way == 1) or (station.position < self.position and self.way == -1):
+                return station
+
 
     def move(self):
         if self.gui_positions[:2] == self.stations[-1].get_gui_center()[:2]: 

@@ -210,15 +210,13 @@ class Line:
         return self.color
     
     def add_train(self, info):
-
         carriages = []
         for i in range(info['nr_carriages']):
             carriages.append(Carriage(80, self))
 
-        if info["way"] == 1:
-            line_color = lines[self.color]
-        else:
-            line_color = lines[self.color][::1]            
+        if info["way"] == 1: line_color = lines[self.color]
+
+        else: line_color = lines[self.color][::1]            
 
         self.trains += [Train(len(self.trains), 3, carriages, info['nr_carriages'], 4, colors[self.color], self.gui, line_color, info['way'], self.color )]
 
