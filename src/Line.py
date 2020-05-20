@@ -214,10 +214,10 @@ class Line:
         for i in range(info['nr_carriages']):
             carriages.append(Carriage(80, self))
 
-        if info["way"] == 1: line_color = lines[self.color]
+        if info["way"] == 1: line_stations = lines[self.color]
+        else: line_stations = lines[self.color][::-1]            
 
-        else: line_color = lines[self.color][::1]            
 
-        self.trains += [Train(len(self.trains), 3, carriages, info['nr_carriages'], 4, colors[self.color], self.gui, line_color, info['way'], self.color )]
+        self.trains += [Train(len(self.trains), 3, carriages, info['nr_carriages'], 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
 
 
