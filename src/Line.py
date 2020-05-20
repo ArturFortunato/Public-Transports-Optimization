@@ -217,7 +217,7 @@ class Line:
     def add_person_to_station(self, person, station):
         for s in self.stations:
             if s.name == station:
-                s.addPerson(person)
+                s.add_person(person)
 
     def init_pos(self):
         return init_pos[self.color]

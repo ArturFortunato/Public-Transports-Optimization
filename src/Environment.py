@@ -43,7 +43,7 @@ class Environment:
             if station.get_name() == current_station.get_name():
                 for passenger in passengers_to_exchange:
                     passenger.update_way(line, station)
-                    station.addPerson(passenger)
+                    station.add_person(passenger)
                 return True
         return False
 
@@ -66,7 +66,7 @@ class Environment:
             if station.get_name() == insert_station:
                 #print("Station change: ", station.get_name(), " -- ", line.get_color())
                 person.reset_entered_time(datetime.time(self.hours, self.minutes))
-                station.addPerson(person)
+                station.add_person(person)
                 break
 
     def change_passengers_line(self, passengers_to_exchange):
@@ -93,7 +93,7 @@ class Environment:
         for station in stationsDistribution:
             for number_of_persons in range(stationsDistribution[station]):
                 final, way = estimate_final_station(station, self.hours, self.minutes)
-                p = Person(get_unique_id(), station, final, datetime.time(self.hours, self.minutes), way)
+                p = Person(station, final, datetime.time(self.hours, self.minutes), way)
                 line.add_person_to_station(p, station)
 
 
@@ -103,26 +103,10 @@ class Environment:
 
     #person to test line change!! make sure that line changes are occuring before continuing
     def hardcode_new_person(self):
-        p = Person ("Zé", "Odivelas", "Bela Vista" ,datetime.time(self.hours, self.minutes), True)
+        p = Person("Odivelas", "Bela Vista" ,datetime.time(self.hours, self.minutes), True)
         self.lines[1].add_person_to_station(p, "Odivelas")
 
     def run(self):
-<<<<<<< HEAD
-        #self.hardcode_new_person()
-        while True:
-            self.generate_people()
-            self.move_trains(self.hours, self.minutes)
-            self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
-            decisions = self.orchestrator.deliberate()
-
-            #print(decisions)
-            #exit()
-
-            self.update_lines(decisions)
-            self.gui.run()
-            self.tik()
-            #time.sleep(0.3)
-=======
         self.hardcode_new_person()
         try:
             while True:
@@ -142,7 +126,6 @@ class Environment:
             print("Deste Ctrl-c.")
             self.reporter.generate_charts()
             pass
->>>>>>> 1c9004991fcac422768e340f543711a795dafee8
 
 ##### Auxiliar
 

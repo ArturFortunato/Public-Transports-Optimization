@@ -1,6 +1,5 @@
 class Person:
-    def __init__(self,pid, starting_station, final_station, entered_time, positive_way):
-        self.pId = pid
+    def __init__(self, starting_station, final_station, entered_time, positive_way):
         self.starting_station = starting_station
         self.final_station = final_station
         self.entered_time  = entered_time
@@ -10,13 +9,9 @@ class Person:
     def get_entered_time(self):
         return self.entered_time
 
-
     #Funcao que atualiza o tempo de entrada de uma pessoa numa nova estacao(troca de linha)
-    #para poder avaliar quanto tempo ela esta a espera no metro.
     def reset_entered_time(self,new_reset_time):
-        #print("vou imprimir o entered time:")
         self.entered_time = new_reset_time
-    
 
     def get_starting_station(self):
         return self.starting_station
