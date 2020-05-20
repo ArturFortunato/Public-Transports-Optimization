@@ -112,19 +112,24 @@ class Environment:
 
     def run(self):
         self.hardcode_new_person()
-        while True:
-            self.generate_people()
-            self.move_trains(self.hours, self.minutes)
-            self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
-            decisions = self.orchestrator.deliberate()
+        try:
+            while True:
+                self.generate_people()
+                self.move_trains(self.hours, self.minutes)
+                self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
+                decisions = self.orchestrator.deliberate()
 
-            #print(decisions)
-            #exit()
+                #print(decisions)
+                #exit()
 
-            self.update_lines(decisions)
-            self.gui.run()
-            self.tik()
-            #time.sleep(0.3)
+                self.update_lines(decisions)
+                self.gui.run()
+                self.tik()
+                #time.sleep(0.3)
+        except KeyboardInterrupt:
+            print("Deste Ctrl-c.")
+            reporter.generateCharts()
+            pass
 
 ##### Auxiliar
 

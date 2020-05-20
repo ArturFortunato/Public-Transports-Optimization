@@ -1,10 +1,28 @@
-
-
+import re
 #Flags passadas pelo utilizador como input.
 flags = {}
+
+'''
+Ex:
+    lines=ALL
+    lines=red
+    lines=green
+    lines=blue
+    lines=yellow
+'''
+
 def add_flags(args):
-    if "-v" in args: flags["verbose"] = True
-    else: flags["verbose"] = False
+    p = re.compile('lines=+')
+
+    for arg in args:
+        if(p.match(arg) != None):
+            arg = arg.split("=")[1]
+            if (arg not in ["yellow","green","blue","red","ALL"]): #erro
+                print("FLAG: " + str(arg) + "não reconhecida pelo sistema")
+                #exit()
+            else: flags["verbose"] = arg
+        else: flags["verbose"] = None
+
 
 ##### Auxiliar
 
