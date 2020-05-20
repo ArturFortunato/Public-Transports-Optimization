@@ -1,6 +1,8 @@
 
+from global_vars import flags
+
 class Reporter:
-    def __init__(self, gui,flags):
+    def __init__(self, gui):
         self.total_waiting_times = []
         self.waiting_times_per_line = {}
         self.waiting_times_per_line["red"] = []
@@ -8,7 +10,6 @@ class Reporter:
         self.waiting_times_per_line["blue"] = []
         self.waiting_times_per_line["yellow"] = []
         self.gui = gui
-        self.flags = flags
         gui.add_reporter(self)
 
 
@@ -23,7 +24,7 @@ class Reporter:
             return None
         else:
             for key in list(self.waiting_times_per_line.keys()):
-                if(self.flags["verbose"] == True):
+                if(flags["verbose"] == True):
                     self.printIndividualLineMetrics(key)
             return sum(self.total_waiting_times)/len(self.total_waiting_times)
 

@@ -1,3 +1,11 @@
+
+
+#Flags passadas pelo utilizador como input.
+flags = {}
+def add_flags(args):
+    if "-v" in args: flags["verbose"] = True
+    else: flags["verbose"] = False
+
 ##### Auxiliar
 
 #rethink station and line design if this seems too ugly

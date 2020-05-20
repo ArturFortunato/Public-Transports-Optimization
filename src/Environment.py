@@ -14,14 +14,9 @@ import random
 
 class Environment:
 
-    def __init__(self,input_args):
-        self.flags = {}
-        #Faz print de metricas para cada linha no terminal
-        if "-v" in input_args: self.flags["verbose"] = True
-        else: self.flags["verbose"] = False
-
+    def __init__(self):
         self.gui = Gui(self)
-        reporter = Reporter(self.gui,self.flags)
+        reporter = Reporter(self.gui)
 
         self.lines = [ Line('red',2, reporter, self.gui) , Line('yellow',2, reporter, self.gui) , Line('blue',2, reporter, self.gui) , Line('green',2, reporter, self.gui) ]
         self.orchestrator = Orchestrator(self.lines)
