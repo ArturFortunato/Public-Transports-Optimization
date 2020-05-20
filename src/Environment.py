@@ -13,7 +13,7 @@ import random
 class Environment:
 
     def __init__(self):
-        self.gui = Gui()
+        self.gui = Gui(self)
         reporter = Reporter(self.gui)
         self.lines = [ Line('red',2,[], reporter, self.gui) , Line('yellow',2,[], reporter, self.gui) , Line('blue',2,[], reporter, self.gui) , Line('green',2,[], reporter, self.gui) ]
         self.orchestrator = Orchestrator(self.lines)
@@ -98,13 +98,13 @@ class Environment:
 
     #person to test line change!! make sure that line changes are occuring before continuing
     def hardcode_new_person(self):
-        p = Person ("Zé", "Laranjeiras", "Ameixoeira" ,datetime.time(self.hours, self.minutes), True)
+        p = Person ("Zé", "Laranjeiras", "Rato" ,datetime.time(self.hours, self.minutes), True)
         self.lines[2].add_person_to_station(p, "Laranjeiras")
         
     def run(self):
         self.hardcode_new_person()
         while True:
-            self.generate_people()
+            #self.generate_people()
             self.move_trains(self.hours, self.minutes)
             self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
             decisions = self.orchestrator.deliberate()

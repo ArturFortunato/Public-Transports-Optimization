@@ -1,6 +1,7 @@
 import pygame as pg
 
 from Line import Line
+import datetime
 
 colors = {
     'red': (255, 0, 0),
@@ -17,7 +18,7 @@ STATION_RADIUS = 5
 TEXT_COLOR = (255, 255, 255)
 
 class Gui:
-    def __init__(self):
+    def __init__(self, env):
         pg.init()
         self.win = pg.display.set_mode((1500, 800))
         self.background = (0,0,0)
@@ -25,6 +26,7 @@ class Gui:
         self.lines = []
         self.stations = []
         self.reporter = None
+        self.environment = env
     
     def run(self):
         if self.check_quit():
@@ -79,6 +81,17 @@ class Gui:
         textSurf = largeText.render(base_text + str(self.reporter.get_average()), True, TEXT_COLOR)
         textRect = textSurf.get_rect()
         self.win.blit(textSurf, textRect)
+    
+    def write_current_time(self):
+        base_text = "Time: "
+        largeText = pg.font.Font('freesansbold.ttf', 15)
+        time = str(datetime.time(self.environment.hours, self.environment.minutes))
+        textSurf = largeText.render(base_text + time, True, TEXT_COLOR)
+        textRect = textSurf.get_rect()
+        textRect.center = (49,33)
+        self.win.blit(textSurf, textRect)
+
+
 
     def draw(self):
         for i in range(len(self.lines)):
@@ -92,6 +105,7 @@ class Gui:
             self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position(), self.trains[i].get_id(), self.trains[i].get_line())
         
         self.write_reports()
+        self.write_current_time()
 
     def add_train(self, train):
         self.trains += [train]
