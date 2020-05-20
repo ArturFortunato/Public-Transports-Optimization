@@ -63,7 +63,8 @@ class Carriage:
                 passengers_remaining.append(passenger)
             
             elif passenger.get_final_station() == station.name:
-                print("CHEGUEI AO DESTINO")
+                pass
+                #print("CHEGUEI AO DESTINO")
 
         self.passengers = passengers_remaining
         self.update_taken_spots()
