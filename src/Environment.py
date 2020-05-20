@@ -2,6 +2,8 @@ from Orchestrator import Orchestrator
 from Line import Line
 from Reporter import Reporter
 
+from Forecasting import Forecasting
+
 from Person import Person
 from Gui import Gui
 
@@ -122,138 +124,65 @@ class Environment:
 
 ##### Auxiliar
 
-#rethink station and line design if this seems too ugly
 red = ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Olaias', 'Alameda', 'Saldanha', 'São Sebastião']
-blue = ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Santa Apolónia']
+blue = ['Reboleira', 'Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Santa Apolónia']
 yellow = ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conchas', 'Campo Grande', 'Cidade Universitária', 'Entre Campos', 'Campo Pequeno', 'Saldanha', 'Picoas', 'Marquês de Pombal', 'Rato']
-green = ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
+green = ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
 i = 0
 
+forecaster = Forecasting()
 
-#mudanca de linha
-mudanca_linha = ["São Sebastião","Marquês de Pombal","Saldanha","Baixa Chiado","Alameda","Campo Grande"]
-
-stations_per_line = {
-    "red": ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Olaias', 'Alameda', 'Saldanha', 'São Sebastião'],
-    "blue": ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Santa Apolónia'],
-    "yellow": ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conchas', 'Campo Grande', 'Cidade Universitária', 'Entre Campos', 'Campo Pequeno', 'Saldanha', 'Picoas', 'Marquês de Pombal', 'Rato'],
-    "green": ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
-}
-
-""" def format_hour(hours,minutes):
-    end_quarter = minutes + 15
-    hr = str(hours)
-    mn = str(minutes)
-
-    if(len(str(hours)) == 1):
-        hr = str(0) + str(hours)
-        #hora_formatada =  str(0) + str(hours) + ":" + str(minutes) + "-" + str(end_quarter)
-    if(len(str(minutes)) == 1):
-        mn = str(0) + str(minutes)
-   
-    hora_formatada = hr + ":" + mn + "-" + str(end_quarter)
-    return hora_formatada
-
-
-#TODO: analyse the data
-#toy example with random station
-#-entrance station
-#-return a string 
-#Outputs a destination station for a person.
-def estimate_final_station(line,station, hours, minutes):
-    prob = random.uniform(0, 1)
-
-    if(prob >= 0.90):#mudanca de linha
-        valid_stations = []
-        for s in stations_per_line.keys():
-            if(s != line):
-                valid_stations = valid_stations + stations_per_line[s]
-        valid_stations = set(valid_stations)
-        if(station in valid_stations):
-            valid_stations.remove(list(station))
-        return random.choice(list(valid_stations))
-
-    else:#calcula probabilide de sair numa estacao da mesma linha
-
-        hora_formatada = format_hour(hours,minutes)
-        line_stations = stations_per_line[line] #remove a estacao atual
-
-        dic_stations = {}
-        counter = 0
-        for s in line_stations:
-            if(s != station):
-                dic_stations[s] = sg.extract_value(line,hora_formatada,s,"entradas")
-                counter += dic_stations[s]
-
-        #normalizacao
-        for key in list(dic_stations.keys()):
-            dic_stations[key] = dic_stations[key] / counter
-
-        counter = 0 
-        prob = random.uniform(0, 1)
-
-        for key in list(dic_stations.keys()):
-            counter += dic_stations[key]
-            if(counter >= prob):
-                return key
-
-
-
-#TODO: analyse the data
-#toy example with random number for each station
-def estimate_number_of_people_per_station(line, hours, minutes):
-    estimative = dict()
-    print(hours)
-    print(minutes)
-    for station in line.stations:
-        hora_formatada = format_hour(hours,minutes)
-        estimative[station.name] = sg.extract_value(line.color,hora_formatada,station.name,"entradas") """
-
-
-#this is ugly but it'll change when we have the models of the data so dw
 def estimate_final_station(station, hours, minutes):
-    if station in red:
-        temp = list(filter(lambda x: x != station,red))
-        final = random.choice(temp)
-        idx_start = red.index(station)
-        idx_final = red.index(final)
+    final = forecaster.predict_final_station(station, hours, minutes)
+
+    if same_line(station, final):
+        line = get_line_mutual(station, final)
+        idx_start = line.index(station)
+        idx_final = line.index(final)
         way = idx_start < idx_final
-        return final,way
-    if station in blue:
-        temp = list(filter(lambda x: x != station,blue))
-        final = random.choice(temp)
-        idx_start = blue.index(station)
-        idx_final = blue.index(final)
+    
+    else:
+        change = get_line_change(station, final)
+        line = get_line_mutual(station, change)
+        idx_start = line.index(station)
+        idx_final = line.index(change)
         way = idx_start < idx_final
-        return final,way
-    if station in green:
-        temp = list(filter(lambda x: x != station,green))
-        final = random.choice(temp)
-        idx_start = green.index(station)
-        idx_final = green.index(final)
-        way = idx_start < idx_final
-        return final,way
-    if station in yellow:
-        temp = list(filter(lambda x: x != station,yellow))
-        final = random.choice(temp)
-        idx_start = yellow.index(station)
-        idx_final = yellow.index(final)
-        way = idx_start < idx_final
-        return final,way
+
+    return final, way
+
+def same_line(s1,s2): 
+    for line in [red,green,blue,yellow]: 
+        if s1 in line and s2 in line: 
+            return True 
+    return False
+
+def get_line_mutual(station, final):
+    for line in [red,green,blue,yellow]:
+        if station in line and final in line:
+            return line
+
+def get_line(station):
+    for line in [red,green,blue,yellow]:
+        if station in line:
+            return line
+
+def get_line_change(s1,s2): 
+    if(same_line(s1, s2) == False): 
+        return intersection(get_line(s1),get_line(s2))
 
 
-#TODO: analyse the data
-#toy example with random number for each station
 def estimate_number_of_people_per_station(line, hours, minutes):
     estimative = dict()
     for station in line.stations:
-        estimative[station.name] = random.randint(1,1)
+        estimative[station.name] = forecaster.predict_number_of_people(station.name, hours, minutes)
     return estimative
     
+def intersection(lst1, lst2): 
+    lst3 = [value for value in lst1 if value in lst2] 
+    return lst3[0]
+
 #may not be necessary
 def get_unique_id():
     global i 
     i += 1
     return i
-
-

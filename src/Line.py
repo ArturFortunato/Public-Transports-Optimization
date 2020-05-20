@@ -17,7 +17,7 @@ alvalade = Station('Alvalade', 'Telheiras', 'Cais do Sodré', 20, [750, 450], [-
 roma = Station('Roma', 'Telheiras', 'Cais do Sodré', 26, [750, 400], [-35, -15])
 areeiro = Station('Areeiro', 'Telheiras', 'Cais do Sodré', 33, [750, 350], [-35, -15])
 alameda = Station('Alameda', 'Telheiras', 'Cais do Sodré', 40, [750, 300], [35, -25])
-arroios = Station('Arroios', 'Telheiras', 'Cais do Sodré', 44, [750, 260], [-40, -15])
+#arroios = Station('Arroios', 'Telheiras', 'Cais do Sodré', 44, [750, 260], [-40, -15])
 anjos = Station('Anjos', 'Telheiras', 'Cais do Sodré', 48, [750, 220], [-30, -15])
 intendente = Station('Intendente', 'Telheiras', 'Cais do Sodré', 53, [750, 180], [-50, -15])
 martim_moniz = Station('Martim Moniz', 'Telheiras', 'Cais do Sodré', 60, [750, 150], [-60, -15])
@@ -25,7 +25,7 @@ rossio = Station('Rossio', 'Telheiras', 'Cais do Sodré', 65, [750, 120], [-40, 
 baixa_chiado = Station('Baixa Chiado', 'Telheiras', 'Cais do Sodré', 71, [750, 80], [65, -15])
 cais_do_sodre = Station('Cais do Sodré', 'Telheiras', 'Cais do Sodré', 78, [750, 20], [65, -15])
 
-green = [telheiras, campo_grande, alvalade, roma, areeiro, alameda, arroios, anjos, intendente, martim_moniz, rossio, baixa_chiado, cais_do_sodre]
+green = [telheiras, campo_grande, alvalade, roma, areeiro, alameda, anjos, intendente, martim_moniz, rossio, baixa_chiado, cais_do_sodre]
 
 #amarela
 odivelas = Station('Odivelas', 'Odivelas', 'Rato', 0, [622, 760], [-30, 0])
@@ -116,16 +116,16 @@ class Line:
         #Todas as linhas excepto a azul tiveram a sua velocidade aumentada.
         if color == 'red':
             self.stations = red
-            self.trains += [Train(0, 3, [Carriage(80, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(0, 3, [Carriage(80, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(0, 3, [Carriage(80, self)], 3, 4, colors[color], gui, green, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, green, 1, self.color)]
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(0, 3, [Carriage(80, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(141*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
         self.number_of_trains = 1
         #gui stuff
         self.gui = gui
@@ -225,16 +225,18 @@ class Line:
 
     def get_color(self):
         return self.color
-    
+
+
+    #hardcoded 6 carriaged with 141 capacity each
     def add_train(self, info):
         carriages = []
-        for i in range(info['nr_carriages']):
-            carriages.append(Carriage(80, self))
+        #for i in range(info['nr_carriages']):
+        carriages.append(Carriage(141*6, self))
 
         if info["way"] == 1: line_stations = lines[self.color]
         else: line_stations = lines[self.color][::-1]            
 
 
-        self.trains += [Train(self.number_of_trains, 3, carriages, info['nr_carriages'], 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
+        self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
         self.number_of_trains += 1
 
