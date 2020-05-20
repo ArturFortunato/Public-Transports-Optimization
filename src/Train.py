@@ -1,6 +1,3 @@
-from Carriage import Carriage
-
-
 from datetime import datetime, date
 import time as tempo
 
@@ -71,7 +68,7 @@ class Train:
         for station in self.stations:
             if (station.position > self.position and self.way == 1) or (station.position < self.position and self.way == -1):
                 return station
-
+        return None
 
     def move(self):
         if self.gui_positions[:2] == self.stations[-1].get_gui_center()[:2]: 
@@ -107,8 +104,8 @@ class Train:
             
 
             if number_of_passengers_to_enter != 0:
-                for p in passengers[:number_of_passengers_to_enter]:
-                    waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, p.get_entered_time()) 
+                for passenger in passengers[:number_of_passengers_to_enter]:
+                    waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, passenger.get_entered_time()) 
                     report.append(waiting_time)
                 carriage.add_passengers(passengers[:number_of_passengers_to_enter])
                 passengers = passengers[number_of_passengers_to_enter:]

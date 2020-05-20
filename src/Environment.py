@@ -9,8 +9,8 @@ from Gui import Gui
 
 import datetime
 import time
-import random
 
+from global_vars import RED, GREEN, BLUE, YELLOW
 
 class Environment:
 
@@ -18,9 +18,11 @@ class Environment:
         self.gui = Gui(self)
         self.reporter = Reporter(self.gui)
 
-        self.lines = [ Line('red',2, self.reporter, self.gui) , Line('yellow',2, self.reporter, self.gui) , Line('blue',2, self.reporter, self.gui) , Line('green',2, self.reporter, self.gui) ]
+        self.lines = [Line('red', 2, self.reporter, self.gui),
+                      Line('yellow', 2, self.reporter, self.gui),
+                      Line('blue', 2, self.reporter, self.gui),
+                      Line('green', 2, self.reporter, self.gui)]
         self.orchestrator = Orchestrator(self.lines)
-        self.day_ended = False
         self.start_day()
 
     def start_day(self):
@@ -33,9 +35,6 @@ class Environment:
         else:
             self.minutes = 0 
             self.hours = (self.hours + 1) % 24
-
-            if self.hours == 1:
-                self.day_ended = True
 
     def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
         for station in line.get_stations():
@@ -58,7 +57,7 @@ class Environment:
                     cont += 1
             if cont == 2:
                 return line
-
+        return None
 
     #Funcao responsavel por adicionar uma pessoa a uma estacao numa troca de linha.
     def add_person_to_station(self, insert_station, line, person):
@@ -88,13 +87,13 @@ class Environment:
 
     # receives a Line object
     def populate_stations(self, line):
-        stationsDistribution = estimate_number_of_people_per_station(line, self.hours, self.minutes)
+        stations_distribution = estimate_number_of_people_per_station(line, self.hours, self.minutes)
         #{oriente: 2, encarnacao: 3, .... }
-        for station in stationsDistribution:
-            for number_of_persons in range(stationsDistribution[station]):
+        for station in stations_distribution:
+            for number_of_persons in range(stations_distribution[station]):
                 final, way = estimate_final_station(station, self.hours, self.minutes)
-                p = Person(station, final, datetime.time(self.hours, self.minutes), way)
-                line.add_person_to_station(p, station)
+                person = Person(station, final, datetime.time(self.hours, self.minutes), way)
+                line.add_person_to_station(person, station)
 
 
     def update_lines(self, decisions):
@@ -103,7 +102,7 @@ class Environment:
 
     #person to test line change!! make sure that line changes are occuring before continuing
     def hardcode_new_person(self):
-        p = Person("Odivelas", "Bela Vista" ,datetime.time(self.hours, self.minutes), True)
+        p = Person("Odivelas", "Bela Vista", datetime.time(self.hours, self.minutes), True)
         self.lines[1].add_person_to_station(p, "Odivelas")
 
     def run(self):
@@ -112,7 +111,7 @@ class Environment:
             while True:
                 self.generate_people()
                 self.move_trains(self.hours, self.minutes)
-                self.orchestrator.percept(self.day_ended, self.hours, self.minutes)
+                self.orchestrator.percept(self.hours, self.minutes)
                 decisions = self.orchestrator.deliberate()
 
                 #print(decisions)
@@ -121,18 +120,12 @@ class Environment:
                 self.update_lines(decisions)
                 self.gui.run()
                 self.tik()
-                #time.sleep(0.3)
+                time.sleep(0.3)
         except KeyboardInterrupt:
             print("Deste Ctrl-c.")
             self.reporter.generate_charts()
-            pass
 
 ##### Auxiliar
-
-red = ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Olaias', 'Alameda', 'Saldanha', 'São Sebastião']
-blue = ['Reboleira', 'Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Santa Apolónia']
-yellow = ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conchas', 'Campo Grande', 'Cidade Universitária', 'Entre Campos', 'Campo Pequeno', 'Saldanha', 'Picoas', 'Marquês de Pombal', 'Rato']
-green = ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
 i = 0
 
 forecaster = Forecasting()
@@ -155,25 +148,25 @@ def estimate_final_station(station, hours, minutes):
 
     return final, way
 
-def same_line(s1,s2): 
-    for line in [red,green,blue,yellow]: 
+def same_line(s1, s2): 
+    for line in [RED, GREEN, BLUE, YELLOW]: 
         if s1 in line and s2 in line: 
             return True 
     return False
 
 def get_line_mutual(station, final):
-    for line in [red,green,blue,yellow]:
+    for line in [RED, GREEN, BLUE, YELLOW]:
         if station in line and final in line:
             return line
 
 def get_line(station):
-    for line in [red,green,blue,yellow]:
+    for line in [RED, GREEN, BLUE, YELLOW]:
         if station in line:
             return line
 
-def get_line_change(s1,s2): 
-    if(same_line(s1, s2) == False): 
-        return intersection(get_line(s1),get_line(s2))
+def get_line_change(s1, s2): 
+    if same_line(s1, s2) == False: 
+        return intersection(get_line(s1), get_line(s2))
 
 
 def estimate_number_of_people_per_station(line, hours, minutes):
@@ -186,7 +179,6 @@ def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2] 
     return lst3[0]
 
-#may not be necessary
 def get_unique_id():
     global i 
     i += 1

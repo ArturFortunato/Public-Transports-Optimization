@@ -2,7 +2,7 @@ class Person:
     def __init__(self, starting_station, final_station, entered_time, positive_way):
         self.starting_station = starting_station
         self.final_station = final_station
-        self.entered_time  = entered_time
+        self.entered_time = entered_time
         self.positive_way = positive_way #if the person is travelling in positive way = T, else false. Positive is station.terminal1 -> sation.terminal2  
     
     #To be updated every tick the person is waiting
@@ -10,7 +10,7 @@ class Person:
         return self.entered_time
 
     #Funcao que atualiza o tempo de entrada de uma pessoa numa nova estacao(troca de linha)
-    def reset_entered_time(self,new_reset_time):
+    def reset_entered_time(self, new_reset_time):
         self.entered_time = new_reset_time
 
     def get_starting_station(self):

@@ -1,9 +1,4 @@
-stations_per_line = {
-    "red": ['Aeroporto', 'Encarnação', 'Moscavide', 'Oriente', 'Cabo Ruivo', 'Olivais', 'Chelas', 'Bela Vista', 'Olaias', 'Alameda', 'Saldanha', 'São Sebastião'],
-    "blue": ['Amadora Este', 'Alfornelos', 'Pontinha', 'Carnide', 'Colégio Militar', 'Alto dos Moinhos', 'Laranjeiras', 'Jardim Zoológico', 'Praça Espanha', 'São Sebastião', 'Parque', 'Marquês de Pombal', 'Avenida', 'Restauradores', 'Baixa Chiado', 'Terreiro Paço', 'Santa Apolónia'],
-    "yellow": ['Odivelas', 'Senhor Roubado', 'Ameixoeira', 'Lumiar', 'Quinta das Conchas', 'Campo Grande', 'Cidade Universitária', 'Entre Campos', 'Campo Pequeno', 'Saldanha', 'Picoas', 'Marquês de Pombal', 'Rato'],
-    "green": ['Telheiras', 'Campo Grande', 'Alvalade', 'Roma', 'Areeiro', 'Alameda', 'Arroios', 'Anjos', 'Intendente', 'Martim Moniz', 'Rossio', 'Baixa Chiado', 'Cais do Sodré']
-}
+from global_vars import stations_per_line
 
 class Carriage:
     def __init__(self, maximum_capacity, line):
@@ -43,10 +38,7 @@ class Carriage:
             if station_name in stations_per_line[other_line]:
                 return station_name
 
-    
-    #fix identation
     def remove_passengers(self, station):
-
         passengers_remaining = []
         passengers_to_exchange = []
         for passenger in self.passengers:
@@ -61,10 +53,6 @@ class Carriage:
             # is not in his destiny yet
             elif passenger.get_final_station() != station.name:
                 passengers_remaining.append(passenger)
-            
-            elif passenger.get_final_station() == station.name:
-                pass
-                #print("CHEGUEI AO DESTINO")
 
         self.passengers = passengers_remaining
         self.update_taken_spots()

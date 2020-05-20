@@ -10,7 +10,7 @@ colors = {
     'yellow': (255, 255, 0)
 }
 
-TRAIN_ID_OFFSET = [25,12]
+TRAIN_ID_OFFSET = [25, 12]
 
 LINE_WIDTH = 2
 STATION_COLOR = (255, 255, 255)
@@ -21,7 +21,7 @@ class Gui:
     def __init__(self, env):
         pg.init()
         self.win = pg.display.set_mode((1500, 800))
-        self.background = (0,0,0)
+        self.background = (0, 0, 0)
         self.trains = []
         self.lines = []
         self.stations = []
@@ -56,47 +56,47 @@ class Gui:
 
     def get_station_color(self, nr_people): #maybe change this for both ways?
         if nr_people[0] + nr_people[1] == 0:
-            return (255,255,255)
-        elif (nr_people[0] + nr_people[1]) / 2 <= 5:
-            return (0,255,0)
-        elif (nr_people[0] + nr_people[1]) / 2 <= 10:
-            return (255,255,0)
+            return (255, 255, 255)
+        elif (nr_people[0] + nr_people[1]) / 2 <= 50:
+            return (0, 255, 0)
+        elif (nr_people[0] + nr_people[1]) / 2 <= 100:
+            return (255, 255, 0)
         else:
-            return (255,0,0)
+            return (255, 0, 0)
             
     def write_station_name(self, station_position, station_name, nr_people, nr_people_extra=None):
-        largeText = pg.font.Font('freesansbold.ttf', 15)
+        large_text = pg.font.Font('freesansbold.ttf', 15)
         if nr_people_extra == None:
-            textSurf = largeText.render(station_name + " " + str(nr_people), True, self.get_station_color(nr_people))
+            text_surf = large_text.render(station_name + " " + str(nr_people), True, self.get_station_color(nr_people))
         else:
-            textSurf = largeText.render(station_name + " " + str(nr_people) + " " + str(nr_people_extra), True, self.get_station_color(nr_people))
-        textRect = textSurf.get_rect()
-        textRect.center = (station_position[0],station_position[1] + 15)
-        self.win.blit(textSurf, textRect)
+            text_surf = large_text.render(station_name + " " + str(nr_people) + " " + str(nr_people_extra), True, self.get_station_color(nr_people))
+        text_rect = text_surf.get_rect()
+        text_rect.center = (station_position[0], station_position[1] + 15)
+        self.win.blit(text_surf, text_rect)
 
     def write_train_id(self, train_position, train_id, color):
-        largeText = pg.font.Font('freesansbold.ttf', 15)
-        textSurf = largeText.render(str(train_id), True, TEXT_COLOR)
-        textRect = textSurf.get_rect()
-        textRect.center = (train_position[0] + TRAIN_ID_OFFSET[0], train_position[1] + TRAIN_ID_OFFSET[1])
-        self.win.blit(textSurf, textRect)
+        large_text = pg.font.Font('freesansbold.ttf', 15)
+        text_surf = large_text.render(str(train_id), True, TEXT_COLOR)
+        text_rect = text_surf.get_rect()
+        text_rect.center = (train_position[0] + TRAIN_ID_OFFSET[0], train_position[1] + TRAIN_ID_OFFSET[1])
+        self.win.blit(text_surf, text_rect)
     
     def write_reports(self):
         base_text = "Global average waiting time:"
-        largeText = pg.font.Font('freesansbold.ttf', 15)
+        large_text = pg.font.Font('freesansbold.ttf', 15)
         time = datetime.time(self.environment.hours, self.environment.minutes)
-        textSurf = largeText.render(base_text + str(self.reporter.get_average(time)), True, TEXT_COLOR)
-        textRect = textSurf.get_rect()
-        self.win.blit(textSurf, textRect)
+        text_surf = large_text.render(base_text + str(self.reporter.get_average(time)), True, TEXT_COLOR)
+        text_rect = text_surf.get_rect()
+        self.win.blit(text_surf, text_rect)
     
     def write_current_time(self):
         base_text = "Time: "
-        largeText = pg.font.Font('freesansbold.ttf', 15)
+        large_text = pg.font.Font('freesansbold.ttf', 15)
         time = str(datetime.time(self.environment.hours, self.environment.minutes))
-        textSurf = largeText.render(base_text + time, True, TEXT_COLOR)
-        textRect = textSurf.get_rect()
-        textRect.center = (49,33)
-        self.win.blit(textSurf, textRect)
+        text_surf = large_text.render(base_text + time, True, TEXT_COLOR)
+        text_rect = text_surf.get_rect()
+        text_rect.center = (49, 33)
+        self.win.blit(text_surf, text_rect)
 
     def draw(self):
         for i in range(len(self.lines)):
@@ -117,7 +117,6 @@ class Gui:
         self.write_current_time()
 
     def is_crossing(self, current_station, index):
-        cont = 0
         for i in range(len(self.stations)):
             if self.stations[i].get_name() == current_station.get_name() and i != index:
                 return i

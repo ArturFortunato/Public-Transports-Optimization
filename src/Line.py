@@ -12,7 +12,7 @@ import re
 #verde
 #arroios ta a mais, nao ha dados
 telheiras = Station('Telheiras', 'Telheiras', 'Cais do Sodré', 0, [750, 600], [0, 0])
-campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, [750, 495], [70,-10])
+campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, [750, 495], [70, -10])
 alvalade = Station('Alvalade', 'Telheiras', 'Cais do Sodré', 20, [750, 450], [-40, -15])
 roma = Station('Roma', 'Telheiras', 'Cais do Sodré', 26, [750, 400], [-35, -15])
 areeiro = Station('Areeiro', 'Telheiras', 'Cais do Sodré', 33, [750, 350], [-35, -15])
@@ -39,7 +39,7 @@ entrecampos = Station('Entre Campos', 'Odivelas', 'Rato', 41, [795, 400], [65, -
 campo_pequeno = Station('Campo Pequeno', 'Odivelas', 'Rato', 43, [820, 350], [70, -15])
 saldanha = Station('Saldanha', 'Odivelas', 'Rato', 51, [845, 300], [40, 0])
 picoas = Station('Picoas', 'Odivelas', 'Rato', 56, [875, 237], [30, 0])
-marques_pombal = Station('Marquês de Pombal', 'Odivelas', 'Rato', 59, [905,175], [90, -20])
+marques_pombal = Station('Marquês de Pombal', 'Odivelas', 'Rato', 59, [905, 75], [90, -20])
 rato = Station('Rato', 'Odivelas', 'Rato', 68, [982, 20], [20, 0])
 
 yellow = [odivelas, senhor_roubado, ameixoeira, lumiar, quinta_conchas, campo_grande, cidade_universitaria, entrecampos, campo_pequeno, saldanha, picoas, marques_pombal, rato]
@@ -55,7 +55,7 @@ olivais = Station('Olivais', 'Aeroporto', 'São Sebastião', 29, [400, 300], [0,
 chelas = Station('Chelas', 'Aeroporto', 'São Sebastião', 36, [500, 300], [0, 0])
 bela_vista = Station('Bela Vista', 'Aeroporto', 'São Sebastião', 41, [600, 300], [0, -30])
 olaias = Station('Olaias', 'Aeroporto', 'São Sebastião', 48, [680, 300], [0, 0])
-alameda = Station('Alameda', 'Aeroporto', 'São Sebastião',52, [750, 300], [0, 0], False)
+alameda = Station('Alameda', 'Aeroporto', 'São Sebastião', 52, [750, 300], [0, 0], False)
 saldanha = Station('Saldanha', 'Aeroporto', 'São Sebastião', 59, [845, 300], [0, 0], False)
 sao_sebastiao = Station('São Sebastião', 'Aeroporto', 'São Sebastião', 70, [1115, 300], [70, -15])
 
@@ -74,7 +74,7 @@ jardim_zoologico = Station('Jardim Zoológico', 'Amadora Este', 'Santa Apolónia
 praca_espanha = Station('Praça Espanha', 'Amadora Este', 'Santa Apolónia', 58, [1155, 324], [80, -15])
 sao_sebastiao = Station('São Sebastião', 'Amadora Este', 'Santa Apolónia', 68, [1115, 300], [0, 0], False)
 parque = Station('Parque', 'Amadora Este', 'Santa Apolónia', 72, [1010, 237], [-20, 0])
-marques_pombal = Station('Marquês de Pombal', 'Amadora Este', 'Santa Apolónia', 77, [905,175], [0, 0], False)
+marques_pombal = Station('Marquês de Pombal', 'Amadora Este', 'Santa Apolónia', 77, [905, 175], [0, 0], False)
 avenida = Station('Avenida', 'Amadora Este', 'Santa Apolónia', 79, [854, 144], [-30, 0])
 restauradores = Station('Restauradores', 'Amadora Este', 'Santa Apolónia', 82, [802, 112], [65, -15])
 baixa_chiado = Station('Baixa Chiado', 'Amadora Este', 'Santa Apolónia', 87, [750, 80], [0, 0], False)
@@ -149,7 +149,7 @@ class Line:
         else: line_stations = lines[self.color][::-1]            
 
 
-        self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color )]
+        self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color)]
         self.number_of_trains += 1
 
     def move_trains(self, hours, minutes):
@@ -212,7 +212,7 @@ class Line:
         return trains[tid]
         
     def report_satisfaction(self, report):
-        self.reporter.add_passengers_satisfaction(report,self.color)
+        self.reporter.add_passengers_satisfaction(report, self.color)
 
     def add_person_to_station(self, person, station):
         for s in self.stations:

@@ -6,7 +6,6 @@ class Station:
         self.terminal_two = terminal_two
         self.people_terminal_one = 0  #nr de pessoas no sentido negativo: t2 -> t1
         self.people_terminal_two = 0 #nr de pessoas no sentido positivo: t1 -> t2
-        self.isTerminal = (name == terminal_one or name == terminal_two)
         self.position = position
         self.gui_center = gui_center
         self.text_offset = text_offset
@@ -46,7 +45,8 @@ class Station:
         return self.gui_center
 
     def get_text_position(self): #change this to avoid overlap text and lines
-        return [self.gui_center[0] + self.text_offset[0], self.gui_center[1] + self.text_offset[1]] 
+        return [self.gui_center[0] + self.text_offset[0],
+                self.gui_center[1] + self.text_offset[1]] 
 
     def to_draw(self):
         return self.draw

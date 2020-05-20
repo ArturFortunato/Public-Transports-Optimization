@@ -13,25 +13,25 @@ class Reporter:
         gui.add_reporter(self)
 
 
-    def add_passengers_satisfaction(self, report,color):
+    def add_passengers_satisfaction(self, report, color):
         for r in report:
             self.waiting_times_per_line[color].append(r.seconds)    #analysis per line
             self.total_waiting_times.append(r.seconds)              #total analysis
 
 
-    def get_average(self,time):
+    def get_average(self, time):
         print(time)
         if len(self.total_waiting_times) == 0:
             return None
         else:
             for key in list(self.waiting_times_per_line.keys()):
-                if(flags["verbose"] == "ALL" or flags["verbose"] == key):
+                if flags["verbose"] == "ALL" or flags["verbose"] == key:
                     self.print_individual_line_metrics(key)
             return sum(self.total_waiting_times)/len(self.total_waiting_times)
 
-    def print_individual_line_metrics(self,key):
+    def print_individual_line_metrics(self, key):
         if len(self.waiting_times_per_line[key]) != 0:
-            print("Linha " +str(key) + " - "  + str( round(sum(self.waiting_times_per_line[key]) / len(self.waiting_times_per_line[key]),2) )  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
+            print("Linha " +str(key) + " - "  + str(round(sum(self.waiting_times_per_line[key]) / len(self.waiting_times_per_line[key]), 2))  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])))
 
 
     def generate_charts(self):
