@@ -18,11 +18,16 @@ class Reporter:
 
         #Guarda os resultados da funcao printIndividual LineMetrics
         self.avg_waiting_time_hour = {}
+
+        #Guarda a ocupacao media de cada comboio
+        self.avg_train_occupancy = {}
+
         for c in flags["verbose"]:
             self.avg_waiting_time_hour[c] = []
-        
+            self.avg_train_occupancy[c] = []
         #Guarda as horas.
         self.hours = []
+
 
         self.gui = gui
         gui.add_reporter(self)
@@ -33,9 +38,10 @@ class Reporter:
             self.waiting_times_per_line[color].append(r.seconds)    #analysis per line
             self.total_waiting_times.append(r.seconds)              #total analysis
 
+    def report_average_train_occupancy(self,color,avg_train_occupancy):
+        self.avg_train_occupancy[color].append(avg_train_occupancy)
 
     def get_average(self, time):
-        #print(time)
         if len(self.total_waiting_times) == 0:
             return None
         else:
@@ -53,7 +59,7 @@ class Reporter:
                 self.hours.append(time)
             self.avg_waiting_time_hour[key].append(avg_waiting_time)  
 
-            print("Linha " +str(key) + " - "  + str(avg_waiting_time)  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
+            #print("Linha " +str(key) + " - "  + str(avg_waiting_time)  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
 
 
     def format_title_metro_colors(self):
@@ -66,12 +72,35 @@ class Reporter:
 
     def generate_charts(self):
         if(flags["verbose"] != []):
+            self.plot_average_occupancy()
             self.plot_average_waiting_time()
 
 
 
-    def plot_average_waiting_time(self):    
-        fig, axs = plt.subplots(1)
+    def plot_average_occupancy(self):
+
+        fig = plt.figure()
+        fig.suptitle('Daily Avg Occupancy Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
+        plt.xlabel('Time (HH:MM:SS)')
+        plt.ylabel('Avg Occupancy')
+        for color in flags["verbose"]:
+
+            y = self.avg_train_occupancy[color]
+            x = self.hours
+            size = min(len(y),len(x))
+            # plot
+            plt.plot(x[0:size], y[0:size],color)
+            plt.gcf().autofmt_xdate()
+
+        plt.show()
+        fig.savefig('../plots/daily_average_occupancy.png')
+        plt.close(fig)
+
+
+
+
+    def plot_average_waiting_time(self):
+        fig = plt.figure()
         fig.suptitle('Daily Avg Waiting Time Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
         plt.xlabel('Time (HH:MM:SS)')
         plt.ylabel('Avg Waiting Time')
@@ -84,7 +113,15 @@ class Reporter:
             plt.plot(x[0:size], y[0:size],color)
             plt.gcf().autofmt_xdate()
 
-        fig.savefig('../plots/daily_average_waiting_time.png')
         plt.show()
+        fig.savefig('../plots/daily_average_waiting_time.png')
+        plt.close(fig)
+
+
+    '''
+    Iterates the trains in each line and averages the train capacity(used_capacity/max_capacity) per line
+    '''
+    def plot_average_used_capacity(self):
+        pass
 
 

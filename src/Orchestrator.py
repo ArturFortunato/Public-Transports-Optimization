@@ -36,11 +36,11 @@ class Orchestrator:
         res['new_train'] = []
         #print("Orchestrator: Choosing actions for line:  " + str(line_color))
 
-        if self.minutes % 4 == 0 and self.minutes % 8 == 0:
+        if self.minutes % 8 == 0 and self.minutes % 16 == 0:
             res['new_train'] += self.launch_new_train(-1)
 
         #launch new train each 18 minutes
-        elif self.minutes % 4 == 0:
+        elif self.minutes % 8 == 0:
             res['new_train'] += self.launch_new_train(1)
 
         #atualiza info relativo aos comboios

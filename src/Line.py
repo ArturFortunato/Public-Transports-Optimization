@@ -152,6 +152,15 @@ class Line:
         self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color)]
         self.number_of_trains += 1
 
+    
+    def avg_train_capacity(self):
+        train_occupancy_ratio = []
+        for train in self.trains:
+            for carriage in train.carriages:
+                train_occupancy_ratio.append(carriage.get_occupancy_ratio())
+        return sum(train_occupancy_ratio)/ len(train_occupancy_ratio)
+    
+
     def move_trains(self, time):
         passengers_to_exchange = {}
         trains_to_remove = []
@@ -169,6 +178,9 @@ class Line:
                         passengers_to_exchange[station.get_name()] = passengers_to_exchange_temp
                     station.remove_persons_until_index(people_boarded, train.get_way())
                     self.report_satisfaction(report, time)
+                    
+                    avg_train_occupancy = self.avg_train_capacity()
+                    self.reporter.report_average_train_occupancy(self.color,avg_train_occupancy)
 
                     # se tiver chegado a estacao final (ou "inicial" se estiver a andar ao contrario, adiciona o comboio à lista de comboios para apagar)
                     if station == self.stations[-1 if train.get_way() == 1 else 0]:

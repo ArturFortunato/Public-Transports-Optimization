@@ -10,6 +10,9 @@ class Carriage:
     def get_capacity(self):
         return self.maximum_capacity
 
+    def get_occupancy_ratio(self):
+        return  self.taken_spots / self.maximum_capacity 
+
     def current_capacity(self):
         return self.maximum_capacity - self.taken_spots
         
