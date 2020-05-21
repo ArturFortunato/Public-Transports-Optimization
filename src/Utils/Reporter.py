@@ -1,5 +1,5 @@
 
-from global_vars import flags
+from Utils.global_vars import flags
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -87,16 +87,21 @@ class Reporter:
 
         fig = plt.figure()
         fig.suptitle('Daily Avg Occupancy Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
-        plt.xlabel('Time (HH:MM:SS)')
+        plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Occupancy')
+        xformatter = matplotlib.dates.DateFormatter('%H:%M')
         for color in flags["verbose"]:
 
             y = self.avg_train_occupancy[color]
             x = self.hours
-            size = min(len(y),len(x))
-            # plot
-            plt.plot(x[0:size], y[0:size],color)
-            plt.gcf().autofmt_xdate()
+            nx = []
+            for i in x:
+                nx.append(datetime.datetime.combine(datetime.date.min, i))
+
+            size = min(len(y),len(nx))
+            plt.plot(nx[0:size], y[0:size],color)
+            #plt.gcf().autofmt_xdate()
+            plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
         print("Showing daily average occupancy...")
         fig.savefig('../plots/daily_average_occupancy.png')
@@ -113,16 +118,21 @@ class Reporter:
 
         fig = plt.figure()
         fig.suptitle('Daily Avg Waiting Time Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
-        plt.xlabel('Time (HH:MM:SS)')
+        plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Waiting Time')
+        xformatter = matplotlib.dates.DateFormatter('%H:%M')
         for color in flags["verbose"]:
 
             y = self.avg_waiting_time_hour[color]
             x = self.hours
-            size = min(len(y),len(x))
+            nx = []
+            for i in x:
+                nx.append(datetime.datetime.combine(datetime.date.min, i))
+            size = min(len(y),len(nx))
             # plot
-            plt.plot(x[0:size], y[0:size],color)
-            plt.gcf().autofmt_xdate()
+            plt.plot(nx[0:size], y[0:size],color)
+            #plt.gcf().autofmt_xdate()
+            plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
         print("Showing average waiting time.")
 

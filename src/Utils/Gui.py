@@ -103,7 +103,7 @@ class Gui:
             self.draw_line(colors[self.lines[i].get_color()], self.lines[i].init_pos(), self.lines[i].end_pos())
         
         for i in range(len(self.stations)):
-            if self.stations[i].to_draw():
+            if self.stations[i].get_draw():
                 index = self.is_crossing(self.stations[i], i)
                 if index == None:
                     self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people())

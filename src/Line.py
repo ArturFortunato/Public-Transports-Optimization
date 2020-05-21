@@ -1,10 +1,9 @@
 # - coding: utf-8 --
 
-from Station import Station
-from Reporter import Reporter
-from Train import Train
-from Carriage import Carriage
-
+from Modelation.Station import Station
+from Modelation.Train import Train
+from Modelation.Carriage import Carriage
+from Utils.Reporter import Reporter
 
 import datetime
 import re
@@ -143,7 +142,7 @@ class Line:
     def add_train(self, info):
         carriages = []
         #for i in range(info['nr_carriages']):
-        carriages.append(Carriage(141*6, self))
+        carriages.append(Carriage(186*6, self))
 
         if info["way"] == 1: line_stations = lines[self.color]
         else: line_stations = lines[self.color][::-1]            

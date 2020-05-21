@@ -1,11 +1,12 @@
 from Orchestrator import Orchestrator
+
+from Modelation.Person import Person
+
+from Utils.Forecasting import Forecasting
+from Utils.Reporter import Reporter
+from Utils.Gui import Gui
+
 from Line import Line
-from Reporter import Reporter
-
-from Forecasting import Forecasting
-
-from Person import Person
-from Gui import Gui
 
 import datetime
 import time

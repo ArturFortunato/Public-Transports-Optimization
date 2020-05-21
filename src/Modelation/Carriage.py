@@ -1,4 +1,4 @@
-from global_vars import stations_per_line
+from Utils.global_vars import stations_per_line
 
 class Carriage:
     def __init__(self, maximum_capacity, line):
@@ -13,24 +13,6 @@ class Carriage:
     def get_occupancy_ratio(self):
         return  self.taken_spots / self.maximum_capacity 
 
-    def current_capacity(self):
-        return self.maximum_capacity - self.taken_spots
-        
-    def update_taken_spots(self):
-        self.taken_spots = len(self.passengers)
-
-    def get_carriage_info(self):
-        carriage_info = {}
-        
-        carriage_info['maximum_capacity'] = self.maximum_capacity
-        carriage_info['taken_spots'] = self.taken_spots
-
-        return carriage_info
-    
-    def add_passengers(self, passengers):
-        self.passengers += passengers
-        self.update_taken_spots()
-
     def get_station_line(self, station):
         for line in stations_per_line:
             if station in stations_per_line[line]:
@@ -40,6 +22,24 @@ class Carriage:
         for station_name in stations_per_line[self.line.color]:
             if station_name in stations_per_line[other_line]:
                 return station_name
+
+    def get_carriage_info(self):
+        carriage_info = {}
+        
+        carriage_info['maximum_capacity'] = self.maximum_capacity
+        carriage_info['taken_spots'] = self.taken_spots
+
+        return carriage_info
+
+    def current_capacity(self):
+        return self.maximum_capacity - self.taken_spots
+        
+    def update_taken_spots(self):
+        self.taken_spots = len(self.passengers)
+    
+    def add_passengers(self, passengers):
+        self.passengers += passengers
+        self.update_taken_spots()
 
     def remove_passengers(self, station):
         passengers_remaining = []

@@ -11,8 +11,8 @@ import os
 from tslearn.barycenters import softdtw_barycenter
 from itertools import chain
 
-from global_vars import stations
-from global_vars import RED, GREEN, BLUE, YELLOW
+from Utils.global_vars import stations
+from Utils.global_vars import RED, GREEN, BLUE, YELLOW
 
 
 #Mapping Hour to int
