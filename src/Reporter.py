@@ -18,7 +18,7 @@ class Reporter:
 
         #Guarda os resultados da funcao printIndividual LineMetrics
         self.avg_waiting_time_hour = {}
-        for c in ["red","green","yellow","blue"]:
+        for c in flags["verbose"]:
             self.avg_waiting_time_hour[c] = []
         
         #Guarda as horas.
@@ -40,7 +40,7 @@ class Reporter:
             return None
         else:
             for key in list(self.waiting_times_per_line.keys()):
-                if(flags["verbose"] == "ALL" or flags["verbose"] == key):
+                if key in flags["verbose"]:
                     self.print_individual_line_metrics(key, time)
             return sum(self.total_waiting_times) / len(self.total_waiting_times)
 
@@ -56,20 +56,35 @@ class Reporter:
             print("Linha " +str(key) + " - "  + str(avg_waiting_time)  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
 
 
+    def format_title_metro_colors(self):
+        res = "("
+        for c in range(0,len(flags["verbose"])):
+            res += flags["verbose"][c]
+            if(c != len(flags["verbose"])-1): res += ", "
+            else: res += ")"
+        return res
+
     def generate_charts(self):
-        # create data
+        if(flags["verbose"] != []):
+            self.plot_average_waiting_time()
 
-        print("o size do self.hours e: " + str(len(self.hours)))
-        print("o size do waiting_times_per_lines_color: " + str(len(self.avg_waiting_time_hour["red"])))
 
-        customdate = datetime.datetime(2016, 1, 1, 13, 30)
-        y = self.avg_waiting_time_hour["red"]
-        x = self.hours
 
-        # plot
-        plt.plot(x, y)
-        plt.gcf().autofmt_xdate()
+    def plot_average_waiting_time(self):    
+        fig, axs = plt.subplots(1)
+        fig.suptitle('Daily Avg Waiting Time Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
+        plt.xlabel('Time (HH:MM:SS)')
+        plt.ylabel('Avg Waiting Time')
+        for color in flags["verbose"]:
+
+            y = self.avg_waiting_time_hour[color]
+            x = self.hours
+            size = min(len(y),len(x))
+            # plot
+            plt.plot(x[0:size], y[0:size],color)
+            plt.gcf().autofmt_xdate()
+
+        fig.savefig('../plots/daily_average_waiting_time.png')
         plt.show()
 
-        print("Gerando charts")
-        pass
+

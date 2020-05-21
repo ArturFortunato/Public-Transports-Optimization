@@ -170,12 +170,15 @@ def get_closest_15_min_time(hour, minute):
 #
 ###################################
 
-""" forecaster = Forecasting()
+'''
+forecaster = Forecasting()
 
 temp = ['Aeroporto', 'Alameda', 'Alfornelos', 'Alto dos Moinhos', 'Alvalade', 'Amadora Este', 'Ameixoeira', 'Anjos', 'Areeiro', 'Avenida', 'Baixa Chiado', 'Bela Vista', 'Cabo Ruivo', 'Cais do Sodré', 'Campo Grande', 'Campo Pequeno', 'Carnide', 'Chelas', 'Cidade Universitária', 'Colégio Militar', 'Encarnação', 'Entre Campos', 'Intendente', 'Jardim Zoológico', 'Laranjeiras', 'Lumiar', 'Marquês de Pombal', 'Martim Moniz', 'Moscavide', 'Odivelas', 'Olaias', 'Olivais', 'Oriente', 'Parque', 'Picoas', 'Pontinha', 'Praça Espanha', 'Quinta das Conchas', 'Rato', 'Restauradores', 'Roma', 'Rossio', 'Saldanha', 'Santa Apolónia', 'Senhor Roubado', 'São Sebastião', 'Telheiras', 'Terreiro Paço']
 #predict alameda 16 horas e 0 minutos.
 
-print(forecaster.predict_final_station("Alfornelos", 23, 31)) """
+for i in temp:
 
+    print(forecaster.predict_final_station(i, 23, 31)) 
 
+'''
 

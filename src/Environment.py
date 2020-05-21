@@ -26,7 +26,7 @@ class Environment:
         self.start_day()
 
     def start_day(self):
-        self.time = datetime.time(6,15)
+        self.time = datetime.time(23,15)
     
     def tik(self):
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
