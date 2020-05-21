@@ -10,8 +10,6 @@ from Gui import Gui
 import datetime
 import time
 
-from global_vars import RED, GREEN, BLUE, YELLOW
-
 class Environment:
 
     def __init__(self):
@@ -26,7 +24,7 @@ class Environment:
         self.start_day()
 
     def start_day(self):
-        self.time = datetime.time(23,15)
+        self.time = datetime.time(6,15)
     
     def tik(self):
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
@@ -129,60 +127,20 @@ class Environment:
             exit()
 
 ##### Auxiliar
-i = 0
-
+pid = 0
 forecaster = Forecasting()
 
 def estimate_final_station(station, hours, minutes):
-    final = forecaster.predict_final_station(station, hours, minutes)
-
-    if same_line(station, final):
-        line = get_line_mutual(station, final)
-        idx_start = line.index(station)
-        idx_final = line.index(final)
-        way = idx_start < idx_final
-    
-    else:
-        change = get_line_change(station, final)
-        line = get_line_mutual(station, change)
-        idx_start = line.index(station)
-        idx_final = line.index(change)
-        way = idx_start < idx_final
-
+    final, way = forecaster.predict_final_station(station, hours, minutes)
     return final, way
-
-def same_line(s1, s2): 
-    for line in [RED, GREEN, BLUE, YELLOW]: 
-        if s1 in line and s2 in line: 
-            return True 
-    return False
-
-def get_line_mutual(station, final):
-    for line in [RED, GREEN, BLUE, YELLOW]:
-        if station in line and final in line:
-            return line
-
-def get_line(station):
-    for line in [RED, GREEN, BLUE, YELLOW]:
-        if station in line:
-            return line
-
-def get_line_change(s1, s2): 
-    if same_line(s1, s2) == False: 
-        return intersection(get_line(s1), get_line(s2))
-
 
 def estimate_number_of_people_per_station(line, hours, minutes):
     estimative = dict()
     for station in line.stations:
         estimative[station.name] = forecaster.predict_number_of_people(station.name, hours, minutes)
     return estimative
-    
-def intersection(lst1, lst2): 
-    lst3 = [value for value in lst1 if value in lst2] 
-    return lst3[0]
 
 def get_unique_id():
-    global i 
-    i += 1
-    return i
+    global pid 
+    pid += 1
+    return pid
