@@ -53,3 +53,9 @@ class Station:
 
     def get_people(self): #update for each sentido
         return (self.people_terminal_two, self.people_terminal_one)
+
+
+    def reset(self):
+        self.persons = {self.terminal_one: [], self.terminal_two: []}
+        self.people_terminal_one = 0 
+        self.people_terminal_two = 0

@@ -26,16 +26,19 @@ class Environment:
         self.start_day()
 
     def start_day(self):
-        self.time = datetime.time(6,15)
+        self.time = datetime.time(23,15)
     
     def tik(self):
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
         if self.time == datetime.time(0,1):
+            self.reset_passangers_and_trains()
             self.time = datetime.time(6,15)
+            self.gui.run()
             print("---new day---")
-            #delete all people who were still waiting!!!!
-
-    
+            time.sleep(10)
+            #current behaviour: All trains and people in station at midnight and 1 minute are deleted
+            #may be todo: dont generate more trains at 0h01, dont generate more people, but let the remaining trains finish the trip
+            #people not picked up by the final trip are then deleted
 
     def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
         for station in line.get_stations():
@@ -85,6 +88,11 @@ class Environment:
     def generate_people(self):
         for line in self.lines:
             self.populate_stations(line)
+
+
+    def reset_passangers_and_trains(self):
+        for line in self.lines:
+            line.new_day()
 
     # receives a Line object
     def populate_stations(self, line):

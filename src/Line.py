@@ -115,16 +115,16 @@ class Line:
 
         if color == 'red':
             self.stations = red
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, green, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 3, 4, colors[color], gui, green, 1, self.color)]
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
         self.number_of_trains = 1
         
         #gui stuff
@@ -192,13 +192,18 @@ class Line:
 
         return passengers_to_exchange
 
+
     def delete_trains(self, trains_to_remove):
         for train_to_delete in trains_to_remove:
             for i in range(len(self.trains)):
                 if train_to_delete.get_id() == self.trains[i].get_id():
                     self.gui.delete_train(self.trains[i])
-                    del self.trains[i]
+                    #del self.trains[i]
+                    #del may break the indexes if more than one i and the one that matches the if is not the 1st
+                    #but plz check if this is the desired behaviour
+                    self.trains = [train for train in self.trains if self.trains.index(train) != i]
                     break
+
 
     def update_trains_info(self, deliberations):
         for i in range(len(self.trains)):
@@ -219,6 +224,16 @@ class Line:
             line_info["trains"][i] = self.trains[i].get_train_info()
             line_info["stations"] = self.stations
         return line_info
+
+
+    #sensor -> line agent percepted a new day
+    def new_day(self):
+        for station in self.stations:
+            station.reset()
+        self.delete_trains(self.trains)
+        for i in self.trains:
+            print(i)
+        #self.delete_trains(self.trains)
 
     def get_train_by_id(self, tid):
         return trains[tid]
