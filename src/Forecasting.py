@@ -33,10 +33,10 @@ class Forecasting:
         self.model_number_of_people = create_model_number_of_people(self.files_path_count)
         self.model_final_station = create_model_final_station(self.files_path_exit)
 
-    def predict_number_of_people(self, station, hour, minutes):
+    def predict_number_of_people(self, station, p_time):
         global date_values
 
-        time = get_closest_15_min_time(hour, minutes)
+        time = get_closest_15_min_time(p_time)
         time_index = date_values[time]
 
         base_number = int(round(self.model_number_of_people[mapping[station]][0][time_index]))
@@ -44,8 +44,8 @@ class Forecasting:
         
         return round(random.randint(max(0, base_number-deviation), base_number+deviation)/15)
 
-    def predict_final_station(self, station, hour, minutes):
-        time = get_closest_15_min_time(hour, minutes)
+    def predict_final_station(self, station, p_time):
+        time = get_closest_15_min_time(p_time)
 
         stations = self.model_final_station[mapping[station]][time][0]
         probabilities = self.model_final_station[mapping[station]][time][1]
@@ -172,8 +172,8 @@ def create_model_final_station(files_path):
         return result
 
 
-def get_closest_15_min_time(hour, minute):
-    date_time = datetime.datetime(1, 1, 1, hour, minute)
+def get_closest_15_min_time(time):
+    date_time = datetime.datetime.combine(datetime.date.min, time)
     delta = datetime.timedelta(minutes=15)
     ceil = date_time + (datetime.datetime.min - date_time) % delta 
     return str(ceil.time())

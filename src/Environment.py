@@ -21,11 +21,10 @@ class Environment:
                       Line('blue', 2, self.reporter, self.gui),
                       Line('green', 2, self.reporter, self.gui)]
         self.orchestrator = Orchestrator(self.lines)
-        self.start_day()
 
-    def start_day(self):
         self.time = datetime.time(6,15)
     
+    #TIME MEASURE
     def tik(self):
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
         if self.time == datetime.time(0,1):
@@ -38,6 +37,29 @@ class Environment:
             #may be todo: dont generate more trains at 0h01, dont generate more people, but let the remaining trains finish the trip
             #people not picked up by the final trip are then deleted
 
+
+    #EVENTS
+    def move_trains(self):
+        for line in self.lines:
+            passengers_to_exchange = line.move_trains(self.time)
+            if passengers_to_exchange != {}:
+                self.change_passengers_line(passengers_to_exchange)
+
+    def generate_people(self):
+        for line in self.lines:
+            self.populate_stations(line)
+
+    def reset_passangers_and_trains(self):
+        for line in self.lines:
+            line.new_day()
+    
+    def update_lines(self, decisions):
+        for line in self.lines:
+            line.update_line_info(decisions[line.color])
+
+    #AUXILIAR
+    
+    #not being used?
     def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
         for station in line.get_stations():
             print(station.get_name(), current_station.get_name())
@@ -77,35 +99,15 @@ class Environment:
                 person.update_way(line, station)
                 self.add_person_to_station(station, line, person)
 
-    def move_trains(self):
-        for line in self.lines:
-            passengers_to_exchange = line.move_trains(self.time)
-            if passengers_to_exchange != {}:
-                self.change_passengers_line(passengers_to_exchange)
-
-    def generate_people(self):
-        for line in self.lines:
-            self.populate_stations(line)
-
-
-    def reset_passangers_and_trains(self):
-        for line in self.lines:
-            line.new_day()
-
     # receives a Line object
     def populate_stations(self, line):
-        stations_distribution = estimate_number_of_people_per_station(line, self.time.hour, self.time.minute)
+        stations_distribution = estimate_number_of_people_per_station(line, self.time)
         #{oriente: 2, encarnacao: 3, .... }
         for station in stations_distribution:
             for number_of_persons in range(stations_distribution[station]):
-                final, way = estimate_final_station(station, self.time.hour, self.time.minute)
+                final, way = estimate_final_station(station, self.time)
                 person = Person(station, final, self.time, way)
                 line.add_person_to_station(person, station)
-
-
-    def update_lines(self, decisions):
-        for line in self.lines:
-            line.update_line_info(decisions[line.color])
 
     def run(self):
         try:
@@ -130,14 +132,14 @@ class Environment:
 pid = 0
 forecaster = Forecasting()
 
-def estimate_final_station(station, hours, minutes):
-    final, way = forecaster.predict_final_station(station, hours, minutes)
+def estimate_final_station(station, time):
+    final, way = forecaster.predict_final_station(station, time)
     return final, way
 
-def estimate_number_of_people_per_station(line, hours, minutes):
+def estimate_number_of_people_per_station(line, time):
     estimative = dict()
     for station in line.stations:
-        estimative[station.name] = forecaster.predict_number_of_people(station.name, hours, minutes)
+        estimative[station.name] = forecaster.predict_number_of_people(station.name, time)
     return estimative
 
 def get_unique_id():
