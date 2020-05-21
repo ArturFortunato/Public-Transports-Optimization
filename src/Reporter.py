@@ -4,6 +4,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import datetime
+import os
+from os import path
 
 class Reporter:
     def __init__(self, gui):
@@ -39,7 +41,8 @@ class Reporter:
             self.total_waiting_times.append(r.seconds)              #total analysis
 
     def report_average_train_occupancy(self,color,avg_train_occupancy):
-        self.avg_train_occupancy[color].append(avg_train_occupancy)
+        if color in flags["verbose"]:
+            self.avg_train_occupancy[color].append(avg_train_occupancy)
 
     def get_average(self, time):
         if len(self.total_waiting_times) == 0:
@@ -79,6 +82,9 @@ class Reporter:
 
     def plot_average_occupancy(self):
 
+        if path.exists('../plots/daily_average_occupancy.png'):
+            os.remove('../plots/daily_average_occupancy.png')
+
         fig = plt.figure()
         fig.suptitle('Daily Avg Occupancy Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
         plt.xlabel('Time (HH:MM:SS)')
@@ -92,14 +98,19 @@ class Reporter:
             plt.plot(x[0:size], y[0:size],color)
             plt.gcf().autofmt_xdate()
 
-        plt.show()
+        print("Showing daily average occupancy...")
         fig.savefig('../plots/daily_average_occupancy.png')
+        plt.show()
         plt.close(fig)
+        print("Saved daily average occupancy...")
 
 
 
 
     def plot_average_waiting_time(self):
+        if(path.exists('../plots/daily_average_waiting_time.png')):
+            os.remove('../plots/daily_average_waiting_time.png')
+
         fig = plt.figure()
         fig.suptitle('Daily Avg Waiting Time Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
         plt.xlabel('Time (HH:MM:SS)')
@@ -113,15 +124,12 @@ class Reporter:
             plt.plot(x[0:size], y[0:size],color)
             plt.gcf().autofmt_xdate()
 
-        plt.show()
+        print("Showing average waiting time.")
+
         fig.savefig('../plots/daily_average_waiting_time.png')
+        plt.show()
         plt.close(fig)
 
 
-    '''
-    Iterates the trains in each line and averages the train capacity(used_capacity/max_capacity) per line
-    '''
-    def plot_average_used_capacity(self):
-        pass
-
+   
 
