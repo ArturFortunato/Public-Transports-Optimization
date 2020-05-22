@@ -112,9 +112,9 @@ class Reporter:
             y = self.avg_train_occupancy[color]
             x = self.hours
 
-            if(flags["smooth"] == True):
-                x = [x[i] for i in range(len(x)) if i % 10 == 0]
-                y = [y[i] for i in range(len(y)) if i % 10 == 0]
+            if(flags["opt"] == "smooth"):
+                x = [x[i] for i in range(len(x)) if i % 15 == 0]
+                y = [y[i] for i in range(len(y)) if i % 15 == 0]
 
             nx = []
             for i in x:
@@ -150,7 +150,7 @@ class Reporter:
             os.remove('../plots/daily_average_waiting_time_day'  + str(self.day) + '.png')
 
         fig = plt.figure()
-        fig.suptitle('Daily Avg Waiting Time Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
+        fig.suptitle('Daily Avg Waiting Time Per Line(s) ' + self.format_title_metro_colors() + ":", fontsize=12)
         plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Waiting Time')
         xformatter = matplotlib.dates.DateFormatter('%H:%M')
@@ -159,9 +159,9 @@ class Reporter:
             y = self.avg_waiting_time_hour[color]
             x = self.hours
 
-            if(flags["smooth"] == True):
-                x = [x[i] for i in range(len(x)) if i % 5 == 0]
-                y = [y[i] for i in range(len(y)) if i % 5 == 0]
+            if(flags["opt"] == "smooth"):
+                x = [x[i] for i in range(len(x)) if i % 15 == 0]
+                y = [y[i] for i in range(len(y)) if i % 15 == 0]
 
             nx = []
             for i in x:
@@ -174,7 +174,11 @@ class Reporter:
             plt.plot(x, y,color) #plot
 
             if(flags["std"] == True):
+
+
                 error = np.random.normal(0.1, 0.02, size=len(y))
+
+
                 plt.fill_between(x, y-error,y+error, color=color,alpha=0.4)
 
             plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
