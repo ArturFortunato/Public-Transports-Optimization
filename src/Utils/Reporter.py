@@ -98,47 +98,50 @@ class Reporter:
 
 
 
-    def plot_average_occupancy(self,show_plots):
-        if path.exists('../plots/daily_average_occupancy_day' + str(self.day) + '.png'):
-            os.remove('../plots/daily_average_occupancy_day'  + str(self.day) + '.png')
+    def plot_average_occupancy(self, show_plots):
+        if path.exists('../plots/daily_average_occupancy_day'+ str(self.day) + '.png'):
+            os.remove('../plots/daily_average_occupancy_day' + str(self.day) + '.png')
 
         fig = plt.figure()
-        fig.suptitle('Daily Avg Occupancy Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
+        fig.suptitle('Daily Avg Occupancy Per Line '
+                    + self.format_title_metro_colors() + ':', fontsize=12)
         plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Occupancy')
         xformatter = matplotlib.dates.DateFormatter('%H:%M')
-        for color in flags["colors"]:
+        for color in flags['colors']:
 
             y = self.avg_train_occupancy[color]
             x = self.hours
 
-            if(flags["opt"] != None): x,y = self.apply_options(flags["opt"],x,y)
+            if flags['opt'] != None:
+                (x, y) = self.apply_options(flags['opt'], x, y)
 
             nx = []
             for i in x:
                 nx.append(datetime.datetime.combine(datetime.date.min, i))
 
-            size = min(len(y),len(nx)) -1
+            size = min(len(y), len(nx)) - 1
 
             x = nx[0:size]
-            y= y[0:size]
+            y = y[0:size]
 
-            plt.plot(x, y,color) #plot
+            plt.plot(x, y, color)  # plot
 
-            if(flags["std"] == True):
+            if flags['std'] == True:
                 error = np.random.normal(0.1, 0.02, size=len(y))
-                plt.fill_between(x, y-error,y+error, color=color,alpha=0.4)
+                plt.fill_between(x, y - error, y + error, color=color, alpha=0.4)
 
             plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
+        print('Showing daily average occupancy...')
+        plt.savefig('../plots/daily_average_occupancy_day' + str(self.day)
+                    + '.png')
 
-        print("Showing daily average occupancy...")
-        plt.savefig('../plots/daily_average_occupancy_day' + str(self.day)  + '.png')
-        
-        if show_plots: plt.show()
+        if show_plots:
+            plt.show()
 
         plt.close(fig)
-        print("Saved daily average occupancy...")
+        print('Saved daily average occupancy...')
 
 
     def apply_options(self,opt,x,y):

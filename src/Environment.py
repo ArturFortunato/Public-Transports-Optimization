@@ -53,7 +53,7 @@ class Environment:
 
     def reset_passangers_and_trains(self):
         for line in self.lines:
-            line.new_day()
+            line.percept_new_day()
     
     def update_lines(self, decisions):
         for line in self.lines:
@@ -109,7 +109,7 @@ class Environment:
             for number_of_persons in range(stations_distribution[station]):
                 final, way = estimate_final_station(station, self.time)
                 person = Person(station, final, self.time, way)
-                line.add_person_to_station(person, station)
+                line.percept_person_in_station(person, station)
 
     def run(self):
         try:
