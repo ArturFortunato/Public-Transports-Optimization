@@ -36,7 +36,6 @@ class Orchestrator:
         res['new_train'] = []
 
         print("o valor da line_perception e: " + str(line_perception))
-        exit()
 
         if self.minutes % 8 == 0 and self.minutes % 16 == 0:
             res['new_train'] += self.launch_new_train(-1)
