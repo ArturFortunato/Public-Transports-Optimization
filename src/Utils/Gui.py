@@ -71,7 +71,7 @@ class Gui:
         if nr_people_extra == None:
             text_surf = large_text.render(station_name + " " + str(nr_people), True, self.get_station_color(nr_people))
         else:
-            text_surf = large_text.render(station_name + " " + color + ": " + str(nr_people) + " " + color_extra + ": " + str(nr_people_extra), True, self.get_station_color(nr_people))
+            text_surf = large_text.render(station_name + " " + color[0] + ": " + str(nr_people) + " " + color_extra[0] + ": " + str(nr_people_extra), True, self.get_station_color(nr_people))
         text_rect = text_surf.get_rect()
         text_rect.center = (station_position[0], station_position[1] + 15)
         self.win.blit(text_surf, text_rect)

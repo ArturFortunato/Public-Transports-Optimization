@@ -73,8 +73,8 @@ class Orchestrator:
         #print(line_perception["trains"])
         #exit()
 
-
-        res = self.launch_trains(self.minutes,res,line_perception["stations"])
+        if "stations" in  list(line_perception.keys()):
+            res = self.launch_trains(self.minutes,res,line_perception["stations"])
         
         #atualiza info relativo aos comboios
         for train_key in line_perception["trains"].keys():

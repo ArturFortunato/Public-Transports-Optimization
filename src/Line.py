@@ -14,7 +14,7 @@ import re
 #verde
 #arroios ta a mais, nao ha dados
 telheiras = Station('Telheiras', 'Telheiras', 'Cais do Sodré', 0, [750, 600], [20, 0], "green")
-campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, [750, 495], [120, -10], "green")
+campo_grande = Station('Campo Grande', 'Telheiras', 'Cais do Sodré', 8, [750, 495], [140, -10], "green")
 alvalade = Station('Alvalade', 'Telheiras', 'Cais do Sodré', 20, [750, 450], [-70, -15], "green")
 roma = Station('Roma', 'Telheiras', 'Cais do Sodré', 26, [750, 400], [-55, -15], "green")
 areeiro = Station('Areeiro', 'Telheiras', 'Cais do Sodré', 33, [750, 350], [-55, -15], "green")
@@ -24,7 +24,7 @@ anjos = Station('Anjos', 'Telheiras', 'Cais do Sodré', 48, [750, 220], [-60, -1
 intendente = Station('Intendente', 'Telheiras', 'Cais do Sodré', 53, [750, 180], [-70, -15], "green")
 martim_moniz = Station('Martim Moniz', 'Telheiras', 'Cais do Sodré', 60, [750, 150], [-80, -15], "green")
 rossio = Station('Rossio', 'Telheiras', 'Cais do Sodré', 65, [750, 120], [-60, -15], "green")
-baixa_chiado = Station('Baixa Chiado', 'Telheiras', 'Cais do Sodré', 71, [750, 80], [-125, -10], "green")
+baixa_chiado = Station('Baixa Chiado', 'Telheiras', 'Cais do Sodré', 71, [750, 80], [-135, -10], "green")
 cais_do_sodre = Station('Cais do Sodré', 'Telheiras', 'Cais do Sodré', 78, [750, 20], [85, -15], "green")
 
 green = [telheiras, campo_grande, alvalade, roma, areeiro, alameda, anjos, intendente, martim_moniz, rossio, baixa_chiado, cais_do_sodre]
@@ -39,9 +39,9 @@ campo_grande = Station('Campo Grande', 'Odivelas', 'Rato', 31, [750, 495], [0, 0
 cidade_universitaria = Station('Cidade Universitária', 'Odivelas', 'Rato', 37, [772, 450], [105, -15], "yellow")
 entrecampos = Station('Entre Campos', 'Odivelas', 'Rato', 41, [795, 400], [85, -15], "yellow")
 campo_pequeno = Station('Campo Pequeno', 'Odivelas', 'Rato', 43, [820, 350], [90, -15], "yellow")
-saldanha = Station('Saldanha', 'Odivelas', 'Rato', 51, [845, 300], [90, 0], "yellow")
+saldanha = Station('Saldanha', 'Odivelas', 'Rato', 51, [845, 300], [110, 0], "yellow")
 picoas = Station('Picoas', 'Odivelas', 'Rato', 56, [875, 237], [50, 0], "yellow")
-marques_pombal = Station('Marquês de Pombal', 'Odivelas', 'Rato', 59, [905, 175], [130, -15], "yellow")
+marques_pombal = Station('Marquês de Pombal', 'Odivelas', 'Rato', 59, [905, 175], [160, -15], "yellow")
 rato = Station('Rato', 'Odivelas', 'Rato', 68, [982, 20], [20, 0], "yellow")
 
 yellow = [odivelas, senhor_roubado, ameixoeira, lumiar, quinta_conchas, campo_grande, cidade_universitaria, entrecampos, campo_pequeno, saldanha, picoas, marques_pombal, rato]
@@ -58,7 +58,7 @@ bela_vista = Station('Bela Vista', 'Aeroporto', 'São Sebastião', 41, [600, 300
 olaias = Station('Olaias', 'Aeroporto', 'São Sebastião', 48, [680, 300], [0, 0], "red")
 alameda = Station('Alameda', 'Aeroporto', 'São Sebastião', 52, [750, 300], [0, 0], "red", draw=False)
 saldanha = Station('Saldanha', 'Aeroporto', 'São Sebastião', 59, [845, 300], [0, 0],"red", draw=False)
-sao_sebastiao = Station('São Sebastião', 'Aeroporto', 'São Sebastião', 70, [1115, 300], [110, -15], "red")
+sao_sebastiao = Station('São Sebastião', 'Aeroporto', 'São Sebastião', 70, [1115, 300], [130, -15], "red")
 
 red = [aeroporto, encarnacao, moscavide, oriente, cabo_ruivo, olivais, chelas, bela_vista, olaias, alameda, saldanha, sao_sebastiao]
 
