@@ -77,6 +77,13 @@ class Environment:
                 return line
         return None
 
+    def get_mutual_station_line(self, station1, station2):
+        line = self.get_stations_line(station1, station2)
+        if line != None:
+            return True, line
+        else:
+            return False, None
+
     #Funcao responsavel por adicionar uma pessoa a uma estacao numa troca de linha.
     def add_person_to_station(self, insert_station, line, person):
         for station in line.get_stations():
@@ -100,8 +107,13 @@ class Environment:
         for station in stations_distribution:
             for number_of_persons in range(stations_distribution[station]):
                 final, way = estimate_final_station(station, self.time)
+                is_same_line, same_line = self.get_mutual_station_line(station, final)
+                if is_same_line and same_line != line:
+                    #examplo: estamos a adicionar a sao sebastiao vermelho. Se sai marques, entao ele vai por em S.Sebastiao Red -> marques. Devia estar no blue.
+                    continue
                 person = Person(station, final, self.time, way)
                 line.percept_person_in_station(person, station)
+
 
     def run(self):
         try:
