@@ -1,10 +1,9 @@
 # - coding: utf-8 --
 
-from Station import Station
-from Reporter import Reporter
-from Train import Train
-from Carriage import Carriage
-
+from Modelation.Station import Station
+from Modelation.Train import Train
+from Modelation.Carriage import Carriage
+from Utils.Reporter import Reporter
 
 import datetime
 import re
@@ -115,16 +114,16 @@ class Line:
 
         if color == 'red':
             self.stations = red
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
         elif color == 'yellow':
             self.stations = yellow
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
         elif color == 'green':
             self.stations = green
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 3, 4, colors[color], gui, green, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 3, 4, colors[color], gui, green, 1, self.color)]
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(0, 3, [Carriage(141*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(185*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
         self.number_of_trains = 1
         
         #gui stuff
@@ -143,7 +142,7 @@ class Line:
     def add_train(self, info):
         carriages = []
         #for i in range(info['nr_carriages']):
-        carriages.append(Carriage(141*6, self))
+        carriages.append(Carriage(186*6, self))
 
         if info["way"] == 1: line_stations = lines[self.color]
         else: line_stations = lines[self.color][::-1]            
@@ -152,7 +151,16 @@ class Line:
         self.trains += [Train(self.number_of_trains, 3, carriages, 6, 4, colors[self.color], self.gui, line_stations, info['way'], self.color)]
         self.number_of_trains += 1
 
-    def move_trains(self, hours, minutes):
+    
+    def avg_train_capacity(self):
+        train_occupancy_ratio = []
+        for train in self.trains:
+            for carriage in train.carriages:
+                train_occupancy_ratio.append(carriage.get_occupancy_ratio())
+        return sum(train_occupancy_ratio)/ len(train_occupancy_ratio)
+    
+
+    def move_trains(self, time):
         passengers_to_exchange = {}
         trains_to_remove = []
 
@@ -160,7 +168,7 @@ class Line:
             for station in self.stations:
                 if station.get_position() == train.get_position():
                     passengers_to_enter = station.get_persons(train.get_way())
-                    people_boarded, passengers_to_exchange_temp, report = train.open_doors(station, passengers_to_enter, datetime.time(hours, minutes))
+                    people_boarded, passengers_to_exchange_temp, report = train.open_doors(station, passengers_to_enter, time)
                     # needs to know the station where the exchange happens to transfer people to the new platform
                     if passengers_to_exchange_temp != []:
                         if station in passengers_to_exchange:
@@ -168,7 +176,10 @@ class Line:
                             exit()
                         passengers_to_exchange[station.get_name()] = passengers_to_exchange_temp
                     station.remove_persons_until_index(people_boarded, train.get_way())
-                    self.report_satisfaction(report)
+                    self.report_satisfaction(report, time)
+                    
+                    avg_train_occupancy = self.avg_train_capacity()
+                    self.reporter.report_average_train_occupancy(self.color,avg_train_occupancy)
 
                     # se tiver chegado a estacao final (ou "inicial" se estiver a andar ao contrario, adiciona o comboio à lista de comboios para apagar)
                     if station == self.stations[-1 if train.get_way() == 1 else 0]:
@@ -180,13 +191,18 @@ class Line:
 
         return passengers_to_exchange
 
+
     def delete_trains(self, trains_to_remove):
         for train_to_delete in trains_to_remove:
             for i in range(len(self.trains)):
                 if train_to_delete.get_id() == self.trains[i].get_id():
                     self.gui.delete_train(self.trains[i])
-                    del self.trains[i]
+                    #del self.trains[i]
+                    #del may break the indexes if more than one i and the one that matches the if is not the 1st
+                    #but plz check if this is the desired behaviour
+                    self.trains = [train for train in self.trains if self.trains.index(train) != i]
                     break
+
 
     def update_trains_info(self, deliberations):
         for i in range(len(self.trains)):
@@ -207,6 +223,16 @@ class Line:
             line_info["trains"][i] = self.trains[i].get_train_info()
             line_info["stations"] = self.stations
         return line_info
+
+
+    #sensor -> line agent percepted a new day
+    def new_day(self):
+        for station in self.stations:
+            station.reset()
+        self.delete_trains(self.trains)
+        for i in self.trains:
+            print(i)
+        #self.delete_trains(self.trains)
 
     def get_train_by_id(self, tid):
         return trains[tid]

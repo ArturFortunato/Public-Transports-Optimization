@@ -12,15 +12,37 @@ Ex:
 '''
 
 def add_flags(args):
-    p = re.compile('lines=+')
-    flags["verbose"] = None
+
+    #Adiciona linhas
+    re1 = re.compile('--lines=+')
+    re2 = re.compile('--behavior=+')
+    re3 = re.compile('--opt=+')
+    flags["opt"] = None
+    flags["colors"] = []
+    flags["behavior"] = "baseline"
+    flags["std"] = False
+
     for arg in args:
-        if p.match(arg) != None:
+        if re1.match(arg) != None:
             arg = arg.split("=")[1]
-            if arg not in ["yellow", "green", "blue", "red", "ALL"]: #erro
-                print("FLAG: " + str(arg) + "não reconhecida pelo sistema")
-                #exit()
-            else: flags["verbose"] = arg
+            print(arg)
+            if arg in ["yellow","green","blue","red"]:
+                flags["colors"] = [arg]
+            elif arg == "ALL":
+                flags["colors"] = ["yellow","green","blue","red"]
+        if re2.match(arg) != None:
+            arg = arg.split("=")[1]
+            if arg in ["reactive","deliberative"]:
+                flags["behavior"] = arg
+        if re3.match(arg) != None:
+            arg = arg.split("=")[1]
+            if arg in ["smooth","avg"]: flags["opt"] = arg
+
+    #Adiciona o envelope com o desvio padrao
+    if "--std" in args: flags["std"] = True
+
+    
+
 
 
 ##### Auxiliar

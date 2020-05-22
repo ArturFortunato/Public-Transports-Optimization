@@ -1,5 +1,4 @@
 from datetime import datetime, date
-import time as tempo
 
 TRAIN_HEIGHT = 20
 
@@ -26,17 +25,21 @@ class Train:
     def get_id(self):
         return self.id
 
-    def change_speed(self, new_speed):
-        if self.position == self.stations[-1].get_position():
-            self.current_speed = 0
-        elif new_speed <= self.maximum_speed and self.position + self.way * new_speed <= self.get_next_station().get_position() and self.line.can_update_train_speed(self, self.position, new_speed):
-            self.current_speed = new_speed
-        # Deveriamos acrescentar self.line.can_update_train_speed(self.tid, self.position, self.way * (self.get_next_station().get_position() - self.position))?
-        elif new_speed <= self.maximum_speed:
-            self.current_speed = self.way * (self.get_next_station().get_position() - self.position)
-        else:
-            self.current_speed = self.maximum_speed
+    def get_gui_position(self):
+        return self.gui_positions
+    
+    def get_position(self):
+        return self.position
+    
+    def get_color(self):
+        return self.color
 
+    def get_line(self):
+        return self.line
+
+    def get_way(self):
+        return self.way
+    
     def get_train_info(self):
         train_info = {}
         train_info['position'] = self.position
@@ -48,6 +51,17 @@ class Train:
         #    train_info['carriages'] += [carriage.get_carriage_info()] 
 
         return train_info
+
+    def change_speed(self, new_speed):
+        if self.position == self.stations[-1].get_position():
+            self.current_speed = 0
+        elif new_speed <= self.maximum_speed and self.position + self.way * new_speed <= self.get_next_station().get_position() and self.line.can_update_train_speed(self, self.position, new_speed):
+            self.current_speed = new_speed
+        # Deveriamos acrescentar self.line.can_update_train_speed(self.tid, self.position, self.way * (self.get_next_station().get_position() - self.position))?
+        elif new_speed <= self.maximum_speed:
+            self.current_speed = self.way * (self.get_next_station().get_position() - self.position)
+        else:
+            self.current_speed = self.maximum_speed
 
     def get_vector_between(self, station1, station2):
         pos1 = station1.get_gui_center()
@@ -105,23 +119,11 @@ class Train:
 
             if number_of_passengers_to_enter != 0:
                 for passenger in passengers[:number_of_passengers_to_enter]:
-                    waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, passenger.get_entered_time()) 
+                    waiting_time = datetime.combine(date.min, time) - datetime.combine(date.min, passenger.get_entered_time())
                     report.append(waiting_time)
+                    
                 carriage.add_passengers(passengers[:number_of_passengers_to_enter])
                 passengers = passengers[number_of_passengers_to_enter:]
         return original_length - len(passengers), passengers_to_exchange, report
 
-    def get_gui_position(self):
-        return self.gui_positions
     
-    def get_position(self):
-        return self.position
-    
-    def get_color(self):
-        return self.color
-
-    def get_line(self):
-        return self.line
-
-    def get_way(self):
-        return self.way

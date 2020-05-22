@@ -84,7 +84,7 @@ class Gui:
     def write_reports(self):
         base_text = "Global average waiting time:"
         large_text = pg.font.Font('freesansbold.ttf', 15)
-        time = datetime.time(self.environment.hours, self.environment.minutes)
+        time = self.environment.time
         text_surf = large_text.render(base_text + str(self.reporter.get_average(time)), True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
         self.win.blit(text_surf, text_rect)
@@ -92,7 +92,7 @@ class Gui:
     def write_current_time(self):
         base_text = "Time: "
         large_text = pg.font.Font('freesansbold.ttf', 15)
-        time = str(datetime.time(self.environment.hours, self.environment.minutes))
+        time = str(self.environment.time)
         text_surf = large_text.render(base_text + time, True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
         text_rect.center = (49, 33)
@@ -103,7 +103,7 @@ class Gui:
             self.draw_line(colors[self.lines[i].get_color()], self.lines[i].init_pos(), self.lines[i].end_pos())
         
         for i in range(len(self.stations)):
-            if self.stations[i].to_draw():
+            if self.stations[i].get_draw():
                 index = self.is_crossing(self.stations[i], i)
                 if index == None:
                     self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people())
