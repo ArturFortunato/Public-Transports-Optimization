@@ -4,6 +4,9 @@ class Station:
         self.persons = {terminal_one: [], terminal_two: []}
         self.terminal_one = terminal_one
         self.terminal_two = terminal_two
+        self.ways = {self.terminal_one: -1 , self.terminal_two: 1   }
+
+
         self.people_terminal_one = 0  #nr de pessoas no sentido negativo: t2 -> t1
         self.people_terminal_two = 0 #nr de pessoas no sentido positivo: t1 -> t2
         self.position = position
@@ -20,6 +23,9 @@ class Station:
     
     def get_persons(self, way):
         return self.persons[self.terminal_two if way == 1 else self.terminal_one]
+
+    def get_ways(self):
+        return self.ways
 
     def get_gui_center(self):
         return self.gui_center
