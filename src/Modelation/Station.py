@@ -1,5 +1,5 @@
 class Station:
-    def __init__(self, name, terminal_one, terminal_two, position, gui_center, text_offset, draw=True):
+    def __init__(self, name, terminal_one, terminal_two, position, gui_center, text_offset, color, draw=True):
         self.name = name
         self.persons = {terminal_one: [], terminal_two: []}
         self.terminal_one = terminal_one
@@ -10,7 +10,8 @@ class Station:
         self.gui_center = gui_center
         self.text_offset = text_offset
         self.draw = draw
-
+        self.color = color 
+        
     def get_name(self):
         return self.name
 
@@ -32,6 +33,9 @@ class Station:
 
     def get_draw(self):
         return self.draw
+
+    def get_color(self):
+        return self.color
 
     def add_person(self, person):
         self.persons[self.terminal_two if person.get_way() == 1 else self.terminal_one] += [person]

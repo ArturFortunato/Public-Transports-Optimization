@@ -23,7 +23,7 @@ class Environment:
                       Line('green', 2, self.reporter, self.gui)]
         self.orchestrator = Orchestrator(self.lines)
 
-        self.time = datetime.time(11,15)
+        self.time = datetime.time(23,15)
         self.day = 1
 
     #TIME MEASURE
@@ -34,7 +34,7 @@ class Environment:
             self.reporter.new_day_reset(False)
             self.reset_passangers_and_trains()
             self.time = datetime.time(6,15)
-            self.gui.run(day)
+            self.gui.run(self.day)
             print("---new day---")
             time.sleep(10)
             #current behaviour: All trains and people in station at midnight and 1 minute are deleted
@@ -62,17 +62,6 @@ class Environment:
             line.update_line_info(decisions[line.color])
 
     #AUXILIAR
-    
-    #not being used?
-    def add_change_passengers_to_line(self, current_station, line, passengers_to_exchange):
-        for station in line.get_stations():
-            print(station.get_name(), current_station.get_name())
-            if station.get_name() == current_station.get_name():
-                for passenger in passengers_to_exchange:
-                    passenger.update_way(line, station)
-                    station.add_person(passenger)
-                return True
-        return False
 
     # returns the only line that has both station1 and station2
     def get_stations_line(self, station1, station2):

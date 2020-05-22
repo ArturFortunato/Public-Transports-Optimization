@@ -3,6 +3,8 @@ import pygame as pg
 from Line import Line
 import datetime
 
+from Utils.global_vars import stations_per_line
+
 colors = {
     'red': (255, 0, 0),
     'green': (0, 255, 0),
@@ -46,13 +48,13 @@ class Gui:
         pg.draw.rect(self.win, color, position)
         self.write_train_id(position, train_id, line)
 
-    def draw_station(self, position, name, text_position, nr_people, index=None):
+    def draw_station(self, position, name, text_position, nr_people, color=None, index=None, color_extra=None):
         if position != None:
             pg.draw.circle(self.win, STATION_COLOR, position, STATION_RADIUS)
             if index == None:
                 self.write_station_name(text_position, name, nr_people)
             else:
-                self.write_station_name(text_position, name, nr_people, self.stations[index].get_people())
+                self.write_station_name(text_position, name, nr_people, color=color, nr_people_extra=self.stations[index].get_people(), color_extra=color_extra)
 
     def get_station_color(self, nr_people): #maybe change this for both ways?
         if nr_people[0] + nr_people[1] == 0:
@@ -64,12 +66,12 @@ class Gui:
         else:
             return (255, 0, 0)
             
-    def write_station_name(self, station_position, station_name, nr_people, nr_people_extra=None):
+    def write_station_name(self, station_position, station_name, nr_people, color=None, nr_people_extra=None, color_extra=None):
         large_text = pg.font.Font('freesansbold.ttf', 15)
         if nr_people_extra == None:
             text_surf = large_text.render(station_name + " " + str(nr_people), True, self.get_station_color(nr_people))
         else:
-            text_surf = large_text.render(station_name + " " + str(nr_people) + " " + str(nr_people_extra), True, self.get_station_color(nr_people))
+            text_surf = large_text.render(station_name + " " + color + ": " + str(nr_people) + " " + color_extra + ": " + str(nr_people_extra), True, self.get_station_color(nr_people))
         text_rect = text_surf.get_rect()
         text_rect.center = (station_position[0], station_position[1] + 15)
         self.win.blit(text_surf, text_rect)
@@ -109,7 +111,7 @@ class Gui:
                 if index == None:
                     self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people())
                 else:
-                    self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people(), index)
+                    self.draw_station(self.stations[i].get_gui_center(), self.stations[i].get_name(), self.stations[i].get_text_position(), self.stations[i].get_people(), color=self.stations[i].get_color(), index=index, color_extra=self.get_line_from_station(self.stations[i].get_name(), self.stations[i].get_color()))
         
         for i in range(len(self.trains)):
             self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position(), self.trains[i].get_id(), self.trains[i].get_line())
@@ -148,3 +150,8 @@ class Gui:
             if self.trains[i].get_color() == train_to_remove.get_color() and self.trains[i].get_id() == train_to_remove.get_id():
                 del self.trains[i]
                 break
+
+    def get_line_from_station(self, station_name, color):
+        for line in stations_per_line:
+            if line != color and station_name in stations_per_line[line]:
+                return line
