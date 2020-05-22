@@ -1,5 +1,5 @@
 import re
-from Modelation.Station import Station
+#from Utils.Station import Station
 #Flags passadas pelo utilizador como input.
 flags = {}
 

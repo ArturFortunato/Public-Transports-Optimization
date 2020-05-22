@@ -28,12 +28,12 @@ class Gui:
         self.reporter = None
         self.environment = env
     
-    def run(self):
+    def run(self, day):
         if self.check_quit():
             return
 
         self.clear()
-        self.draw()
+        self.draw(day)
         pg.display.update()
 
     def clear(self):
@@ -89,16 +89,17 @@ class Gui:
         text_rect = text_surf.get_rect()
         self.win.blit(text_surf, text_rect)
     
-    def write_current_time(self):
-        base_text = "Time: "
+    def write_current_time(self, day):
+        base_day = "Day: "
+        base_time = "Time: "
         large_text = pg.font.Font('freesansbold.ttf', 15)
         time = str(self.environment.time)
-        text_surf = large_text.render(base_text + time, True, TEXT_COLOR)
+        text_surf = large_text.render(base_day + str(day) + " | " + base_time + time, True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
-        text_rect.center = (49, 33)
+        text_rect.center = (80, 33)
         self.win.blit(text_surf, text_rect)
 
-    def draw(self):
+    def draw(self, day):
         for i in range(len(self.lines)):
             self.draw_line(colors[self.lines[i].get_color()], self.lines[i].init_pos(), self.lines[i].end_pos())
         
@@ -114,7 +115,7 @@ class Gui:
             self.draw_train(self.trains[i].get_color(), self.trains[i].get_gui_position(), self.trains[i].get_id(), self.trains[i].get_line())
         
         self.write_reports()
-        self.write_current_time()
+        self.write_current_time(day)
 
     def is_crossing(self, current_station, index):
         for i in range(len(self.stations)):

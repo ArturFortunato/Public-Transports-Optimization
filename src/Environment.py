@@ -23,16 +23,18 @@ class Environment:
                       Line('green', 2, self.reporter, self.gui)]
         self.orchestrator = Orchestrator(self.lines)
 
-        self.time = datetime.time(6,15)
-    
+        self.time = datetime.time(11,15)
+        self.day = 1
+
     #TIME MEASURE
     def tik(self):
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
         if self.time == datetime.time(0,1):
+            self.day += 1
             self.reporter.new_day_reset(False)
             self.reset_passangers_and_trains()
             self.time = datetime.time(6,15)
-            self.gui.run()
+            self.gui.run(day)
             print("---new day---")
             time.sleep(10)
             #current behaviour: All trains and people in station at midnight and 1 minute are deleted
@@ -122,7 +124,7 @@ class Environment:
                 decisions = self.orchestrator.deliberate()
                 self.update_lines(decisions)
 
-                self.gui.run()
+                self.gui.run(self.day)
 
                 self.tik()
         except KeyboardInterrupt:

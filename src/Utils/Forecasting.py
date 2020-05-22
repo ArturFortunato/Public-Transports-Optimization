@@ -11,8 +11,8 @@ import os
 from tslearn.barycenters import softdtw_barycenter
 from itertools import chain
 
-from Utils.global_vars import stations
-from Utils.global_vars import RED, GREEN, BLUE, YELLOW
+from global_vars import stations
+from global_vars import RED, GREEN, BLUE, YELLOW
 
 
 #Mapping Hour to int
@@ -210,13 +210,13 @@ def intersection(lst1, lst2):
 #
 ###################################
 
-"""
+
 forecaster = Forecasting()
 
 temp = ['Aeroporto', 'Alameda', 'Alfornelos', 'Alto dos Moinhos', 'Alvalade', 'Amadora Este', 'Ameixoeira', 'Anjos', 'Areeiro', 'Avenida', 'Baixa Chiado', 'Bela Vista', 'Cabo Ruivo', 'Cais do Sodré', 'Campo Grande', 'Campo Pequeno', 'Carnide', 'Chelas', 'Cidade Universitária', 'Colégio Militar', 'Encarnação', 'Entre Campos', 'Intendente', 'Jardim Zoológico', 'Laranjeiras', 'Lumiar', 'Marquês de Pombal', 'Martim Moniz', 'Moscavide', 'Odivelas', 'Olaias', 'Olivais', 'Oriente', 'Parque', 'Picoas', 'Pontinha', 'Praça Espanha', 'Quinta das Conchas', 'Rato', 'Restauradores', 'Roma', 'Rossio', 'Saldanha', 'Santa Apolónia', 'Senhor Roubado', 'São Sebastião', 'Telheiras', 'Terreiro Paço']
 #predict alameda 16 horas e 0 minutos.
 
 for i in temp:
-    print(forecaster.predict_number_of_people(i, 23, 31))"""
+    print(forecaster.predict_final_station(i, datetime.time(23,31)))
 
 
