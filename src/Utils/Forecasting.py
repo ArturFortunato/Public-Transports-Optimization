@@ -210,13 +210,13 @@ def intersection(lst1, lst2):
 #
 ###################################
 
-"""
+
 forecaster = Forecasting()
 
 temp = ['Aeroporto', 'Alameda', 'Alfornelos', 'Alto dos Moinhos', 'Alvalade', 'Amadora Este', 'Ameixoeira', 'Anjos', 'Areeiro', 'Avenida', 'Baixa Chiado', 'Bela Vista', 'Cabo Ruivo', 'Cais do Sodré', 'Campo Grande', 'Campo Pequeno', 'Carnide', 'Chelas', 'Cidade Universitária', 'Colégio Militar', 'Encarnação', 'Entre Campos', 'Intendente', 'Jardim Zoológico', 'Laranjeiras', 'Lumiar', 'Marquês de Pombal', 'Martim Moniz', 'Moscavide', 'Odivelas', 'Olaias', 'Olivais', 'Oriente', 'Parque', 'Picoas', 'Pontinha', 'Praça Espanha', 'Quinta das Conchas', 'Rato', 'Restauradores', 'Roma', 'Rossio', 'Saldanha', 'Santa Apolónia', 'Senhor Roubado', 'São Sebastião', 'Telheiras', 'Terreiro Paço']
 #predict alameda 16 horas e 0 minutos.
 
 for i in temp:
-    print(forecaster.predict_number_of_people(i, 23, 31))"""
+    print(forecaster.predict_number_of_people(i, datetime.time(23,31)))
 
 
