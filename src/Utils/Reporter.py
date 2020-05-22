@@ -112,9 +112,7 @@ class Reporter:
             y = self.avg_train_occupancy[color]
             x = self.hours
 
-            if(flags["opt"] == "smooth"):
-                x = [x[i] for i in range(len(x)) if i % 15 == 0]
-                y = [y[i] for i in range(len(y)) if i % 15 == 0]
+            if(flags["opt"] != None): x,y = self.apply_options(flags["opt"],x,y)
 
             nx = []
             for i in x:
@@ -143,6 +141,11 @@ class Reporter:
         print("Saved daily average occupancy...")
 
 
+    def apply_options(self,opt,x,y):
+        if(flags["opt"] == "smooth"):
+            x = [x[i] for i in range(len(x)) if i % 15 == 0]
+            y = [y[i] for i in range(len(y)) if i % 15 == 0]
+        return x,y
 
 
     def plot_average_waiting_time(self,show_plots):
@@ -159,9 +162,8 @@ class Reporter:
             y = self.avg_waiting_time_hour[color]
             x = self.hours
 
-            if(flags["opt"] == "smooth"):
-                x = [x[i] for i in range(len(x)) if i % 15 == 0]
-                y = [y[i] for i in range(len(y)) if i % 15 == 0]
+            if(flags["opt"] != None): x,y = self.apply_options(flags["opt"],x,y)
+
 
             nx = []
             for i in x:
