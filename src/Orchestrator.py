@@ -62,6 +62,8 @@ class Orchestrator:
         return res
 
 
+
+
     #AI algorithm to calculate the optimal values for each train velocity and number of carriages.
     #Each invocation of this func deliberates  for a line taking in account the 4 line PERCEPTIONS
     #each line_perception is a dictionary the values of each train. the train ids are numerics.
@@ -73,7 +75,14 @@ class Orchestrator:
         #print(line_perception["trains"])
         #exit()
 
-        if "stations" in  list(line_perception.keys()):
+        print( str(self.hours) + " - " + str(self.minutes))
+
+        if(self.hours == 6 and self.minutes == 15):
+            res['new_train'] = self.add_new_train(-1)
+            res['new_train'] = self.add_new_train(1)
+
+
+        elif "stations" in  list(line_perception.keys() or  (self.hours == 0 and self.minutes == 15)):
             res = self.launch_trains(self.minutes,res,line_perception["stations"])
         
         #atualiza info relativo aos comboios
