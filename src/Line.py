@@ -157,8 +157,8 @@ class Line:
     def get_train_by_id(self, tid):
         return trains[tid]
         
-    def report_satisfaction(self, report):
-        self.reporter.add_passengers_satisfaction(report, self.color)
+    def report_satisfaction(self, report, time):
+        self.reporter.add_passengers_satisfaction(report, self.color, time)
 
     def init_pos(self):
         return init_pos[self.color]
