@@ -15,7 +15,7 @@ class Environment:
 
     def __init__(self):
         self.gui = Gui(self)
-        self.reporter = Reporter(self.gui)
+        self.reporter = Reporter(self.gui,1)
 
         self.lines = [Line('red', 2, self.reporter, self.gui),
                       Line('yellow', 2, self.reporter, self.gui),
@@ -23,12 +23,13 @@ class Environment:
                       Line('green', 2, self.reporter, self.gui)]
         self.orchestrator = Orchestrator(self.lines)
 
-        self.time = datetime.time(6,15)
+        self.time = datetime.time(23,15)
     
     #TIME MEASURE
     def tik(self):
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
         if self.time == datetime.time(0,1):
+            self.reporter.new_day_reset(False)
             self.reset_passangers_and_trains()
             self.time = datetime.time(6,15)
             self.gui.run()
@@ -126,7 +127,7 @@ class Environment:
                 self.tik()
         except KeyboardInterrupt:
             print("Deste Ctrl-c.")
-            self.reporter.generate_charts()
+            self.reporter.generate_charts(True)
             exit()
 
 ##### Auxiliar

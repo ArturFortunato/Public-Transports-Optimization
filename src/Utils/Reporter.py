@@ -8,7 +8,8 @@ import os
 from os import path
 
 class Reporter:
-    def __init__(self, gui):
+    def __init__(self, gui,day):
+        self.day = day
         self.total_waiting_times = []
         self.waiting_times_per_line = {}
 
@@ -29,10 +30,27 @@ class Reporter:
             self.avg_train_occupancy[c] = []
         #Guarda as horas.
         self.hours = []
-
-
         self.gui = gui
         gui.add_reporter(self)
+
+    
+    #faz reset dos parametros.
+    def new_day_reset(self,show_plots):
+        print("Reporter resetting...")
+        self.day += 1
+
+        #no início do primeiro dia não ha plots para mostrar
+        if(self.day != 1): self.generate_charts(show_plots)
+        
+        self.hours = []
+
+        for key in list(self.avg_train_occupancy.keys()):
+            self.avg_waiting_time_hour[key] = []
+            self.avg_train_occupancy[key] = []
+
+        for key in list(self.waiting_times_per_line.keys()):
+            self.waiting_times_per_line[key] = []
+
 
 
     def add_passengers_satisfaction(self, report, color, time):
@@ -70,20 +88,20 @@ class Reporter:
         for c in range(0,len(flags["verbose"])):
             res += flags["verbose"][c]
             if(c != len(flags["verbose"])-1): res += ", "
-            else: res += ")"
+            else: res += ") - Day " +  str(self.day)
         return res
 
-    def generate_charts(self):
+    def generate_charts(self,show_plots):
         if(flags["verbose"] != []):
-            self.plot_average_occupancy()
-            self.plot_average_waiting_time()
+            self.plot_average_occupancy(show_plots)
+            self.plot_average_waiting_time(show_plots)
 
 
 
-    def plot_average_occupancy(self):
+    def plot_average_occupancy(self,show_plots):
 
-        if path.exists('../plots/daily_average_occupancy.png'):
-            os.remove('../plots/daily_average_occupancy.png')
+        if path.exists('../plots/daily_average_occupancy_day' + str(self.day) + '.png'):
+            os.remove('../plots/daily_average_occupancy_day'  + str(self.day) + '.png')
 
         fig = plt.figure()
         fig.suptitle('Daily Avg Occupancy Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
@@ -98,23 +116,28 @@ class Reporter:
             for i in x:
                 nx.append(datetime.datetime.combine(datetime.date.min, i))
 
-            size = min(len(y),len(nx))
+            size = min(len(y),len(nx)) -1
             plt.plot(nx[0:size], y[0:size],color)
             #plt.gcf().autofmt_xdate()
             plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
+        print("o valor de self.hours e: " + str(self.hours))
+
         print("Showing daily average occupancy...")
-        fig.savefig('../plots/daily_average_occupancy.png')
-        plt.show()
+        print("o valor de self.day e: " + str(self.day) + "o valor do show_plots e: " + str(show_plots))
+        plt.savefig('../plots/daily_average_occupancy_day' + str(self.day)  + '.png')
+        
+        if show_plots: plt.show()
+
         plt.close(fig)
         print("Saved daily average occupancy...")
 
 
 
 
-    def plot_average_waiting_time(self):
-        if(path.exists('../plots/daily_average_waiting_time.png')):
-            os.remove('../plots/daily_average_waiting_time.png')
+    def plot_average_waiting_time(self,show_plots):
+        if(path.exists('../plots/daily_average_waiting_time_day' + str(self.day) +  '.png')):
+            os.remove('../plots/daily_average_waiting_time_day'  + str(self.day) + '.png')
 
         fig = plt.figure()
         fig.suptitle('Daily Avg Waiting Time Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
@@ -128,16 +151,16 @@ class Reporter:
             nx = []
             for i in x:
                 nx.append(datetime.datetime.combine(datetime.date.min, i))
-            size = min(len(y),len(nx))
+            size = min(len(y),len(nx)) -1
             # plot
             plt.plot(nx[0:size], y[0:size],color)
-            #plt.gcf().autofmt_xdate()
             plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
-        print("Showing average waiting time.")
+        print("Showing average waiting time...")
 
-        fig.savefig('../plots/daily_average_waiting_time.png')
-        plt.show()
+        plt.savefig('../plots/daily_average_waiting_time'  + str(self.day) + '.png')
+
+        if show_plots: plt.show()
         plt.close(fig)
 
 
