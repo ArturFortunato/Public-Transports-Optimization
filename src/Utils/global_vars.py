@@ -117,7 +117,7 @@ red = [aeroporto, encarnacao, moscavide, oriente, cabo_ruivo, olivais, chelas, b
 #missing reboleira
 amadora_este = Station('Amadora Este', 'Amadora Este', 'Santa Apolónia', 0, [1475, 515], [-50, 0])
 alfornelos = Station('Alfornelos', 'Amadora Este', 'Santa Apolónia', 7, [1440, 496], [-50, -15])
-pontinha = Station('Pontinha', 'Amadora Este', 'Santa Apolonia', 16, [1400, 472], [50, -15])
+pontinha = Station('Pontinha', 'Amadora Este', 'Santa Apolónia', 16, [1400, 472], [50, -15])
 carnide = Station('Carnide', 'Amadora Este', 'Santa Apolónia', 21, [1360, 448], [50, -15])
 colegio_militar = Station('Colégio Militar', 'Amadora Este', 'Santa Apolónia', 31, [1315, 420], [70, -15])
 alto_moinhos = Station('Alto dos Moinhos', 'Amadora Este', 'Santa Apolónia', 36, [1275, 396], [80, -15])

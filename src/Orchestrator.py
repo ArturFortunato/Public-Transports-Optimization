@@ -1,6 +1,8 @@
 """
 Project by Artur Fortunato, João Coelho and Pedro Esteves.
 """
+from Utils.global_vars import flags
+
 class Orchestrator:
 
     def __init__(self, new_lines):
@@ -24,8 +26,41 @@ class Orchestrator:
         
 
     #receives as argument the way where the line is changing.
-    def launch_new_train(self, sentido):
+    def add_new_train(self, sentido):
         return [{'nr_carriages': 1, 'speed': 2, 'way': sentido}]
+
+    
+    def launch_trains(self,minutes,res,stations):
+        if(flags["behavior"] == "baseline"):
+            if self.minutes % 8 == 0 and self.minutes % 16 == 0:
+                res['new_train'] += self.add_new_train(-1)
+
+            #launch new train each 18 minutes
+            elif self.minutes % 8 == 0:
+                res['new_train'] += self.add_new_train(1)
+
+        elif(flags["behavior"] == "reactive"):
+            ways = stations[0].get_ways()
+            for way in list(ways.keys()):
+                n_persons = 0
+                for station in stations: #itera todas as estacoes num sentido
+                    n_persons += len(station.persons[way])
+
+                if n_persons / len(stations) > 30:
+                    res['new_train'] += self.add_new_train(ways[way])
+
+            '''
+            for station in stations:
+                ways = station.get_ways()
+                for key in list(ways.keys()): #key e uma estacao consoante o sentido
+                    persons += len(station)
+                    for person in station.persons[key]: #itera as pessoas da estacao num sentido
+                        print(person)
+                        exit()
+            '''
+        
+        return res
+
 
     #AI algorithm to calculate the optimal values for each train velocity and number of carriages.
     #Each invocation of this func deliberates  for a line taking in account the 4 line PERCEPTIONS
@@ -35,16 +70,12 @@ class Orchestrator:
         res["trains"] = {}
         res['new_train'] = []
 
-        print("o valor da line_perception e: " + str(line_perception))
-        exit()
+        print(line_perception["trains"])
+        #exit()
 
-        if self.minutes % 8 == 0 and self.minutes % 16 == 0:
-            res['new_train'] += self.launch_new_train(-1)
 
-        #launch new train each 18 minutes
-        elif self.minutes % 8 == 0:
-            res['new_train'] += self.launch_new_train(1)
-
+        res = self.launch_trains(self.minutes,res,line_perception["stations"])
+        
         #atualiza info relativo aos comboios
         for train_key in line_perception["trains"].keys():
             
