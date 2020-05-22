@@ -70,7 +70,7 @@ class Orchestrator:
         res["trains"] = {}
         res['new_train'] = []
 
-        print(line_perception["trains"])
+        #print(line_perception["trains"])
         #exit()
 
 
