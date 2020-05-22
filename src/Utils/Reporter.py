@@ -98,57 +98,72 @@ class Reporter:
 
 
 
-    def plot_average_occupancy(self, show_plots):
-        if path.exists('../plots/daily_average_occupancy_day'+ str(self.day) + '.png'):
-            os.remove('../plots/daily_average_occupancy_day' + str(self.day) + '.png')
+    def plot_average_occupancy(self,show_plots):
+        if path.exists('../plots/daily_average_occupancy_day' + str(self.day) + '.png'):
+            os.remove('../plots/daily_average_occupancy_day'  + str(self.day) + '.png')
 
         fig = plt.figure()
-        fig.suptitle('Daily Avg Occupancy Per Line '
-                    + self.format_title_metro_colors() + ':', fontsize=12)
+        fig.suptitle('Daily Avg Occupancy Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
         plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Occupancy')
         xformatter = matplotlib.dates.DateFormatter('%H:%M')
-        for color in flags['colors']:
+        for color in flags["colors"]:
 
             y = self.avg_train_occupancy[color]
             x = self.hours
-
-            if flags['opt'] != None:
-                (x, y) = self.apply_options(flags['opt'], x, y)
 
             nx = []
             for i in x:
                 nx.append(datetime.datetime.combine(datetime.date.min, i))
 
-            size = min(len(y), len(nx)) - 1
+            size = min(len(y),len(nx)) -1
 
             x = nx[0:size]
-            y = y[0:size]
+            y= y[0:size]
 
-            plt.plot(x, y, color)  # plot
+            if(flags["opt"] != None): x,y = self.apply_options(flags["opt"],x,y)
 
-            if flags['std'] == True:
+
+            plt.plot(x, y,color) #plot
+
+            if(flags["std"] == True):
                 error = np.random.normal(0.1, 0.02, size=len(y))
-                plt.fill_between(x, y - error, y + error, color=color, alpha=0.4)
+                plt.fill_between(x, y-error,y+error, color=color,alpha=0.4)
 
             plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
-        print('Showing daily average occupancy...')
-        plt.savefig('../plots/daily_average_occupancy_day' + str(self.day)
-                    + '.png')
 
-        if show_plots:
-            plt.show()
+        print("Showing daily average occupancy...")
+        plt.savefig('../plots/daily_average_occupancy_day' + str(self.day)  + '.png')
+        
+        if show_plots: plt.show()
 
         plt.close(fig)
-        print('Saved daily average occupancy...')
+        print("Saved daily average occupancy...")
 
 
     def apply_options(self,opt,x,y):
-        if(flags["opt"] == "smooth"):
+        if flags["opt"] == "smooth" :
             x = [x[i] for i in range(len(x)) if i % 15 == 0]
             y = [y[i] for i in range(len(y)) if i % 15 == 0]
-        return x,y
+
+        elif flags["opt"] == "avg":
+            avg_time = 5
+            avg_x = []
+            avg_y = []
+            #print("o tamanaho de x e : " + str(len(x)))
+            #print("o tamanho de y e: " + str(len(y)))
+            #exit()
+            for ind in range(0,len(y)):
+                if ind == 0:
+                    avg_y.append(y[0])
+                    avg_x.append(x[ind])
+                elif ind % avg_time == 0:
+                    numerador = (sum(y[ind-avg_time:ind]))
+                    denominador = len(y[ind-avg_time:ind])
+                    avg_y.append(numerador/denominador) 
+                    avg_x.append(x[ind])
+        return avg_x, avg_y
 
 
     def plot_average_waiting_time(self,show_plots):
@@ -165,9 +180,7 @@ class Reporter:
             y = self.avg_waiting_time_hour[color]
             x = self.hours
 
-            if(flags["opt"] != None): x,y = self.apply_options(flags["opt"],x,y)
-
-
+            
             nx = []
             for i in x:
                 nx.append(datetime.datetime.combine(datetime.date.min, i))
@@ -176,13 +189,13 @@ class Reporter:
             x = nx[0:size]
             y = y[0:size]
 
+            if(flags["opt"] != None): x,y = self.apply_options(flags["opt"],x,y)
+
+
             plt.plot(x, y,color) #plot
 
             if(flags["std"] == True):
-
-
                 error = np.random.normal(0.1, 0.02, size=len(y))
-
 
                 plt.fill_between(x, y-error,y+error, color=color,alpha=0.4)
 
