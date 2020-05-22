@@ -33,7 +33,7 @@ def add_flags(args):
                 flags['colors'] = ['yellow', 'green', 'blue', 'red']
         if re2.match(arg) != None:
             arg = arg.split('=')[1]
-            if arg in ['reactive', 'deliberative']:
+            if arg in ['reactive', 'deliberative','baseline']:
                 flags['behavior'] = arg
         if re3.match(arg) != None:
             arg = arg.split('=')[1]
