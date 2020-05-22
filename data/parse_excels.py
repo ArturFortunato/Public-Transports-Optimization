@@ -60,7 +60,8 @@ def get_station_id(stations, name):
 def get_time(time, day):
     try: 
         if int(time[0:2])<4: day=day+1
-    except: pass
+    except: 
+        pass
     yearmonth = '2018-10-' if day<=31 else "2018-11-"
     if day>31: day=day%31
     daystr = '%d'%day

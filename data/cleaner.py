@@ -1,14 +1,12 @@
 # - coding: utf-8 --
 import pandas as pd
 
+from global_vars import stations
 #Create datasets for estimating number of people entering d station at d given time
 
 file = "parsed_data/full_data/samplemetro_only_entries_station_names.csv"
 endfolder1 = "parsed_data/data_per_station_count/"
 endfolder2 = "parsed_data/data_per_station_exits/"
-
-stations = ['aeroporto', 'alameda', 'alfornelos', 'alto dos moinhos', 'alvalade', 'amadora este', 'ameixoeira', 'anjos', 'areeiro', 'avenida', 'baixa chiado', 'bela vista', 'cabo ruivo', 'cais do sodré', 'campo grande', 'campo pequeno', 'carnide', 'chelas', 'cidade universitária', 'colégio militar', 'encarnaçao', 'entre campos', 'intendente', 'jardim zoológico', 'laranjeiras', 'lumiar', 'marquês de pombal', 'martim moniz', 'moscavide', 'odivelas', 'olaias', 'olivais', 'oriente', 'parque', 'picoas', 'pontinha', 'praça de espanha', 'quinta das conchas', 'rato', 'reboleira', 'restauradores', 'roma', 'rossio', 'saldanha', 'santa apolónia', 'sao sebastiao', 'senhor roubado', 'telheiras', 'terreiro paço']
-
 
 def generate_count_per_station_per_hour():
     csv = pd.read_csv(file, sep=',', header=0, skipinitialspace=True)
@@ -26,7 +24,7 @@ def generate_count_per_station_per_hour():
         reduced = csv[csv['estacao_entrada'] == station]
         summed = reduced.groupby('date')['count'].sum()
         summed.to_csv(endfolder1 + station + ".csv", index=True, sep=',', header=["count"])
-        with open(endfolder1 + station + ".csv" , 'a', encoding = "latin1") as f:
+        with open(endfolder1 + station + ".csv", 'a', encoding = "latin1") as f:
             f.write(add)
     return "done"
 

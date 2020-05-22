@@ -17,7 +17,7 @@ def add_flags(args):
     for arg in args:
         if p.match(arg) != None:
             arg = arg.split("=")[1]
-            if (arg not in ["yellow", "green", "blue", "red", "ALL"]): #erro
+            if arg not in ["yellow", "green", "blue", "red", "ALL"]: #erro
                 print("FLAG: " + str(arg) + "não reconhecida pelo sistema")
                 #exit()
             else: flags["verbose"] = arg
