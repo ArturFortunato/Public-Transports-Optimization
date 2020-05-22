@@ -31,8 +31,9 @@ class Environment:
         self.time = (datetime.datetime.combine(datetime.date.min, self.time) + datetime.timedelta(minutes = 1)).time()
         if self.time == datetime.time(0,1):
             self.day += 1
-            self.reporter.new_day_reset(False)
+            self.reporter.new_day_reset(False,self.orchestrator.get_trains_per_line()) #o orchestrator guarda para o programa correr mais rapido.
             self.reset_passangers_and_trains()
+            self.orchestrator.reset()
             self.time = datetime.time(6,15)
             self.gui.run(self.day)
             print("---new day---")
@@ -108,7 +109,6 @@ class Environment:
                 self.generate_people()
 
                 self.move_trains()
-
                 self.orchestrator.percept(self.time.hour, self.time.minute)
                 decisions = self.orchestrator.deliberate()
                 self.update_lines(decisions)

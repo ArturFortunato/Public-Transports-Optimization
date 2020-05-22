@@ -33,23 +33,31 @@ class Reporter:
         self.gui = gui
         gui.add_reporter(self)
 
-    
+
+    def register_new_trains(self,decisions):
+        for color in list(decisions.keys()):
+            for t in decisions[color]["new_train"]:
+                self.trains_per_line[color][str(t['way'])] += 1
+
+    def print_trains_of_the_day(self,trains_per_line):
+        for color in ["red","green","blue","yellow"]:
+            print("Metros lançados na linha " + str(color) + ":")
+            for way in ["-1","1"]:
+                print("Sentido  " + str(way)  + " : " + str(trains_per_line[color][way]))
+
     #faz reset dos parametros.
-    def new_day_reset(self,show_plots):
+    def new_day_reset(self,show_plots,trains_of_the_day):
+        self.print_trains_of_the_day(trains_of_the_day)
         print("Reporter resetting...")
         #no início do primeiro dia não ha plots para mostrar
         if(self.day >= 1): self.generate_charts(show_plots)
         
         self.day += 1
-
         self.hours = []
 
         for key in list(self.avg_train_occupancy.keys()):
             self.avg_waiting_time_hour[key] = []
             self.avg_train_occupancy[key] = []
-
-        for key in list(self.waiting_times_per_line.keys()):
-            self.waiting_times_per_line[key] = []
 
 
 
@@ -80,8 +88,6 @@ class Reporter:
                 self.hours.append(time)
             self.avg_waiting_time_hour[key].append(avg_waiting_time)  
 
-            #print("Linha " +str(key) + " - "  + str(avg_waiting_time)  + "  Pessoas:" + str(len(self.waiting_times_per_line[key])) )
-
 
     def format_title_metro_colors(self):
         res = "("
@@ -91,10 +97,17 @@ class Reporter:
             else: res += ") - Day " +  str(self.day)
         return res
 
+    def format_behavior(self,b):
+        if(b == "baseline"): return "Baseline"
+        if(b == "reactive"): return "Reactive"
+        if(b == "deliberative"): return "Deliberative"
+
+
     def generate_charts(self,show_plots):
         if(flags["colors"] != [] and self.hours != []):
             self.plot_average_occupancy(show_plots)
             self.plot_average_waiting_time(show_plots)
+
 
 
 
@@ -103,7 +116,7 @@ class Reporter:
             os.remove('../plots/daily_average_occupancy_day'  + str(self.day) + '.png')
 
         fig = plt.figure()
-        fig.suptitle('Daily Avg Occupancy Per Line ' + self.format_title_metro_colors() + ":", fontsize=12)
+        fig.suptitle(str(self.format_behavior(flags["behavior"]))  + ' - Avg Occupancy Per Line ' + self.format_title_metro_colors() , fontsize=12)
         plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Occupancy')
         xformatter = matplotlib.dates.DateFormatter('%H:%M')
@@ -171,7 +184,7 @@ class Reporter:
             os.remove('../plots/daily_average_waiting_time_day'  + str(self.day) + '.png')
 
         fig = plt.figure()
-        fig.suptitle('Daily Avg Waiting Time Per Line(s) ' + self.format_title_metro_colors() + ":", fontsize=12)
+        fig.suptitle(str(self.format_behavior(flags["behavior"])) + self.format_title_metro_colors() + " - Avg waiting Time(s) per Line " + str(self.format_behavior(flags["behavior"])), fontsize=12)
         plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Waiting Time')
         xformatter = matplotlib.dates.DateFormatter('%H:%M')

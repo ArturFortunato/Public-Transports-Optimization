@@ -226,9 +226,10 @@ class Line:
     def get_line_info(self):
         line_info = {}
         line_info["trains"] = {}
+        line_info["stations"] = self.stations
+
         for i in range(len(self.trains)):
             line_info["trains"][i] = self.trains[i].get_train_info()
-            line_info["stations"] = self.stations
         return line_info
 
     def get_train_by_id(self, tid):
