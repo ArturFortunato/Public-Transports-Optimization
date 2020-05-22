@@ -96,7 +96,7 @@ class Gui:
         base_time = "Time: "
         large_text = pg.font.Font('freesansbold.ttf', 15)
         time = str(self.environment.time)
-        text_surf = large_text.render(base_day + str(day) + " | " + base_time + time, True, TEXT_COLOR)
+        text_surf = large_text.render(base_day + str(day) + " October, 2019| " + base_time + time, True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
         text_rect.center = (80, 33)
         self.win.blit(text_surf, text_rect)
