@@ -12,17 +12,38 @@ Ex:
 '''
 
 def add_flags(args):
-    p = re.compile('lines=+')
-    flags["verbose"] = None
+
+    #Adiciona linhas
+    re1 = re.compile('--lines=+')
+    re2 = re.compile('--behavior=+')
+    re3 = re.compile('--smooth')
+    flags[""] = None
+    flags["colors"] = []
+    flags["behavior"] = "baseline"
+    flags["smooth"] = False
+
     for arg in args:
-        if p.match(arg) != None:
+        if re1.match(arg) != None:
             arg = arg.split("=")[1]
+            print(arg)
             if arg in ["yellow","green","blue","red"]:
-                flags["verbose"] = [arg]
+                flags["colors"] = [arg]
             elif arg == "ALL":
-                flags["verbose"] = ["yellow","green","blue","red"]
-        else:
-            flags["verbose"] = []
+                flags["colors"] = ["yellow","green","blue","red"]
+        if re2.match(arg) != None:
+            arg = arg.split("=")[1]
+            if arg in ["reactive","deliberative"]:
+                flags["behavior"] = arg
+        
+    #Adiciona o envelope com o desvio padrao
+    if "--std" in args: flags["std"] = True
+    else : flags["std"] = False
+
+    #Faz smoothing
+    if "--smooth" in args: flags["smooth"] = True
+    else : flags["smooth"] = False
+    
+
 
 
 ##### Auxiliar

@@ -25,7 +25,7 @@ class Reporter:
         #Guarda a ocupacao media de cada comboio
         self.avg_train_occupancy = {}
 
-        for c in flags["verbose"]:
+        for c in flags["colors"]:
             self.avg_waiting_time_hour[c] = []
             self.avg_train_occupancy[c] = []
         #Guarda as horas.
@@ -37,11 +37,11 @@ class Reporter:
     #faz reset dos parametros.
     def new_day_reset(self,show_plots):
         print("Reporter resetting...")
+        #no início do primeiro dia não ha plots para mostrar
+        if(self.day >= 1): self.generate_charts(show_plots)
+        
         self.day += 1
 
-        #no início do primeiro dia não ha plots para mostrar
-        if(self.day != 1): self.generate_charts(show_plots)
-        
         self.hours = []
 
         for key in list(self.avg_train_occupancy.keys()):
@@ -59,7 +59,7 @@ class Reporter:
             self.total_waiting_times.append(r.seconds)              #total analysis
 
     def report_average_train_occupancy(self,color,avg_train_occupancy):
-        if color in flags["verbose"]:
+        if color in flags["colors"]:
             self.avg_train_occupancy[color].append(avg_train_occupancy)
 
     def get_average(self, time):
@@ -67,7 +67,7 @@ class Reporter:
             return None
         else:
             for key in list(self.waiting_times_per_line.keys()):
-                if key in flags["verbose"]:
+                if key in flags["colors"]:
                     self.print_individual_line_metrics(key, time)
             return sum(self.total_waiting_times) / len(self.total_waiting_times)
 
@@ -85,21 +85,20 @@ class Reporter:
 
     def format_title_metro_colors(self):
         res = "("
-        for c in range(0,len(flags["verbose"])):
-            res += flags["verbose"][c]
-            if(c != len(flags["verbose"])-1): res += ", "
+        for c in range(0,len(flags["colors"])):
+            res += flags["colors"][c]
+            if(c != len(flags["colors"])-1): res += ", "
             else: res += ") - Day " +  str(self.day)
         return res
 
     def generate_charts(self,show_plots):
-        if(flags["verbose"] != []):
+        if(flags["colors"] != [] and self.hours != []):
             self.plot_average_occupancy(show_plots)
             self.plot_average_waiting_time(show_plots)
 
 
 
     def plot_average_occupancy(self,show_plots):
-
         if path.exists('../plots/daily_average_occupancy_day' + str(self.day) + '.png'):
             os.remove('../plots/daily_average_occupancy_day'  + str(self.day) + '.png')
 
@@ -108,23 +107,34 @@ class Reporter:
         plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Occupancy')
         xformatter = matplotlib.dates.DateFormatter('%H:%M')
-        for color in flags["verbose"]:
+        for color in flags["colors"]:
 
             y = self.avg_train_occupancy[color]
             x = self.hours
+
+            if(flags["smooth"] == True):
+                x = [x[i] for i in range(len(x)) if i % 10 == 0]
+                y = [y[i] for i in range(len(y)) if i % 10 == 0]
+
             nx = []
             for i in x:
                 nx.append(datetime.datetime.combine(datetime.date.min, i))
 
             size = min(len(y),len(nx)) -1
-            plt.plot(nx[0:size], y[0:size],color)
-            #plt.gcf().autofmt_xdate()
+
+            x = nx[0:size]
+            y= y[0:size]
+
+            plt.plot(x, y,color) #plot
+
+            if(flags["std"] == True):
+                error = np.random.normal(0.1, 0.02, size=len(y))
+                plt.fill_between(x, y-error,y+error, color=color,alpha=0.4)
+
             plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
-        print("o valor de self.hours e: " + str(self.hours))
 
         print("Showing daily average occupancy...")
-        print("o valor de self.day e: " + str(self.day) + "o valor do show_plots e: " + str(show_plots))
         plt.savefig('../plots/daily_average_occupancy_day' + str(self.day)  + '.png')
         
         if show_plots: plt.show()
@@ -144,16 +154,29 @@ class Reporter:
         plt.xlabel('Time (HH:MM)')
         plt.ylabel('Avg Waiting Time')
         xformatter = matplotlib.dates.DateFormatter('%H:%M')
-        for color in flags["verbose"]:
+        for color in flags["colors"]:
 
             y = self.avg_waiting_time_hour[color]
             x = self.hours
+
+            if(flags["smooth"] == True):
+                x = [x[i] for i in range(len(x)) if i % 5 == 0]
+                y = [y[i] for i in range(len(y)) if i % 5 == 0]
+
             nx = []
             for i in x:
                 nx.append(datetime.datetime.combine(datetime.date.min, i))
             size = min(len(y),len(nx)) -1
-            # plot
-            plt.plot(nx[0:size], y[0:size],color)
+
+            x = nx[0:size]
+            y = y[0:size]
+
+            plt.plot(x, y,color) #plot
+
+            if(flags["std"] == True):
+                error = np.random.normal(0.1, 0.02, size=len(y))
+                plt.fill_between(x, y-error,y+error, color=color,alpha=0.4)
+
             plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
 
         print("Showing average waiting time...")
