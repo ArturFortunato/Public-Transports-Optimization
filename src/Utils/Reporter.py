@@ -25,13 +25,16 @@ class Reporter:
         #Guarda a ocupacao media de cada comboio
         self.avg_train_occupancy = {}
 
-        for c in flags["colors"]:
+        for c in ["green","yellow","red","blue"]:
             self.avg_waiting_time_hour[c] = []
             self.avg_train_occupancy[c] = []
         #Guarda as horas.
         self.hours = []
         self.gui = gui
         gui.add_reporter(self)
+
+    if(path.exists('../logs/logs.txt')):
+        os.remove('../logs/logs.txt')
 
 
     def register_new_trains(self,decisions):
@@ -40,14 +43,43 @@ class Reporter:
                 self.trains_per_line[color][str(t['way'])] += 1
 
     def print_trains_of_the_day(self,trains_per_line):
+        res = "     METROS LANÇADOS POR LINHA:"
+        print(res)
+        res =  "-------------------------------------------------------" + "\n" + res
         for color in ["red","green","blue","yellow"]:
-            print("Metros lançados na linha " + str(color) + ":")
+            tmp = "         " + str(color) + ":"
             for way in ["-1","1"]:
-                print("Sentido  " + str(way)  + " : " + str(trains_per_line[color][way]))
+                tmp += " Sentido  " + str(way)  + " : " + str(trains_per_line[color][way]) + "     "            
+            res += "\n" + tmp 
+            print(tmp)
+        return res
+
+
+    def add_to_logs(self,trains_of_the_day):
+        with open("../logs/logs.txt", "a") as file_object:
+            file_object.write("-------------------------------------------------------\n")
+
+            tmp = "REPORT DO DIA " + str(self.day) + " :"
+            print(tmp)
+            file_object.write(tmp + "\n")
+            tmp = "-------------------------------------------------------"
+            file_object.write(tmp + "\n")
+            print(tmp)
+            tmp = "     TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:"
+            file_object.write(tmp + "\n")
+            print(tmp)
+            for c in ["green","yellow","blue", "red"]:
+                tmp = "         " + str(c) + " : " + str( round(sum(self.waiting_times_per_line[c]) / len(self.waiting_times_per_line[c]),0)) + " segundos  - " + str(round(sum(self.avg_train_occupancy[c]) / len(self.avg_train_occupancy[c]),4))
+                print(tmp)
+                file_object.write(tmp + "\n")
+            print("-------------------------------------------------------")
+            file_object.write(self.print_trains_of_the_day(trains_of_the_day))
+            print("#######################################################")
+    
 
     #faz reset dos parametros.
     def new_day_reset(self,show_plots,trains_of_the_day):
-        self.print_trains_of_the_day(trains_of_the_day)
+        self.add_to_logs(trains_of_the_day)
         print("Reporter resetting...")
         #no início do primeiro dia não ha plots para mostrar
         if(self.day >= 1): self.generate_charts(show_plots)
@@ -164,9 +196,6 @@ class Reporter:
             avg_time = 5
             avg_x = []
             avg_y = []
-            #print("o tamanaho de x e : " + str(len(x)))
-            #print("o tamanho de y e: " + str(len(y)))
-            #exit()
             for ind in range(0,len(y)):
                 if ind == 0:
                     avg_y.append(y[0])

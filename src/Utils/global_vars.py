@@ -25,7 +25,6 @@ def add_flags(args):
     for arg in args:
         if re1.match(arg) != None:
             arg = arg.split('=')[1]
-            print(arg)
             if arg in ['yellow', 'green', 'blue', 'red']:
                 flags['colors'] = [arg]
             elif arg == 'ALL':
