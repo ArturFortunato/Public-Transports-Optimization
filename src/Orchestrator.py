@@ -1,6 +1,7 @@
-"""
-Project by Artur Fortunato, João Coelho and Pedro Esteves.
-"""
+'''
+Project by Artur Fortunato, Joao Coelho and Pedro Esteves.
+'''
+
 from Utils.global_vars import flags
 
 class Orchestrator:
