@@ -12,6 +12,7 @@ class Orchestrator:
         self.deliberations = {}
         self.hours = None
         self.minutes = None
+        self.day = None
         self.test_new_train = False
 
         #regista o numero de trains por linha
@@ -24,7 +25,23 @@ class Orchestrator:
             self.trains_per_line[c]["-1"] = 0
             self.trains_per_line[c]["1"] = 0
 
+        if(flags["behavior"] == "deliberative"):
+            self.stored_perceptions = {}
+            for h in range(6,24):
+                self.stored_perceptions[h] = {}
+                for m in range(0,61):
+                    self.stored_perceptions[h][m] = {}
+                    for c in ["red","green","blue","yellow"]:
+                        self.stored_perceptions[h][m][c] = {}
+                        for s in ["-1","1"]:
+                            self.stored_perceptions[h][m][c][s] = {}
+                            for key in ["lt","occ","avg_p"]:
+                                self.stored_perceptions[h][m][c][s][key] = ""
+                
+            
+    
     def reset(self):
+        print(self.stored_perceptions)
         for c in ["red","blue","green","yellow"]:
             self.trains_per_line[c]["-1"] = 0
             self.trains_per_line[c]["1"] = 0
@@ -36,7 +53,8 @@ class Orchestrator:
         #dayOver - Boolean. It is true if the day is over, false if not.
         #hours - Received from the environment. The orchestrator
         #minutes - Received from the environment.
-    def percept(self, hours, minutes):
+    def percept(self,day, hours, minutes):
+        self.day = day
         self.hours = hours
         self.minutes = minutes
         for line in self.lines:
@@ -47,19 +65,74 @@ class Orchestrator:
     def add_new_train(self, sentido):
         return [{'nr_carriages': 1, 'speed': 2, 'way': sentido}]
 
+
+    #Guarda informacao para planeamento do dia asseguir
+    def store_info_deliberative(self,metrics,color):
+        if(self.hours != 0):
+            for way in list(metrics.keys()):
+                way = str(way)
+                self.stored_perceptions[self.hours][self.minutes][color][way]["lt"] = metrics[way]["lt"]
+                self.stored_perceptions[self.hours][self.minutes][color][way]["occ"] = metrics[way]["occ"]
+                self.stored_perceptions[self.hours][self.minutes][color][way]["avg_p"] = metrics[way]["avg_p"]
+            
+
+
+
+    def launch_trains_baseline(self,res,color):
+        train_launched = False
+        if self.minutes % 8 == 0 and self.minutes % 16 == 0:
+            res['new_train'] += self.add_new_train(-1)
+            train_launched = True
+            self.trains_per_line[color]["-1"]+=1
+
+
+        #launch new train each 8 minutes
+        elif self.minutes % 8 == 0:
+            res['new_train'] += self.add_new_train(1)
+            train_launched = True
+            self.trains_per_line[color]["1"]+=1
+
+        return train_launched,res
+
+
+    #Devolve a media de passageiros e a ocupacao das carruagens por linha por sentido
+    def get_line_metrics(self,line_perception):
+        resultado = {}
+        stations = line_perception["stations"]
+        ways = stations[0].get_ways()
+        for way in list(ways.keys()):
+            n_persons = 0
+            for station in stations: 
+                n_persons += len(station.persons[way])
+
+            trains = line_perception["trains"]
+            total_occupancy = 0
+            total_occupancy_train_counter = 0
+            for train_key in trains:
+                if(trains[train_key]["way"] == station.ways[way]):
+                    for carriage in trains[train_key]["carriages"]:
+                        total_occupancy = carriage.get_occupancy_ratio()
+                        total_occupancy_train_counter+=1
+
+            if total_occupancy_train_counter > 0 : 
+                occupancy_ratio = total_occupancy / total_occupancy_train_counter
+            else: occupancy_ratio = 0
+
+                
+            resultado[str(ways[way])] = {}
+            resultado[str(ways[way])]["avg_p"] = n_persons / len(stations)
+            resultado[str(ways[way])]["occ"] = occupancy_ratio
+
+        return resultado
+
     
+    #Esta funcao e chamada a cada tik para os 2 sentidos de uma linha
     def launch_trains(self,minutes,res,line_perception,color):
         stations = line_perception["stations"]
 
-        if(flags["behavior"] == "baseline"):
-            if self.minutes % 8 == 0 and self.minutes % 16 == 0:
-                res['new_train'] += self.add_new_train(-1)
-                self.trains_per_line[color]["-1"]+=1
-
-            #launch new train each 8 minutes
-            elif self.minutes % 8 == 0:
-                res['new_train'] += self.add_new_train(1)
-                self.trains_per_line[color]["1"]+=1
+        if(flags["behavior"] == "baseline"): 
+           _, res  = self.launch_trains_baseline(res,color)
+           print("o valor de res e: " + str(res))
 
         elif(flags["behavior"] == "reactive"):
             ways = stations[0].get_ways()
@@ -88,6 +161,22 @@ class Orchestrator:
                 if (n_persons / len(stations) > 30 and occupancy_ratio > 0.70) or (n_persons / len(stations) > 30 and trains == {}):
                     res['new_train'] += self.add_new_train(ways[way])
                     self.trains_per_line[color][str(ways[way])]+=1
+
+
+        elif(flags["behavior"]  == "deliberative"):
+            if(self.day == 1):
+                launched, res  = self.launch_trains_baseline(res,color)
+                metrics = self.get_line_metrics(line_perception)
+                
+                for way_key in list(metrics.keys()):
+                    if(launched == True):
+                        way = res["new_train"][0]["way"]
+                        metrics[way_key]["lt"] = True
+                    else: metrics[way_key]["lt"] = False
+            
+            
+            self.store_info_deliberative(metrics,color)
+
 
         return res
 
