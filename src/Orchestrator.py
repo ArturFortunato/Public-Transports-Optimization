@@ -38,13 +38,56 @@ class Orchestrator:
                             for key in ["lt","occ","avg_p"]:
                                 self.stored_perceptions[h][m][c][s][key] = ""
                 
+
+    #faz a media de hora para ocupacao das carruagens e numero de pessoas
+    def hour_avg(self,string,hour,color,way):
+        acc = 0
+        hour = 23 #ALTERAR DE SEGUIDA
+        for m in range(0,60):
+            acc += self.stored_perceptions[hour][m][color][way][string]
+        return acc/60
+
+    #conta o numero de comboios lancados
+    def count_hour_lt(self,hour,color,way):
+        count = 0
+        hour = 23 #ALTERAR DE SEGUIDA
+        for m in range(0,60):
+            count += self.stored_perceptions[hour][m][color][way]["lt"]
+        return count
+
+    def plan(self):
+        plan = {}
+        for hour in self.stored_perceptions.keys():
+            plan[hour] = {}
+            for color in ["blue","yellow","green","red"]:
+                for way in ["-1","1"]:
+                    avg_p = self.hour_avg("avg_p",hour,color,way)
+                    avg_o = self.hour_avg("occ",hour,color,way)
+                    hour_lt = self.count_hour_lt(hour,color,way)
+
+                    if avg_p  > 15 and avg_o > 0.5:
+                        hour_lt += 1
+                    else: hour_lt -= 1
+                        
+                    freq  = round((60 / hour_lt),0)
+                    
+                    minutos_de_partida = []
+                    m = 0
+                    while(m < 60):
+                        minutos_de_partida.append(m)
+                        m += freq
+                    plan[hour][color][way] =  minutos_de_partida
+
+        print(plan)
+        exit()
             
     
     def reset(self):
-        print(self.stored_perceptions)
         for c in ["red","blue","green","yellow"]:
             self.trains_per_line[c]["-1"] = 0
             self.trains_per_line[c]["1"] = 0
+        if(flags["behavior"] == "deliberative"):
+            self.plan()
        
     def get_trains_per_line(self):
         return self.trains_per_line
@@ -158,7 +201,7 @@ class Orchestrator:
                 else: occupancy_ratio = 0
 
                 #o or e porque podem nao existir trains a circular dai a ocupacao ser 0.
-                if (n_persons / len(stations) > 30 and occupancy_ratio > 0.70) or (n_persons / len(stations) > 30 and trains == {}):
+                if (n_persons / len(stations) > 15 and occupancy_ratio > 0.20) or (n_persons / len(stations) > 15 and trains == {}):
                     res['new_train'] += self.add_new_train(ways[way])
                     self.trains_per_line[color][str(ways[way])]+=1
 
