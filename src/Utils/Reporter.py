@@ -25,7 +25,7 @@ class Reporter:
         #Guarda a ocupacao media de cada comboio
         self.avg_train_occupancy = {}
 
-        for c in ["green","yellow","red","blue"]:
+        for c in ['blue','green','red','yellow']:
             self.avg_waiting_time_hour[c] = []
             self.avg_train_occupancy[c] = []
         #Guarda as horas.
@@ -46,10 +46,11 @@ class Reporter:
         res = "     METROS LANÇADOS POR LINHA:"
         print(res)
         res =  "-------------------------------------------------------" + "\n" + res
-        for color in ["red","green","blue","yellow"]:
+        for color in ['blue','green','red','yellow']:
             tmp = "         " + str(color) + ":"
             for way in ["-1","1"]:
-                tmp += " Sentido  " + str(way)  + " : " + str(trains_per_line[color][way]) + "     "            
+                tmp += " Sentido  " + str(way)  + " : " + str(trains_per_line[color][way]) + "     "  
+                print(tmp)          
             res += "\n" + tmp 
             print(tmp)
         return res
@@ -57,7 +58,7 @@ class Reporter:
 
     def add_to_logs(self,trains_of_the_day):
         with open("../logs/logs.txt", "a") as file_object:
-            file_object.write("-------------------------------------------------------\n")
+            file_object.write("\n-------------------------------------------------------\n")
 
             tmp = "REPORT DO DIA " + str(self.day) + " :"
             print(tmp)
@@ -179,6 +180,7 @@ class Reporter:
 
 
         print("Showing daily average occupancy...")
+        print("o valor do dia e: " + str(self.day))
         plt.savefig('../plots/daily_average_occupancy_day' + str(self.day)  + '.png')
         
         if show_plots: plt.show()

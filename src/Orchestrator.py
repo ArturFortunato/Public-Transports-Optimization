@@ -84,7 +84,7 @@ class Orchestrator:
                 else: occupancy_ratio = 0
 
                 #o or e porque podem nao existir trains a circular dai a ocupacao ser 0.
-                if (n_persons / len(stations) > 30 and occupancy_ratio > 0.65) or (n_persons / len(stations) > 30 and trains == {}):
+                if (n_persons / len(stations) > 30 and occupancy_ratio > 0.70) or (n_persons / len(stations) > 30 and trains == {}):
                     res['new_train'] += self.add_new_train(ways[way])
                     self.trains_per_line[color][str(ways[way])]+=1
 

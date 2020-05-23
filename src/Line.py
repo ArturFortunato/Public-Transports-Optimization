@@ -94,17 +94,23 @@ class Line:
         self.trains = []
 
         if color == 'red':
-            self.stations = red
+            self.stations = red #adiciona metro as 6 e 15 nos dois sentidos
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, red, 1, self.color)]
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
         elif color == 'yellow':
             self.stations = yellow
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, yellow[::-1], -1, self.color)]
+
         elif color == 'green':
             self.stations = green
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, green, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, green[::-1], -1, self.color)]
+
         elif color == 'blue':
             self.stations = blue
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, blue[::-1], -1, self.color)]
         self.number_of_trains = 1
         
         #gui stuff

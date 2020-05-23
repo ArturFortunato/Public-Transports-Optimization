@@ -23,7 +23,7 @@ class Environment:
                       Line('green', 2, self.reporter, self.gui)]
         self.orchestrator = Orchestrator(self.lines)
 
-        self.time = datetime.time(23,15)
+        self.time = datetime.time(6,15)
         self.day = 1
 
     #TIME MEASURE
@@ -124,7 +124,6 @@ class Environment:
                 self.orchestrator.percept(self.time.hour, self.time.minute)
                 decisions = self.orchestrator.deliberate()
                 self.update_lines(decisions)
-
                 self.gui.run(self.day)
 
                 self.tik()
