@@ -3,7 +3,7 @@ import pygame as pg
 from Line import Line
 import datetime
 
-from Utils.global_vars import stations_per_line
+from Utils.global_vars import stations_per_line, flags
 
 colors = {
     'red': (255, 0, 0),
@@ -84,21 +84,30 @@ class Gui:
         self.win.blit(text_surf, text_rect)
     
     def write_reports(self):
-        base_text = "Global average waiting time:"
+        base_text = "GLOBAL AVERAGE WAITING TIME:"
         large_text = pg.font.Font('freesansbold.ttf', 15)
         time = self.environment.time
-        text_surf = large_text.render(base_text + str(self.reporter.get_average(time)), True, TEXT_COLOR)
+        text_surf = large_text.render(base_text + "{0:.2f}".format(self.reporter.get_average(time)), True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
+        text_rect.center = (157, 10)
         self.win.blit(text_surf, text_rect)
     
     def write_current_time(self, day):
-        base_day = "Day: "
-        base_time = "Time: "
+        base_day = "DAY: "
+        base_time = "TIME: "
         large_text = pg.font.Font('freesansbold.ttf', 15)
         time = str(self.environment.time)
         text_surf = large_text.render(base_day + str(day) + " October, 2018 | " + base_time + time, True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
-        text_rect.center = (132, 33)
+        text_rect.center = (140, 33)
+        self.win.blit(text_surf, text_rect)
+    
+    def write_behavior(self):
+        base_behavior = "BEHAVIOR: "
+        large_text = pg.font.Font('freesansbold.ttf', 15)
+        text_surf = large_text.render(base_behavior + flags["behavior"], True, TEXT_COLOR)
+        text_rect = text_surf.get_rect()
+        text_rect.center = (77, 58)
         self.win.blit(text_surf, text_rect)
 
     def draw(self, day):
@@ -118,6 +127,7 @@ class Gui:
         
         self.write_reports()
         self.write_current_time(day)
+        self.write_behavior()
 
     def is_crossing(self, current_station, index):
         for i in range(len(self.stations)):

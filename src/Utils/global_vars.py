@@ -18,18 +18,17 @@ def add_flags(args):
     re2 = re.compile('--behavior=+')
     re3 = re.compile('--opt=+')
     flags['opt'] = None
-    flags['colors'] = []
+    flags['colors'] = ['blue','green','red','yellow']
     flags['behavior'] = 'baseline'
     flags['std'] = False
 
     for arg in args:
         if re1.match(arg) != None:
             arg = arg.split('=')[1]
-            print(arg)
-            if arg in ['yellow', 'green', 'blue', 'red']:
+            if arg in ['blue','green','red','yellow']:
                 flags['colors'] = [arg]
             elif arg == 'ALL':
-                flags['colors'] = ['yellow', 'green', 'blue', 'red']
+                flags['colors'] = ['blue','green','red','yellow']
         if re2.match(arg) != None:
             arg = arg.split('=')[1]
             if arg in ['reactive', 'deliberative','baseline']:

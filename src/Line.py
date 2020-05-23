@@ -94,17 +94,23 @@ class Line:
         self.trains = []
 
         if color == 'red':
-            self.stations = red
+            self.stations = red #adiciona metro as 6 e 15 nos dois sentidos
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, red, 1, self.color)]
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, red[::-1], -1, self.color)]
         elif color == 'yellow':
             self.stations = yellow
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, yellow, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, yellow[::-1], -1, self.color)]
+
         elif color == 'green':
             self.stations = green
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, green, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, green[::-1], -1, self.color)]
+
         elif color == 'blue':
             self.stations = blue
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, blue[::-1], -1, self.color)]
         self.number_of_trains = 1
         
         #gui stuff
@@ -226,9 +232,10 @@ class Line:
     def get_line_info(self):
         line_info = {}
         line_info["trains"] = {}
+        line_info["stations"] = self.stations
+
         for i in range(len(self.trains)):
             line_info["trains"][i] = self.trains[i].get_train_info()
-            line_info["stations"] = self.stations
         return line_info
 
     def get_train_by_id(self, tid):

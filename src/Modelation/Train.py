@@ -42,6 +42,7 @@ class Train:
     
     def get_train_info(self):
         train_info = {}
+        train_info["way"] = self.get_way()
         train_info['position'] = self.position
         train_info['current_speed'] = self.current_speed
         train_info['carriages'] = self.carriages
