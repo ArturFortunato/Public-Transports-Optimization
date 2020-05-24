@@ -121,7 +121,7 @@ class Environment:
                 self.generate_people()
 
                 self.move_trains()
-                self.orchestrator.percept(self.time.hour, self.time.minute)
+                self.orchestrator.percept(self.day,self.time.hour, self.time.minute)
                 decisions = self.orchestrator.deliberate()
                 self.update_lines(decisions)
                 self.gui.run(self.day)

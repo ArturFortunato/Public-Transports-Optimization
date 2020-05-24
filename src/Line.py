@@ -109,7 +109,7 @@ class Line:
 
         elif color == 'blue':
             self.stations = blue
-            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 1, 4, colors[color], gui, blue, 1, self.color)]
+            self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, blue, 1, self.color)]
             self.trains += [Train(0, 3, [Carriage(base_carriage_capacity*6, self)], 3, 4, colors[color], gui, blue[::-1], -1, self.color)]
         self.number_of_trains = 1
         
