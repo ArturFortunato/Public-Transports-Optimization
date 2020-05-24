@@ -1,23 +1,46 @@
 # Public-Transports-Optimization
-AASMA project repository
+Projeto para a cadeira de AASMA, IST, MEIC, 2020.  
 
-Projeto feito por: Artur Fortunato, João Coelho e Pedro Esteves.
+Autores: Artur Fortunato, João Coelho e Pedro Esteves.  
 
-Este projeto visa simular o metro de Lisboa utilizando dados do mês de Outubro de 2019.
+Este projeto visa simular o metro de Lisboa utilizando dados do mês de Outubro de 2019.  
 
-Existem 3 modelos no projeto atualmente: baseline, reactive e deliberative.
+Existem 3 modelos no projeto atualmente: baseline, reactive e deliberative.  
 
-É possível passar argumentos através do terminal para o programa. Estes argumentos incluem:
+É possível passar argumentos através do terminal para o programa.  
 
-#How to run
+
+## Organização
+/data/  
+- Modelos para geração de pessoas. Dados sensiveis logo não está tudo aqui.  /data/models tem os pickles dos modelos.  
+
+/logs/
+- Logs gerados durante a execução do programa. Inclui numero de comboios em cada linha em cada sentido e ocupação média.  
+
+/plots/
+- Graficos gerados durante a execução do programa. Dois gráficos por dia, um da evolução do tempo médio de espera, outro da evolução da capacidade média dos comboios.  
+
+/src/
+- Código base. Na raíz tem o código relativo aos agentes (Orchestrator.py e Line.py) e ao Ambiente. Tem também o main.  
+
+/src/Modelation  
+- Código para modelar o metro de Lisboa.  
+
+/src/Utils  
+- Contem código para a GUI, previsões temporais baseadas no modelo, GUI, um Reporter que guarda a evolução das métricas e variáveis globais.  
+
+
+## How to run
+
+From src/:  
 
 python main.py
 
-#FLAGS
+### FLAGS
 
 --behavior : Esta flag controla o tipo de modelo a ser usado. Ela pode ter 3 valores. "reactive", "baseline" ou "deliberative".
 
---lines : Esta flag permite controlar as linhas plottadas. Pode ser "red", "green", "yellow", "blue" ou ALL
+--lines : Esta flag permite controlar as linhas plottadas. Pode ser "red", "green", "yellow", "blue" ou ALL  
 
 --opt : 
     Esta flag pode ter 2 valores:
@@ -28,7 +51,7 @@ python main.py
 
 Por omissão caso se corra apenas o projeto assim: "python main.py " O modo default é o baseline a plottar todas as linhas sem qualquer smoothing ou sampling.
 
-#Exemplos
+### Exemplos
 
 python main.py --lines=green (Plota apenas gráficos para a linha verde)
 
@@ -39,3 +62,23 @@ python main.py --lines=blue --std (Plota gráficos para a linha azul com o envel
 python main.py --lines=ALL --std --opt=smooth (Plota todos os gráficos com o envelope de std e desvio padrão)
 
 python main.py --lines=ALL --std --opt=avg --behavior=reactive (Corre o modelo reactivo plottando todas as linhas com averaging a cada 15 minutes mais os envelopes de desvio padrao).
+
+
+## Parametros
+
+Cada comportamento depende de alguns parametros para realizar as escolhas. Estes parametros estão explicados no relatório.
+Os parametros que temos de momento na implementação são:
+
+Reactive:
+- Ocupancia Média: 20%.  
+- Média de Pessoas por estação: 20.  
+
+Deliberativo:
+- Horario Inicial: Comboios a cada 16 minutos.  
+- Ocupancia Média: 40%
+- Média de Pessoas por Estação: 20
+
+Variações nestes valores irão produzir resultados diferentes.
+
+A baseline atual está a lançar um comboio a cada 8 minutos.
+

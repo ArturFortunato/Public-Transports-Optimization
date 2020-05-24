@@ -200,6 +200,15 @@ class Line:
             for i in range(len(deliberations['new_train'])):
                 self.add_train(deliberations['new_train'][i])
 
+    def get_line_info(self):
+        line_info = {}
+        line_info["trains"] = {}
+        line_info["stations"] = self.stations
+
+        for i in range(len(self.trains)):
+            line_info["trains"][i] = self.trains[i].get_train_info()
+        return line_info
+
     ####################################
     #
     #            AUXILIAR
@@ -228,15 +237,6 @@ class Line:
             for carriage in train.carriages:
                 train_occupancy_ratio.append(carriage.get_occupancy_ratio())
         return sum(train_occupancy_ratio)/ len(train_occupancy_ratio)
-    
-    def get_line_info(self):
-        line_info = {}
-        line_info["trains"] = {}
-        line_info["stations"] = self.stations
-
-        for i in range(len(self.trains)):
-            line_info["trains"][i] = self.trains[i].get_train_info()
-        return line_info
 
     def get_train_by_id(self, tid):
         return trains[tid]

@@ -122,7 +122,7 @@ class Environment:
 
                 self.move_trains()
                 self.orchestrator.percept(self.day,self.time.hour, self.time.minute)
-                decisions = self.orchestrator.deliberate()
+                decisions = self.orchestrator.behave()
                 self.update_lines(decisions)
                 self.gui.run(self.day)
 
