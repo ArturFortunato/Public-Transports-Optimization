@@ -107,7 +107,7 @@ class Gui:
         large_text = pg.font.Font('freesansbold.ttf', 15)
         text_surf = large_text.render(base_behavior + flags["behavior"], True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
-        text_rect.center = (77, 58)
+        text_rect.center = (92, 58)
         self.win.blit(text_surf, text_rect)
 
     def draw(self, day):

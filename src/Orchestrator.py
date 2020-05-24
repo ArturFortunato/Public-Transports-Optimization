@@ -52,12 +52,12 @@ class Orchestrator:
         stations = line_perception["stations"]
 
         if(flags["behavior"] == "baseline"):
-            if self.minutes % 8 == 0 and self.minutes % 16 == 0:
+            if self.minutes % 4 == 0 and self.minutes % 8 == 0:
                 res['new_train'] += self.add_new_train(-1)
                 self.trains_per_line[color]["-1"]+=1
 
             #launch new train each 8 minutes
-            elif self.minutes % 8 == 0:
+            elif self.minutes % 4 == 0:
                 res['new_train'] += self.add_new_train(1)
                 self.trains_per_line[color]["1"]+=1
 
