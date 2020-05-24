@@ -3,55 +3,27 @@
 REPORT DO DIA 1 :
 -------------------------------------------------------
      TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:
-         green : 437.0 segundos  - 0.2848
-         yellow : 513.0 segundos  - 0.2872
-         blue : 441.0 segundos  - 0.2681
-         red : 455.0 segundos  - 0.2579
+         green : 479.0 segundos  - 0.2561
+         yellow : 435.0 segundos  - 0.2628
+         blue : 626.0 segundos  - 0.294
+         red : 480.0 segundos  - 0.2509
 -------------------------------------------------------
      METROS LANÇADOS POR LINHA:
-         blue: Sentido  -1 : 72      Sentido  1 : 71     
-         green: Sentido  -1 : 72      Sentido  1 : 71     
-         red: Sentido  -1 : 72      Sentido  1 : 71     
-         yellow: Sentido  -1 : 72      Sentido  1 : 71     
+         blue: Sentido  -1 : 68      Sentido  1 : 60     
+         green: Sentido  -1 : 84      Sentido  1 : 68     
+         red: Sentido  -1 : 78      Sentido  1 : 72     
+         yellow: Sentido  -1 : 85      Sentido  1 : 76     
 -------------------------------------------------------
 REPORT DO DIA 2 :
 -------------------------------------------------------
      TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:
-         green : 331.0 segundos  - 0.145
-         yellow : 372.0 segundos  - 0.1569
-         blue : 334.0 segundos  - 0.1534
-         red : 349.0 segundos  - 0.1413
+         green : 481.0 segundos  - 0.2565
+         yellow : 435.0 segundos  - 0.2597
+         blue : 619.0 segundos  - 0.2977
+         red : 484.0 segundos  - 0.2491
 -------------------------------------------------------
      METROS LANÇADOS POR LINHA:
-         blue: Sentido  -1 : 128      Sentido  1 : 124     
-         green: Sentido  -1 : 128      Sentido  1 : 126     
-         red: Sentido  -1 : 124      Sentido  1 : 126     
-         yellow: Sentido  -1 : 134      Sentido  1 : 130     
--------------------------------------------------------
-REPORT DO DIA 3 :
--------------------------------------------------------
-     TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:
-         green : 311.0 segundos  - 0.1879
-         yellow : 336.0 segundos  - 0.1886
-         blue : 313.0 segundos  - 0.1802
-         red : 331.0 segundos  - 0.1574
--------------------------------------------------------
-     METROS LANÇADOS POR LINHA:
-         blue: Sentido  -1 : 109      Sentido  1 : 105     
-         green: Sentido  -1 : 109      Sentido  1 : 107     
-         red: Sentido  -1 : 105      Sentido  1 : 107     
-         yellow: Sentido  -1 : 115      Sentido  1 : 111     
--------------------------------------------------------
-REPORT DO DIA 4 :
--------------------------------------------------------
-     TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:
-         green : 320.0 segundos  - 0.2127
-         yellow : 330.0 segundos  - 0.2218
-         blue : 322.0 segundos  - 0.2104
-         red : 334.0 segundos  - 0.1992
--------------------------------------------------------
-     METROS LANÇADOS POR LINHA:
-         blue: Sentido  -1 : 91      Sentido  1 : 87     
-         green: Sentido  -1 : 91      Sentido  1 : 89     
-         red: Sentido  -1 : 87      Sentido  1 : 89     
-         yellow: Sentido  -1 : 97      Sentido  1 : 93     
+         blue: Sentido  -1 : 71      Sentido  1 : 61     
+         green: Sentido  -1 : 84      Sentido  1 : 69     
+         red: Sentido  -1 : 80      Sentido  1 : 73     
+         yellow: Sentido  -1 : 83      Sentido  1 : 78     
