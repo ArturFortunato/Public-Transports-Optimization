@@ -1,0 +1,43 @@
+
+-------------------------------------------------------
+REPORT DO DIA 1 :
+-------------------------------------------------------
+     TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:
+         green : 436.0 segundos  - 0.2838
+         yellow : 509.0 segundos  - 0.2869
+         blue : 445.0 segundos  - 0.2668
+         red : 455.0 segundos  - 0.2589
+-------------------------------------------------------
+     METROS LANÇADOS POR LINHA:
+         blue: Sentido  -1 : 72      Sentido  1 : 71     
+         green: Sentido  -1 : 72      Sentido  1 : 71     
+         red: Sentido  -1 : 72      Sentido  1 : 71     
+         yellow: Sentido  -1 : 72      Sentido  1 : 71     
+-------------------------------------------------------
+REPORT DO DIA 2 :
+-------------------------------------------------------
+     TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:
+         green : 331.0 segundos  - 0.1458
+         yellow : 370.0 segundos  - 0.1586
+         blue : 336.0 segundos  - 0.1551
+         red : 350.0 segundos  - 0.141
+-------------------------------------------------------
+     METROS LANÇADOS POR LINHA:
+         blue: Sentido  -1 : 126      Sentido  1 : 124     
+         green: Sentido  -1 : 128      Sentido  1 : 126     
+         red: Sentido  -1 : 124      Sentido  1 : 126     
+         yellow: Sentido  -1 : 132      Sentido  1 : 130     
+-------------------------------------------------------
+REPORT DO DIA 3 :
+-------------------------------------------------------
+     TEMPO MÉDIO DE ESPERA(s) E OCUPAÇÃO POR LINHA:
+         green : 311.0 segundos  - 0.1864
+         yellow : 336.0 segundos  - 0.1921
+         blue : 315.0 segundos  - 0.1832
+         red : 331.0 segundos  - 0.1563
+-------------------------------------------------------
+     METROS LANÇADOS POR LINHA:
+         blue: Sentido  -1 : 107      Sentido  1 : 105     
+         green: Sentido  -1 : 109      Sentido  1 : 107     
+         red: Sentido  -1 : 105      Sentido  1 : 107     
+         yellow: Sentido  -1 : 113      Sentido  1 : 111     

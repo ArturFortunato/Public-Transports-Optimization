@@ -23,7 +23,7 @@ class Environment:
                       Line('green', 2, self.reporter, self.gui)]
         self.orchestrator = Orchestrator(self.lines)
 
-        self.time = datetime.time(23,00)
+        self.time = datetime.time(6,15)
         self.day = 1
 
     #TIME MEASURE

@@ -26,51 +26,72 @@ class Orchestrator:
             self.trains_per_line[c]["1"] = 0
 
         if(flags["behavior"] == "deliberative"):
-            self.stored_perceptions = {}
-            for h in range(6,24):
-                self.stored_perceptions[h] = {}
-                for m in range(0,61):
-                    self.stored_perceptions[h][m] = {}
-                    for c in ["red","green","blue","yellow"]:
-                        self.stored_perceptions[h][m][c] = {}
-                        for s in ["-1","1"]:
-                            self.stored_perceptions[h][m][c][s] = {}
-                            for key in ["lt","occ","avg_p"]:
-                                self.stored_perceptions[h][m][c][s][key] = ""
+            self.reset_stored_perceptions()
                 
+
+    def reset_stored_perceptions(self):
+        self.stored_perceptions = {}
+        for h in range(6,24):
+            self.stored_perceptions[h] = {}
+            for m in range(0,61):
+                self.stored_perceptions[h][m] = {}
+                for c in ["red","green","blue","yellow"]:
+                    self.stored_perceptions[h][m][c] = {}
+                    for s in ["-1","1"]:
+                        self.stored_perceptions[h][m][c][s] = {}
+                        for key in ["lt","occ","avg_p"]:
+                            self.stored_perceptions[h][m][c][s][key] = ""
+
 
     #faz a media de hora para ocupacao das carruagens e numero de pessoas
     def hour_avg(self,string,hour,color,way):
         acc = 0
-        hour = 23 #ALTERAR DE SEGUIDA
-        for m in range(0,60):
+
+        if hour == 6: m = 15
+        else: m = 0
+        for m in range(m,60):
+            #print("o valor de self.stored_perceptions[hour][m][color]" + str(self.stored_perceptions[hour][m][color]))
+            #print("o valor de self.stored_perceptions[hour][m][color][way]" + str(self.stored_perceptions[hour][m][color][way]))
+            #print("o valor de self.stored_perceptions[hour][m][color][string]" + str(self.stored_perceptions[hour][m][color][way][string]))
+
+            
             acc += self.stored_perceptions[hour][m][color][way][string]
         return acc/60
 
     #conta o numero de comboios lancados
     def count_hour_lt(self,hour,color,way):
-        count = 0
-        hour = 23 #ALTERAR DE SEGUIDA
-        for m in range(0,60):
-            count += self.stored_perceptions[hour][m][color][way]["lt"]
+        try:
+            count = 0
+            for m in range(0,60):
+                #print(self.stored_perceptions[hour][m][color][way]["lt"])
+                if(self.stored_perceptions[hour][m][color][way]["lt"]):
+                    count += 1
+        except:
+            print(self.stored_perceptions[hour][m][color][way])
         return count
 
-    def plan(self):
+    def plan_schedule(self):
         plan = {}
         for hour in self.stored_perceptions.keys():
             plan[hour] = {}
             for color in ["blue","yellow","green","red"]:
+                plan[hour][color] = {}
                 for way in ["-1","1"]:
+                        
+                    plan[hour][color][way] = None
                     avg_p = self.hour_avg("avg_p",hour,color,way)
                     avg_o = self.hour_avg("occ",hour,color,way)
                     hour_lt = self.count_hour_lt(hour,color,way)
 
-                    if avg_p  > 15 and avg_o > 0.5:
+                    if avg_p  > 15 and avg_o > 0.4:
                         hour_lt += 1
                     else: hour_lt -= 1
                         
-                    freq  = round((60 / hour_lt),0)
-                    
+                    if(hour_lt != 0): #no trains launched during that hour
+                        freq  = round((60 / hour_lt),0)
+                    else:
+                        freq = 0
+
                     minutos_de_partida = []
                     m = 0
                     while(m < 60):
@@ -78,8 +99,7 @@ class Orchestrator:
                         m += freq
                     plan[hour][color][way] =  minutos_de_partida
 
-        print(plan)
-        exit()
+        return plan
             
     
     def reset(self):
@@ -87,7 +107,8 @@ class Orchestrator:
             self.trains_per_line[c]["-1"] = 0
             self.trains_per_line[c]["1"] = 0
         if(flags["behavior"] == "deliberative"):
-            self.plan()
+            self.plan = self.plan_schedule()
+            self.reset_stored_perceptions()
        
     def get_trains_per_line(self):
         return self.trains_per_line
@@ -175,7 +196,6 @@ class Orchestrator:
 
         if(flags["behavior"] == "baseline"): 
            _, res  = self.launch_trains_baseline(res,color)
-           print("o valor de res e: " + str(res))
 
         elif(flags["behavior"] == "reactive"):
             ways = stations[0].get_ways()
@@ -216,10 +236,24 @@ class Orchestrator:
                         way = res["new_train"][0]["way"]
                         metrics[way_key]["lt"] = True
                     else: metrics[way_key]["lt"] = False
-            
-            
-            self.store_info_deliberative(metrics,color)
+            else: #deliberativo
 
+                metrics = self.get_line_metrics(line_perception)
+                try:
+                    for way in ["-1","1"]:
+                        metrics[way]["lt"] = False
+                        launch_array = self.plan[self.hours][color][way]
+
+                        if(self.minutes in launch_array):
+                            res['new_train'] += self.add_new_train(int(way))
+                            self.trains_per_line[color][way]+=1
+                            metrics[way]["lt"] = True
+                except:
+                    print(self.hours)
+                    print(color)
+                    print(way)
+
+            self.store_info_deliberative(metrics,color)
 
         return res
 
