@@ -56,7 +56,7 @@ class Gui:
             else:
                 self.write_station_name(text_position, name, nr_people, color=color, nr_people_extra=self.stations[index].get_people(), color_extra=color_extra)
 
-    def get_station_color(self, nr_people): #maybe change this for both ways?
+    def get_station_color(self, nr_people):
         if nr_people[0] + nr_people[1] == 0:
             return (255, 255, 255)
         elif (nr_people[0] + nr_people[1]) / 2 <= 50:
@@ -107,7 +107,7 @@ class Gui:
         large_text = pg.font.Font('freesansbold.ttf', 15)
         text_surf = large_text.render(base_behavior + flags["behavior"], True, TEXT_COLOR)
         text_rect = text_surf.get_rect()
-        text_rect.center = (92, 58)
+        text_rect.center = (97, 58)
         self.win.blit(text_surf, text_rect)
 
     def draw(self, day):

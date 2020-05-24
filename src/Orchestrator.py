@@ -3,6 +3,7 @@ Project by Artur Fortunato, Joao Coelho and Pedro Esteves.
 '''
 
 from Utils.global_vars import flags
+import gc
 
 class Orchestrator:
 
@@ -14,6 +15,7 @@ class Orchestrator:
         self.minutes = None
         self.day = None
         self.test_new_train = False
+        self.plan = None
 
         #regista o numero de trains por linha
         self.trains_per_line = {}
@@ -71,14 +73,14 @@ class Orchestrator:
         return count
 
     def plan_schedule(self):
-        plan = {}
+        self.plan = {}
         for hour in self.stored_perceptions.keys():
-            plan[hour] = {}
+            self.plan[hour] = {}
             for color in ["blue","yellow","green","red"]:
-                plan[hour][color] = {}
+                self.plan[hour][color] = {}
                 for way in ["-1","1"]:
                         
-                    plan[hour][color][way] = None
+                    self.plan[hour][color][way] = None
                     avg_p = self.hour_avg("avg_p",hour,color,way)
                     avg_o = self.hour_avg("occ",hour,color,way)
                     hour_lt = self.count_hour_lt(hour,color,way)
@@ -94,12 +96,15 @@ class Orchestrator:
 
                     minutos_de_partida = []
                     m = 0
-                    while(m < 60):
+                    while m < 60:
                         minutos_de_partida.append(m)
                         m += freq
-                    plan[hour][color][way] =  minutos_de_partida
-
-        return plan
+                        if freq == 0:
+                            break
+                    self.plan[hour][color][way] =  minutos_de_partida
+                    del minutos_de_partida
+                    gc.collect()
+        return self.plan
             
     
     def reset(self):
@@ -107,6 +112,8 @@ class Orchestrator:
             self.trains_per_line[c]["-1"] = 0
             self.trains_per_line[c]["1"] = 0
         if(flags["behavior"] == "deliberative"):
+            del self.plan
+            gc.collect()
             self.plan = self.plan_schedule()
             self.reset_stored_perceptions()
        
@@ -144,14 +151,14 @@ class Orchestrator:
 
     def launch_trains_baseline(self,res,color):
         train_launched = False
-        if self.minutes % 8 == 0 and self.minutes % 16 == 0:
+        if self.minutes % 4 == 0 and self.minutes % 8 == 0:
             res['new_train'] += self.add_new_train(-1)
             train_launched = True
             self.trains_per_line[color]["-1"]+=1
 
 
-        #launch new train each 8 minutes
-        elif self.minutes % 8 == 0:
+        #launch new train each 4 minutes
+        elif self.minutes % 4 == 0:
             res['new_train'] += self.add_new_train(1)
             train_launched = True
             self.trains_per_line[color]["1"]+=1
