@@ -3,7 +3,7 @@ Projeto para a cadeira de AASMA, IST, MEIC, 2020.
 
 Autores: Artur Fortunato, João Coelho e Pedro Esteves.  
 
-Este projeto visa simular o metro de Lisboa utilizando dados do mês de Outubro de 2019.  
+Este projeto visa simular o metro de Lisboa utilizando dados do mês de Outubro de 2018, tentando equilibrar métricas tais como tempos de espera, número de combóios e ocupação de carruagens.
 
 Existem 3 modelos no projeto atualmente: baseline, reactive e deliberative.  
 
@@ -15,10 +15,10 @@ Existem 3 modelos no projeto atualmente: baseline, reactive e deliberative.
 - Modelos para geração de pessoas. Dados sensiveis logo não está tudo aqui.  /data/models tem os pickles dos modelos.  
 
 /logs/
-- Logs gerados durante a execução do programa. Inclui numero de comboios em cada linha em cada sentido e ocupação média.  
+- Logs gerados durante a execução do programa. Inclui número de comboios em cada linha em cada sentido e ocupação média.  
 
 /plots/
-- Graficos gerados durante a execução do programa. Dois gráficos por dia, um da evolução do tempo médio de espera, outro da evolução da capacidade média dos comboios.  
+- Gráficos gerados durante a execução do programa. Dois gráficos por dia, um da evolução do tempo médio de espera, outro da evolução da capacidade média dos comboios.  
 
 /src/
 - Código base. Na raíz tem o código relativo aos agentes (Orchestrator.py e Line.py) e ao Ambiente. Tem também o main.  
@@ -34,13 +34,21 @@ Existem 3 modelos no projeto atualmente: baseline, reactive e deliberative.
 
 From src/:  
 
-python main.py
+python3 main.py
+
+### DEPENDÊNCIAS 
+matplotlib  
+numpy  
+pandas
+tslearn  
+pygame  
+openpyxl
 
 ### FLAGS
 
 --behavior : Esta flag controla o tipo de modelo a ser usado. Ela pode ter 3 valores. "reactive", "baseline" ou "deliberative".
 
---lines : Esta flag permite controlar as linhas plottadas. Pode ser "red", "green", "yellow", "blue" ou ALL  
+--lines : Esta flag permite controlar as linhas plottadas. Pode ser "red", "green", "yellow", "blue" ou "ALL"  
 
 --opt : 
     Esta flag pode ter 2 valores:
@@ -49,7 +57,7 @@ python main.py
 
 --std : Adiciona um envelope aos plots com o desvio padrão.
 
-Por omissão caso se corra apenas o projeto assim: "python main.py " O modo default é o baseline a plottar todas as linhas sem qualquer smoothing ou sampling.
+Por omissão caso se corra apenas o projeto assim: "python main.py " O modo default é o baseline a produzir o plot com todas as linhas sem qualquer smoothing ou sampling.
 
 ### Exemplos
 
@@ -70,13 +78,13 @@ Cada comportamento depende de alguns parametros para realizar as escolhas. Estes
 Os parametros que temos de momento na implementação são:
 
 Reactive:
-- Ocupancia Média: 20%.  
+- Ocupância Média: 20%.  
 - Média de Pessoas por estação: 20.  
 
 Deliberativo:
 - Horario Inicial: Comboios a cada 16 minutos.  
-- Ocupancia Média: 40%
-- Média de Pessoas por Estação: 20
+- Ocupância Média: 40%.
+- Média de Pessoas por Estação: 20.
 
 Variações nestes valores irão produzir resultados diferentes.
 
