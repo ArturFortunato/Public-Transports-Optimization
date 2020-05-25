@@ -36,6 +36,14 @@ From src/:
 
 python3 main.py
 
+### DEPENDÊNCIAS 
+matplotlib  
+numpy  
+pandas
+tslearn  
+pygame  
+openpyxl
+
 ### FLAGS
 
 --behavior : Esta flag controla o tipo de modelo a ser usado. Ela pode ter 3 valores. "reactive", "baseline" ou "deliberative".
