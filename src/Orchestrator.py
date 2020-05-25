@@ -103,7 +103,7 @@ class Orchestrator:
         stations = line_perception["stations"]
 
         if(flags["behavior"] == "baseline"): 
-           _, res  = self.launch_trains_baseline(res,color)
+           _, res  = self.launch_trains_baseline(res,color, 4)
 
         elif(flags["behavior"] == "reactive"):
             ways = stations[0].get_ways()
@@ -143,7 +143,7 @@ class Orchestrator:
 
         elif(flags["behavior"]  == "deliberative"):
             if(self.day == 1):
-                launched, res  = self.launch_trains_baseline(res,color)
+                launched, res  = self.launch_trains_baseline(res,color, 8)
                 metrics = self.get_line_metrics(line_perception)
                 
                 for way_key in list(metrics.keys()):
@@ -250,16 +250,16 @@ class Orchestrator:
                 self.stored_perceptions[self.hours][self.minutes][color][way]["occ"] = metrics[way]["occ"]
                 self.stored_perceptions[self.hours][self.minutes][color][way]["avg_p"] = metrics[way]["avg_p"]
 
-    def launch_trains_baseline(self,res,color):
+    def launch_trains_baseline(self,res,color,n):
         train_launched = False
-        if self.minutes % 4 == 0 and self.minutes % 8 == 0:
+        if self.minutes % n == 0 and self.minutes % (2*n) == 0:
             res['new_train'] += self.add_new_train(-1)
             train_launched = True
             self.trains_per_line[color]["-1"]+=1
 
 
         #launch new train each 8 minutes
-        elif self.minutes % 4 == 0:
+        elif self.minutes % n == 0:
             res['new_train'] += self.add_new_train(1)
             train_launched = True
             self.trains_per_line[color]["1"] += 1
