@@ -3,7 +3,7 @@ Projeto para a cadeira de AASMA, IST, MEIC, 2020.
 
 Autores: Artur Fortunato, João Coelho e Pedro Esteves.  
 
-Este projeto visa simular o metro de Lisboa utilizando dados do mês de Outubro de 2019.  
+Este projeto visa simular o metro de Lisboa utilizando dados do mês de Outubro de 2018, tentando equilibrar métricas tais como tempos de espera, número de combóios e ocupação de carruagens.
 
 Existem 3 modelos no projeto atualmente: baseline, reactive e deliberative.  
 
